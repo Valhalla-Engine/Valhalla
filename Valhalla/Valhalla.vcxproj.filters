@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Valhalla">
+      <UniqueIdentifier>{8AF51F08-76C2-7A13-9FDB-68BB8B07B0A1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Valhalla\Core">
+      <UniqueIdentifier>{2220C2B8-8EE0-3DEF-571B-876CC39A82CB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Valhalla\Core\Events">
+      <UniqueIdentifier>{C6115271-B2A0-DB3A-5BBF-EF35472DECE0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Valhalla\Platform">
+      <UniqueIdentifier>{1E0D4481-8A23-4217-D39A-CD383FF0129F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Valhalla\Platform\OpenGL">
+      <UniqueIdentifier>{9208A7D6-7E2D-F656-A778-DBE693FCF474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Valhalla\Platform\Windows">
+      <UniqueIdentifier>{58F5A303-C4B7-D78D-0D68-661A7969B06B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Valhalla.h" />
+    <ClInclude Include="src\Valhalla\Core\Application.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Assert.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Base.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Buffer.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\ApplicationEvent.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\Event.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\KeyEvent.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\MouseEvent.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\KeyCodes.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Layer.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\LayerStack.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Log.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\MouseCodes.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Timestep.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Window.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\EntryPoint.h">
+      <Filter>Valhalla</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLWindow.h">
+      <Filter>Valhalla\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h">
+      <Filter>Valhalla\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vhpch.h" />
+    <ClInclude Include="src\Valhalla\Core\Ref.h" />
+    <ClInclude Include="src\Valhalla\Core\Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Valhalla\Core\Application.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\Base.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\Layer.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\LayerStack.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\Log.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\Timestep.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLWindow.cpp">
+      <Filter>Valhalla\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Valhalla\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vhpch.cpp" />
+  </ItemGroup>
+</Project>
