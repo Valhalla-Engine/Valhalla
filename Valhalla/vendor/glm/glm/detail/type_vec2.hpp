@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "type_vec3.hpp"
+
 #include "qualifier.hpp"
 #if GLM_CONFIG_SWIZZLE == GLM_SWIZZLE_OPERATOR
 #	include "_swizzle.hpp"

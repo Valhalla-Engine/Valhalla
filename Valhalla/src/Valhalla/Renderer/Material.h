@@ -1,0 +1,207 @@
+#pragma once
+
+#include "Valhalla/Core/Base.h"
+
+#include "Shader.h"
+#include "Texture.h"
+
+#include <unordered_set>
+
+namespace Valhalla
+{
+	namespace Heimdal
+	{
+		enum class VALHALLA_API MaterialFlag
+		{
+			None		=BIT(0),
+			DepthTest	=BIT(1),
+			Blend		=BIT(2)
+		};
+
+		class VALHALLA_API Material : public RefCounted
+		{
+			friend class MaterialInstance;
+
+		public:
+
+			Material(const Ref<Shader>& shader);
+			virtual ~Material();
+
+			void Bind();
+
+			uint32_t GetFlags() const { return m_MaterialFlags; }
+			void SetFlag(MaterialFlag flag) { m_MaterialFlags |= (uint32_t)flag; }
+
+			template<typename T>
+			void Set(const std::string& name, const T& value)
+			{
+				auto decl = FindUniformDeclaration(name);
+				VH_CORE_ASSERT(decl, "Could not find uniform with name 'x'");
+				auto& buffer = m_UniformStorageBuffer;
+				buffer.Write((byte*)&value, decl->GetSize(), decl->GetOffset());
+
+				for (auto mi : m_MaterialInstance)
+					mi->OnMaterialValueUpdated(*decl);
+			}
+
+			void Set(const std::string& name, const Ref<Texture>& texture)
+			{
+				auto decl = FindResourceDeclaration(name);
+				uint32_t slot = decl->GetRegister();
+				if (m_Textures.size() <= slot)
+					m_Textures.resize((size_t)slot + 1);
+				m_Textures[slot] = texture;
+			}
+
+			void Set(const std::string& name, const Ref<Texture2D>& texture)
+			{
+				Set(name, (const Ref<Texture>&)texture);
+			}
+
+			void Set(const std::string& name, const Ref<TextureCube>& texture)
+			{
+				Set(name, (const Ref<Texture>&)texture);
+			}
+
+			template<typename T>
+			T& Get(const std::string& name)
+			{
+				auto decl = FindUniformDeclaration(name);
+				VH_CORE_ASSERT(decl, "Could not find uniform with name: " + name);
+				auto& buffer = m_UniformStorageBuffer;
+				return buffer.Read<T>(decl->GetOffset());
+			}
+
+			template<typename T>
+			Ref<T> GetResources(const std::string& name)
+			{
+				auto decl = FindResourceDeclaration(name);
+				uint32_t slot = decl->GetRegister();
+				VH_CORE_ASSERT(slot < m_Textures.size(), "Texture slot is invalid!");
+				return m_Textures[slot];
+			}
+
+			Ref<Shader> GetShader() { return m_Shader; }
+
+			static Ref<Material> Create(const Ref<Shader>& shader);
+
+		private:
+			void AllocateStorage();
+			void OnShaderReloaded();
+			void BindTextures();
+
+			const ShaderUniform* FindUniformDeclaration(const std::string& name);
+			const ShaderResourceDeclaration* FindResourceDeclaration(const std::string& name);
+		private:
+			Ref<Shader> m_Shader;
+			std::unordered_set<MaterialInstance*> m_MaterialInstance;
+
+			Buffer m_UniformStorageBuffer;
+			std::vector<Ref<Texture>> m_Textures;
+
+			uint32_t m_MaterialFlags;
+		};
+
+		class VALHALLA_API MaterialInstance : public RefCounted
+		{
+			friend class Material;
+
+		public:
+			MaterialInstance(const Ref<Material>& material, const std::string& name = "");
+			virtual ~MaterialInstance();
+
+			template<typename T>
+			void Set(const std::string& name, const T& value)
+			{
+				auto decl = m_Material->FindUniformDeclaration(name);
+				VH_CORE_ASSERT(decl, "Could not find uniform");
+				if (!decl)
+					return;
+				auto& buffer = m_UniformStorageBuffer;
+				buffer.Write((byte*)&value, decl->GetSize(), decl->GetOffset());
+
+				m_OverriddenValues.insert(name);
+			}
+
+			void Set(const std::string& name, const Ref<Texture>& texture)
+			{
+				auto decl = m_Material->FindResourceDeclaration(name);
+				if (!decl)
+				{
+					VH_CORE_WARN("Cannot find material property", name);
+					return;
+				}
+				uint32_t slot = decl->GetRegister();
+				if (m_Textures.size() <= slot)
+					m_Textures.resize((size_t)slot + 1);
+				m_Textures[slot] = texture;
+			}
+
+			void Set(const std::string& name, const Ref<Texture2D>&texture)
+			{
+				Set(name, (const Ref<Texture>&)texture);
+			}
+
+			void Set(const std::string& name, const Ref<TextureCube>& texture)
+			{
+				Set(name, (const Ref<Texture>&)texture);
+			}
+
+			template<typename T>
+			T& Get(const std::string& name)
+			{
+				auto decl = m_Material->FindUniformDeclaration(name);
+				VH_CORE_ASSERT(decl, "Could not find uniform with name: " + name);
+				auto& buffer = m_UniformStorageBuffer;
+				return buffer.Read<T>(decl->GetOffset());
+			}
+
+			template<typename T>
+			Ref<T> GetResource(const std::string& name)
+			{
+				auto decl = m_Material->FindResourceDeclaration(name);
+				VH_CORE_ASSERT(decl, "Could not find uniform with name: " + name);
+				uint32_t slot = decl->GetRegister();
+				VH_CORE_ASSERT(slot < m_Textures.size(), "Texture slot is invalid");
+				return Ref<T>(m_Textures[slot]);
+			}
+
+			template<typename T>
+			Ref<T> TryGetResource(const std::string& name)
+			{
+				auto decl = m_Material->FindResourceDeclaration(name);
+				if (!decl)
+					return nullptr;
+				uint32_t slot = decl->GetRegister();
+				if (slot >= m_Textures.size())
+					return nullptr;
+				return Ref<T>(m_Textures[slot]);
+			}
+
+			void Bind();
+
+			uint32_t GetFlags() const { return m_Material->m_MaterialFlags; }
+			bool GetFlag(MaterialFlag flag) const { return (uint32_t)flag & m_Material->m_MaterialFlags; }
+			void SetFlag(MaterialFlag flag, bool value = true);
+
+			Ref<Shader> GetShader() { return m_Material->m_Shader; }
+
+			const std::string& GetName() const { return m_Name; }
+
+			static Ref<MaterialInstance> Create(const Ref<Material>& decl);
+
+		private:
+			void AllocateStorage();
+			void OnShaderReloaded();
+			void OnMaterialValueUpdated(const ShaderUniform& decl);
+		private:
+			Ref<Material> m_Material;
+			std::string m_Name;
+
+			Buffer m_UniformStorageBuffer;
+			std::vector<Ref<Texture>> m_Textures;
+
+			std::unordered_set<std::string> m_OverriddenValues;
+		};
+	}
+}

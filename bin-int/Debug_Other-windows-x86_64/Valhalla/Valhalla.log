@@ -1,8 +1,1 @@
-﻿  OpenGLWindow.cpp
-C:\Programs\Valhalla\Valhalla\src\Valhalla\Core\Window.h(13,20): warning C4251: 'Valhalla::WindowProps::Title': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of struct 'Valhalla::WindowProps'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-  WindowsWindow.cpp
-C:\Programs\Valhalla\Valhalla\src\Valhalla\Core\Window.h(13,20): warning C4251: 'Valhalla::WindowProps::Title': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of struct 'Valhalla::WindowProps'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-  Generating Code...
-  Valhalla.vcxproj -> C:\Programs\Valhalla\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.dll
+﻿  Valhalla.vcxproj -> C:\Programs\Valhalla\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.dll
