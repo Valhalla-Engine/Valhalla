@@ -17,7 +17,7 @@ namespace Valhalla
 				case RendererAPIType::OpenGL:		return nullptr;
 				case RendererAPIType::DirectX11:	VH_CORE_ASSERT(false, "DirectX 11 is currently not supported");  return nullptr;
 				case RendererAPIType::DirectX12:	VH_CORE_ASSERT(false, "DirectX 12 is currently not supported"); return nullptr;
-				case RendererAPIType::Vulkan:		VH_CORE_ASSERT(false, "Vulkan currently not supported"); return nullptr;
+				case RendererAPIType::Vulkan:		VH_CORE_ASSERT(false, "Vulkan is currently not supported"); return nullptr;
 				case RendererAPIType::Metal:		VH_CORE_ASSERT(false, "Metal is currently not supported"); return nullptr;
 			}
 
@@ -35,7 +35,7 @@ namespace Valhalla
 				case RendererAPIType::OpenGL:		return nullptr;
 				case RendererAPIType::DirectX11:	VH_CORE_ASSERT(false, "DirectX 11 is currently not supported");  return nullptr;
 				case RendererAPIType::DirectX12:	VH_CORE_ASSERT(false, "DirectX 12 is currently not supported"); return nullptr;
-				case RendererAPIType::Vulkan:		VH_CORE_ASSERT(false, "Vulkan currently not supported"); return nullptr;
+				case RendererAPIType::Vulkan:		VH_CORE_ASSERT(false, "Vulkan is currently not supported"); return nullptr;
 				case RendererAPIType::Metal:		VH_CORE_ASSERT(false, "Metal is currently not supported"); return nullptr;
 			}
 

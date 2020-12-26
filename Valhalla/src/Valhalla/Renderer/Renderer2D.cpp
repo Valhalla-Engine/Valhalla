@@ -127,7 +127,68 @@ namespace Valhalla
 			s_Data.QuadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
 			s_Data.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
 
+			//Lines
+			{
+				s_Data.LineShader = Shader::Create("assets/shaders/Renderer2D_Line.glsl");
 
+				PipelineSpecification pipelineSecification;
+				pipelineSecification.Layout =
+				{
+					{ShaderDataType::Float3, "a_Position"},
+					{ShaderDataType::Float4, "a_Color"}
+				};
+
+				s_Data.LinePipeline = Pipeline::Create(pipelineSecification);
+
+				s_Data.LineVertexBuffer = VertexBuffer::Create(s_Data.MaxLineVertices * sizeof(LineVertex));
+				s_Data.LineVertexBufferBase = new LineVertex[s_Data.MaxLineVertices];
+
+				uint32_t* lineIndices = new uint32_t[s_Data.MaxLineIndices];
+				for (uint32_t i = 0; i < s_Data.MaxLineIndices; i++)
+					lineIndices[i] = i;
+
+				s_Data.LineIndexBuffer = IndexBuffer::Create(lineIndices, s_Data.MaxLineIndices);
+				delete[] lineIndices;
+			}
+		}
+
+		void Renderer2D::Shutdown()
+		{
+		}
+
+		void Renderer2D::BeginScene(const glm::mat4& viewProj, bool depthTest)
+		{
+			s_Data.CameraViewProj = viewProj;
+			s_Data.DepthTest = depthTest;
+
+			s_Data.TextureShader->Bind();
+			s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+
+			s_Data.QuadIndexCount = 0;
+			s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+			s_Data.LineIndexCount = 0;
+			s_Data.LineVertexBufferPtr = s_Data.LineVertexBufferBase;
+
+			s_Data.TextureSlotIndex = 1;
+		}
+
+		void Renderer2D::EndScene()
+		{
+			uint32_t dataSize = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase;
+			if (dataSize)
+			{
+				s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
+				s_Data.TextureShader->Bind();
+				s_Data.TextureShader->SetMat4("u_ViewProjection", s_Data.CameraViewProj);
+
+				for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
+					s_Data.TextureSlots[i]->Bind(i);
+
+				s_Data.QuadPipeline->Bind();
+				s_Data.QuadIndexBuffer->Bind();
+				Renderer::DrawIndexed(s_Data.QuadIndexCount, )
+			}
 		}
 	}
 }

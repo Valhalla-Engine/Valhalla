@@ -204,6 +204,7 @@
     <ClInclude Include="src\Valhalla\Core\Layer.h" />
     <ClInclude Include="src\Valhalla\Core\LayerStack.h" />
     <ClInclude Include="src\Valhalla\Core\Log.h" />
+    <ClInclude Include="src\Valhalla\Core\Math\AABB.h" />
     <ClInclude Include="src\Valhalla\Core\MouseCodes.h" />
     <ClInclude Include="src\Valhalla\Core\Ref.h" />
     <ClInclude Include="src\Valhalla\Core\Timer.h" />
@@ -219,11 +220,11 @@
     <ClInclude Include="src\Valhalla\Renderer\Mesh.h" />
     <ClInclude Include="src\Valhalla\Renderer\Pipeline.h" />
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RenderPass.h" />
     <ClInclude Include="src\Valhalla\Renderer\Renderer.h" />
     <ClInclude Include="src\Valhalla\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Valhalla\Renderer\RendererContext.h" />
-    <ClInclude Include="src\Valhalla\Renderer\RenderPass.h" />
     <ClInclude Include="src\Valhalla\Renderer\Shader.h" />
     <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h" />
     <ClInclude Include="src\Valhalla\Renderer\Texture.h" />
@@ -245,9 +246,9 @@
     <ClCompile Include="src\Valhalla\Renderer\Material.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\RenderPass.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\RendererContext.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\RenderPass.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Shader.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Texture.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp" />
