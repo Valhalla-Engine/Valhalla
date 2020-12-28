@@ -10,6 +10,9 @@
     <Filter Include="Valhalla\Core\Events">
       <UniqueIdentifier>{C6115271-B2A0-DB3A-5BBF-EF35472DECE0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Valhalla\Core\Math">
+      <UniqueIdentifier>{3BEAE379-27CE-A4CF-902E-9F227C318F51}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Valhalla\Platform">
       <UniqueIdentifier>{1E0D4481-8A23-4217-D39A-CD383FF0129F}</UniqueIdentifier>
     </Filter>
@@ -61,6 +64,9 @@
     <ClInclude Include="src\Valhalla\Core\Log.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Math\AABB.h">
+      <Filter>Valhalla\Core\Math</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Core\MouseCodes.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
@@ -85,56 +91,11 @@
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h">
       <Filter>Valhalla\Platform\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\Camera.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\Framebuffer.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\Material.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\Mesh.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\Pipeline.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\RenderPass.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\Renderer.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\Renderer2D.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\RendererContext.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\Shader.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\Texture.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\vhpch.h" />
-    <ClInclude Include="src\Valhalla\Core\Math\AABB.h" />
+    <ClInclude Include="src\Valhalla\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Buffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
@@ -161,42 +122,8 @@
     <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp">
       <Filter>Valhalla\Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\Camera.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\Framebuffer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\Material.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\RenderPass.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\Renderer2D.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\RendererContext.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\Shader.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\Texture.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="src\vhpch.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLBuffer.cpp" />
   </ItemGroup>
 </Project>

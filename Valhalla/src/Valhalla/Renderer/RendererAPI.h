@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Valhalla/Core/Base.h"
-
+#include <memory>
 #include <string>
 
 namespace Valhalla
@@ -10,22 +9,18 @@ namespace Valhalla
 	{
 		using RendererID = uint32_t;
 
-		enum class VALHALLA_API RendererAPIType
+		enum class RendererAPIType
 		{
 			None,
-			OpenGL,
-			DirectX11,
-			DirectX12,
-			Vulkan,
-			Metal
+			OpenGL
 		};
 
-		enum class VALHALLA_API PrimitiveType
+		enum class PrimitiveType
 		{
 			None = 0, Triangles, Lines
 		};
 
-		struct VALHALLA_API RendererAPICapabilities
+		struct RenderAPICapabilities
 		{
 			std::string Vendor;
 			std::string Renderer;
@@ -36,7 +31,7 @@ namespace Valhalla
 			int32_t MaxTextureUnits = 0;
 		};
 
-		class VALHALLA_API RendererAPI
+		class RendererAPI
 		{
 		public:
 			static void Init();
@@ -48,18 +43,15 @@ namespace Valhalla
 			static void DrawIndexed(uint32_t count, PrimitiveType type, bool depthTest = true);
 			static void SetLineThickness(float_t thickness);
 
-			static RendererAPICapabilities& GetCapabilities()
+			static RenderAPICapabilities& GetCapabilities()
 			{
-				static RendererAPICapabilities capabilities;
+				static RenderAPICapabilities capabilities;
 				return capabilities;
 			}
 
 			static RendererAPIType Current() { return s_CurrentRendererAPI; }
-			static void SetAPI(RendererAPI api);
-
 		private:
 			static void LoadRequiredAssets();
-
 		private:
 			static RendererAPIType s_CurrentRendererAPI;
 		};
