@@ -61,6 +61,12 @@
     <ClInclude Include="src\Valhalla\Core\MouseCodes.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Ref.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Timer.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Timestep.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
@@ -77,8 +83,10 @@
       <Filter>Valhalla\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\vhpch.h" />
-    <ClInclude Include="src\Valhalla\Core\Ref.h" />
-    <ClInclude Include="src\Valhalla\Core\Timer.h" />
+    <ClInclude Include="src\Valhalla\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Renderer.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLImGuiLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
@@ -106,5 +114,8 @@
       <Filter>Valhalla\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\vhpch.cpp" />
+    <ClCompile Include="src\Valhalla\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLImGuiLayer.cpp" />
   </ItemGroup>
 </Project>

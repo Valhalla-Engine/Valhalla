@@ -1,6 +1,7 @@
 #pragma once
 #include "Valhalla/Core/Base.h"
 #include "Valhalla/Core/Timestep.h"
+#include "Valhalla/Core/Events/Event.h"
 
 namespace Valhalla
 {
