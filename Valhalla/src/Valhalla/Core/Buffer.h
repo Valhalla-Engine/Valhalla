@@ -16,7 +16,7 @@ namespace Valhalla
 		Buffer(byte* data, uint32_t size)
 			:Data(data), Size(size) {}
 
-		static Buffer copy(void* data, uint32_t size)
+		static Buffer Copy(void* data, uint32_t size)
 		{
 			Buffer buffer;
 			buffer.Allocate(size);

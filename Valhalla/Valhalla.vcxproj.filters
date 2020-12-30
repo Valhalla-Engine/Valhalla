@@ -91,11 +91,18 @@
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h">
       <Filter>Valhalla\Platform\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\vhpch.h" />
-    <ClInclude Include="src\Valhalla\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Buffer.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Camera.h" />
+    <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLVertexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Renderer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RenderPass.h" />
+    <ClInclude Include="src\Valhalla\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLFrameBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
@@ -123,7 +130,12 @@
       <Filter>Valhalla\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\vhpch.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLVertexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Renderer.cpp" />
   </ItemGroup>
 </Project>
