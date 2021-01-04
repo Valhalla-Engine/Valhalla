@@ -103,6 +103,12 @@
     <ClInclude Include="src\Valhalla\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLFrameBuffer.h" />
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h" />
+    <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLIndexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Texture.h" />
+    <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLShaderUniform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
@@ -137,5 +143,10 @@
     <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLIndexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Texture.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLShaderUniform.cpp" />
   </ItemGroup>
 </Project>

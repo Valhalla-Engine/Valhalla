@@ -212,15 +212,21 @@
     <ClInclude Include="src\Valhalla\Core\Window.h" />
     <ClInclude Include="src\Valhalla\EntryPoint.h" />
     <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLFrameBuffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLIndexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLShaderUniform.h" />
+    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLVertexBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLWindow.h" />
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Valhalla\Renderer\Camera.h" />
     <ClInclude Include="src\Valhalla\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h" />
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h" />
     <ClInclude Include="src\Valhalla\Renderer\Renderer.h" />
     <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Valhalla\Renderer\RenderPass.h" />
+    <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Texture.h" />
     <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h" />
     <ClInclude Include="src\vhpch.h" />
   </ItemGroup>
@@ -232,13 +238,18 @@
     <ClCompile Include="src\Valhalla\Core\Log.cpp" />
     <ClCompile Include="src\Valhalla\Core\Timestep.cpp" />
     <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLIndexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLShaderUniform.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLVertexBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLWindow.cpp" />
     <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Camera.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Texture.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp" />
     <ClCompile Include="src\vhpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
