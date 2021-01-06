@@ -9,6 +9,7 @@ namespace Valhalla
 	{
 		RendererAPIType RendererAPI::s_CurrentRendererAPI = RendererAPIType::OpenGL;
 
+
 		struct RendererData
 		{
 			RenderCommandQueue m_CommandQueue;
@@ -16,10 +17,16 @@ namespace Valhalla
 
 		static RendererData s_Data;
 
+		void Renderer::Init()
+		{
+			
+		}
+
+
+
 		RenderCommandQueue& Renderer::GetRenderCommandQueue()
 		{
 			return s_Data.m_CommandQueue;
 		}
-
 	}
 }

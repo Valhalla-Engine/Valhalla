@@ -10,6 +10,9 @@ namespace Valhalla
 		class VALHALLA_API Renderer
 		{
 		public:
+
+			static void Init();
+
 			template<typename FuncT>
 			static void Submit(FuncT&& func)
 			{

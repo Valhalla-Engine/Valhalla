@@ -53,7 +53,7 @@ namespace Valhalla::Yggdrasil
 
 		int32_t GetLocation() const { return m_Location; }
 		inline Type GetType() const { return m_Type; }
-		inline bool IsArray() const { m_Count > 1; }
+		inline bool IsArray() const { return m_Count > 1; }
 		inline const Heimdal::ShaderStruct& GetShaderUniformStruct() const { VH_CORE_ASSERT(m_Struct, "There is something wrong with m_Struct in OpenGL"); return *m_Struct; }
 
 		static uint32_t SizeOfUniformType(Type type);
@@ -101,7 +101,7 @@ namespace Valhalla::Yggdrasil
 
 		virtual const Heimdal::ShaderUniformList& GetUniformDeclarations() const override { return m_Uniforms; }
 
-		Heimdal::ShaderUniformDeclaration* FindUniform(const std::string& name);
+		virtual Heimdal::ShaderUniformDeclaration* FindUniform(std::string& name) override;
 	private:
 		friend class Shader;
 	private:

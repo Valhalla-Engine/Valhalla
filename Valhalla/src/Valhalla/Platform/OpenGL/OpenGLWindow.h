@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Valhalla/Core/Window.h"
+#include "Valhalla/Renderer/RendererContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -16,17 +17,27 @@ namespace Valhalla
 			OpenGLWindow(const WindowProps& props);
 			virtual ~OpenGLWindow();
 
-			void OnUpdate() override;
+			virtual void ProcessEvents() override;
+			virtual void SwapBuffers() override;
 
-			inline uint32_t GetWidth() const override { return m_Data.Width; }
-			inline uint32_t GetHeight() const override { return m_Data.Height; }
+			inline unsigned int GetWidth() const override { return m_Data.Width; }
+			inline unsigned int GetHeight() const override { return m_Data.Height; }
+
+			virtual std::pair<uint32_t, uint32_t> GetSize() const override { return { m_Data.Width, m_Data.Height }; }
+			virtual std::pair<float_t, float_t> GetWindowPos() const override;
 
 			// Window attributes
 			virtual void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 			virtual void SetVSync(bool enabled) override;
 			virtual bool IsVSync() const override;
 
+			virtual const std::string& GetTitle() const override { return m_Data.Title; }
+			virtual void SetTitle(const std::string& title) override;
+
 			inline void* GetNativeWindow() const { return m_Window; }
+
+			virtual Ref<Heimdal::RendererContext> GetRenderContext() override { return m_RendererContext; }
+
 
 		private:
 			virtual void Init(const WindowProps& props);
@@ -46,6 +57,8 @@ namespace Valhalla
 
 			WindowData m_Data;
 			float_t m_LastFrameTime = 0.0f;
+
+			Ref<Heimdal::RendererContext> m_RendererContext;
 		};
 
 #endif

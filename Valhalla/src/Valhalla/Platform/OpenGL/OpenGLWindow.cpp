@@ -6,6 +6,8 @@
 #include "Valhalla/Core/Events/KeyEvent.h"
 #include "Valhalla/Core/Events/MouseEvent.h"
 
+#include "Valhalla/Renderer/RendererAPI.h"
+
 namespace Valhalla
 {
 
@@ -53,9 +55,14 @@ namespace Valhalla
 				s_GLFWInitialized = true;
 			}
 
-			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-			glfwMakeContextCurrent(m_Window);
-			int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+			if (Heimdal::RendererAPI::Current() == Heimdal::RendererAPIType::None)
+				glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+			m_Window = glfwCreateWindow((int32_t)props.Width, (int32_t)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+			
+			m_RendererContext = Heimdal::RendererContext::Create(m_Window);
+			m_RendererContext->Create();
+
 			glfwSetWindowUserPointer(m_Window, &m_Data);
 
 			glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int32_t width, int32_t height)
@@ -158,10 +165,22 @@ namespace Valhalla
 			glfwDestroyWindow(m_Window);
 		}
 
-		void OpenGLWindow::OnUpdate()
+		inline std::pair<float_t, float_t> OpenGLWindow::GetWindowPos() const
+		{
+			int32_t x, y;
+			glfwGetWindowPos(m_Window, &x, &y);
+			return { x, y };
+		}
+
+		void OpenGLWindow::ProcessEvents()
 		{
 			glfwPollEvents();
-			glfwSwapBuffers(m_Window);
+			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+
+		void OpenGLWindow::SwapBuffers()
+		{
+			m_RendererContext->SwapBuffers();
 		}
 
 		void OpenGLWindow::SetVSync(bool enabled)
@@ -177,6 +196,12 @@ namespace Valhalla
 		bool OpenGLWindow::IsVSync() const
 		{
 			return m_Data.VSync;
+		}
+
+		void OpenGLWindow::SetTitle(const std::string& title)
+		{
+			m_Data.Title = title;
+			glfwSetWindowTitle(m_Window, m_Data.Title.c_str());
 		}
 	}
 

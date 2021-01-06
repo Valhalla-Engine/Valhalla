@@ -20,10 +20,16 @@ namespace Valhalla
 
 		void Run();
 
+
+
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
+
+		inline Window& GetWindow() { return *m_Window; }
+
+		static inline Application& Get() { return *s_Instance; }
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
@@ -31,8 +37,15 @@ namespace Valhalla
 
 	private:
 		std::unique_ptr<Window> m_Window;
-		LayerStack m_LayerStack;
 		bool m_Running = true, m_Minimized = false;
+		LayerStack m_LayerStack;
+		//ImGuiLayer* m_ImGuiLayer;
+		Timestep m_TimeStep;
+
+		float m_LastFrameTime = 0.0f;
+
+		static Application* s_Instance;
+
 	};
 
 	Application* CreateApplication();

@@ -1,1 +1,43 @@
-﻿  Valhalla.vcxproj -> C:\Programs\Valhalla\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.dll
+﻿  Application.cpp
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\Window.h(14,20): warning C4251: 'Valhalla::WindowProps::Title': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of struct 'Valhalla::WindowProps'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\Layer.h(22,26): warning C4251: 'Valhalla::Layer::m_DebugName': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Valhalla::Layer'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\LayerStack.h(25,31): warning C4251: 'Valhalla::LayerStack::m_Layers': class 'std::vector<Valhalla::Layer *,std::allocator<Valhalla::Layer *>>' needs to have dll-interface to be used by clients of class 'Valhalla::LayerStack'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\LayerStack.h(21): message : see declaration of 'std::vector<Valhalla::Layer *,std::allocator<Valhalla::Layer *>>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\Application.h(39,35): warning C4251: 'Valhalla::Application::m_Window': class 'std::unique_ptr<Valhalla::Window,std::default_delete<Valhalla::Window>>' needs to have dll-interface to be used by clients of class 'Valhalla::Application'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\Application.h(39): message : see declaration of 'std::unique_ptr<Valhalla::Window,std::default_delete<Valhalla::Window>>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\Application.cpp(64,45): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+  EditorCamera.cpp
+C:\dev\valhalla\Valhalla\src\Valhalla\Editor\EditorCamera.h(10,2): warning C4275: non dll-interface class 'Valhalla::Heimdal::Camera' used as base for dll-interface class 'Valhalla::EditorCamera'
+C:\dev\valhalla\Valhalla\src\Valhalla\Renderer\Camera.h(9): message : see declaration of 'Valhalla::Heimdal::Camera'
+C:\dev\valhalla\Valhalla\src\Valhalla\Editor\EditorCamera.h(9): message : see declaration of 'Valhalla::EditorCamera'
+C:\dev\valhalla\Valhalla\src\Valhalla\Editor\EditorCamera.h(51,25): warning C4251: 'Valhalla::EditorCamera::m_ViewMatrix': struct 'glm::mat<4,4,glm::f32,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::EditorCamera'
+C:\dev\valhalla\Valhalla\vendor\glm\glm\fwd.hpp(520): message : see declaration of 'glm::mat<4,4,glm::f32,glm::packed_highp>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Editor\EditorCamera.h(52,23): warning C4251: 'Valhalla::EditorCamera::m_Position': struct 'glm::vec<3,float,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::EditorCamera'
+C:\dev\valhalla\Valhalla\vendor\glm\glm\fwd.hpp(420): message : see declaration of 'glm::vec<3,float,glm::packed_highp>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Editor\EditorCamera.h(52,35): warning C4251: 'Valhalla::EditorCamera::m_Rotation': struct 'glm::vec<3,float,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::EditorCamera'
+C:\dev\valhalla\Valhalla\vendor\glm\glm\fwd.hpp(420): message : see declaration of 'glm::vec<3,float,glm::packed_highp>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Editor\EditorCamera.h(52,49): warning C4251: 'Valhalla::EditorCamera::m_FocalPoint': struct 'glm::vec<3,float,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::EditorCamera'
+C:\dev\valhalla\Valhalla\vendor\glm\glm\fwd.hpp(420): message : see declaration of 'glm::vec<3,float,glm::packed_highp>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Editor\EditorCamera.h(55,35): warning C4251: 'Valhalla::EditorCamera::m_InitialMousePosition': struct 'glm::vec<2,float,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::EditorCamera'
+C:\dev\valhalla\Valhalla\vendor\glm\glm\fwd.hpp(419): message : see declaration of 'glm::vec<2,float,glm::packed_highp>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Editor\EditorCamera.h(56,32): warning C4251: 'Valhalla::EditorCamera::m_InitialFocalPoint': struct 'glm::vec<3,float,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::EditorCamera'
+C:\dev\valhalla\Valhalla\vendor\glm\glm\fwd.hpp(420): message : see declaration of 'glm::vec<3,float,glm::packed_highp>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Editor\EditorCamera.h(56,51): warning C4251: 'Valhalla::EditorCamera::m_InitialRotation': struct 'glm::vec<3,float,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::EditorCamera'
+C:\dev\valhalla\Valhalla\vendor\glm\glm\fwd.hpp(420): message : see declaration of 'glm::vec<3,float,glm::packed_highp>'
+  OpenGLInput.cpp
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\Window.h(14,20): warning C4251: 'Valhalla::WindowProps::Title': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of struct 'Valhalla::WindowProps'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\Layer.h(22,26): warning C4251: 'Valhalla::Layer::m_DebugName': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Valhalla::Layer'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\LayerStack.h(25,31): warning C4251: 'Valhalla::LayerStack::m_Layers': class 'std::vector<Valhalla::Layer *,std::allocator<Valhalla::Layer *>>' needs to have dll-interface to be used by clients of class 'Valhalla::LayerStack'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\LayerStack.h(21): message : see declaration of 'std::vector<Valhalla::Layer *,std::allocator<Valhalla::Layer *>>'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\Application.h(39,35): warning C4251: 'Valhalla::Application::m_Window': class 'std::unique_ptr<Valhalla::Window,std::default_delete<Valhalla::Window>>' needs to have dll-interface to be used by clients of class 'Valhalla::Application'
+C:\dev\valhalla\Valhalla\src\Valhalla\Core\Application.h(39): message : see declaration of 'std::unique_ptr<Valhalla::Window,std::default_delete<Valhalla::Window>>'
+  Generating Code...
+     Creating library ..\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.lib and object ..\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.exp
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+Application.obj : error LNK2001: unresolved external symbol "private: static class Valhalla::Application * Valhalla::Application::s_Instance" (?s_Instance@Application@Valhalla@@0PEAV12@EA)
+OpenGLInput.obj : error LNK2001: unresolved external symbol "private: static class Valhalla::Application * Valhalla::Application::s_Instance" (?s_Instance@Application@Valhalla@@0PEAV12@EA)
+..\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.dll : fatal error LNK1120: 1 unresolved externals

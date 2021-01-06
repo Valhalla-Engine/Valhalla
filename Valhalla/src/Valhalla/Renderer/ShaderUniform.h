@@ -34,7 +34,7 @@ namespace Valhalla
 
 		typedef std::vector<ShaderUniformDeclaration*> ShaderUniformList;
 
-		class ShaderUniformBufferDeclaration
+		class ShaderUniformBufferDeclaration : public RefCounted
 		{
 		public:
 			virtual const std::string& GetName() const = 0;
@@ -42,7 +42,7 @@ namespace Valhalla
 			virtual uint32_t GetSize() const = 0;
 			virtual const ShaderUniformList& GetUniformDeclarations() const = 0;
 
-			virtual const ShaderUniformList* FindUniform(std::string& name) = 0;
+			virtual ShaderUniformDeclaration* FindUniform(std::string& name) = 0;
 		};
 
 		typedef std::vector<ShaderUniformBufferDeclaration*> ShaderUniformBufferList;
@@ -71,7 +71,7 @@ namespace Valhalla
 			inline const std::string& GetName() const { return m_Name; }
 			inline uint32_t GetSize() const { return m_Size; }
 			inline uint32_t GetOffset() const { return m_Offset; }
-			inline const std::vector<ShaderUniformDeclaration*>& GetFields() { return m_Fields; }
+			inline const std::vector<ShaderUniformDeclaration*>& GetFields() const { return m_Fields; }
 
 		private:
 			std::string m_Name;
@@ -93,6 +93,6 @@ namespace Valhalla
 			virtual uint32_t GetCount() const = 0;
 		};
 
-		typedef std::vector<ShaderResourceDeclaration> ShaderResourceList;
+		typedef std::vector<ShaderResourceDeclaration*> ShaderResourceList;
 	}
 }

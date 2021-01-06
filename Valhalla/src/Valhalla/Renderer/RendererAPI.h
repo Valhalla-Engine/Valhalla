@@ -31,15 +31,15 @@ namespace Valhalla
 			int32_t MaxTextureUnits = 0;
 		};
 
-		class RendererAPI
+		class RendererAPI : public RefCounted
 		{
 		public:
 			static void Init();
 			static void Shutdown();
-
+			
 			static void Clear(float_t r, float_t g, float_t b, float_t a);
-			static void SetClearColor(float_t r, float_t g, float_t b, float_t a);
-
+			static void SetClearColor(float_t r, float_t g, float_t b, float_t a) ;
+			
 			static void DrawIndexed(uint32_t count, PrimitiveType type, bool depthTest = true);
 			static void SetLineThickness(float_t thickness);
 
@@ -50,8 +50,10 @@ namespace Valhalla
 			}
 
 			static RendererAPIType Current() { return s_CurrentRendererAPI; }
+
 		private:
 			static void LoadRequiredAssets();
+
 		private:
 			static RendererAPIType s_CurrentRendererAPI;
 		};

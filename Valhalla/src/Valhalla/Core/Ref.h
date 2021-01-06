@@ -126,6 +126,7 @@ namespace Valhalla
 			return Ref<T>(new T(std::forward<Args>(args)...));
 		}
 
+
 	private:
 
 		void IncRef() const

@@ -1,5 +1,1 @@
-﻿  OpenGLShaderUniform.cpp
-C:\Programs\Valhalla\Valhalla\src\Valhalla\Platform\OpenGL\OpenGLShaderUniform.h(56,41): warning C4552: '>': result of expression not used
-     Creating library ..\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.lib and object ..\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.exp
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  Valhalla.vcxproj -> C:\Programs\Valhalla\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.dll
+﻿  Valhalla.vcxproj -> C:\dev\valhalla\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.dll

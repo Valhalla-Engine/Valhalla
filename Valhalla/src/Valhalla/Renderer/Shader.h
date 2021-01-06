@@ -3,14 +3,24 @@
 #include "Valhalla/Core/Base.h"
 #include "Valhalla/Core/Buffer.h"
 
-#include "RendererAPI.h"
-#include "ShaderUniform.h"
+#include "Valhalla/Renderer/RendererAPI.h"
+#include "Valhalla/Renderer/ShaderUniform.h"
 
 #include <string>
 #include <glm/glm.hpp>
 
 namespace Valhalla::Heimdal
 {
+	struct ShaderUniform
+	{
+
+	};
+
+	struct ShaderUniformCollection
+	{
+
+	};
+
 	enum class UniformType
 	{
 		None = 0,
@@ -28,6 +38,12 @@ namespace Valhalla::Heimdal
 
 	struct UniformBuffer
 	{
+		// TODO: This currently represents a byte buffer that has been
+		// packed with uniforms. This was primarily created for OpenGL,
+		// and needs to be revisted for other rendering APIs. Furthermore,
+		// this currently does not assume any alignment. This also has
+		// nothing to do with GL uniform buffers, this is simply a CPU-side
+		// buffer abstraction.
 		byte* Buffer;
 		std::vector<UniformDecl> Uniforms;
 	};
@@ -36,30 +52,30 @@ namespace Valhalla::Heimdal
 	{
 		virtual const byte* GetBuffer() const = 0;
 		virtual const UniformDecl* GetUniforms() const = 0;
-		virtual uint32_t GetUniformCount() const = 0;
+		virtual unsigned int GetUniformCount() const = 0;
 	};
 
-	template<uint32_t N, uint32_t U>
+	template<unsigned int N, unsigned int U>
 	struct UniformBufferDeclaration : public UniformBufferBase
 	{
 		byte Buffer[N];
 		UniformDecl Uniforms[U];
 		std::ptrdiff_t Cursor = 0;
-		int32_t Index = 0;
+		int Index = 0;
 
 		virtual const byte* GetBuffer() const override { return Buffer; }
 		virtual const UniformDecl* GetUniforms() const override { return Uniforms; }
-		virtual uint32_t GetUniformCount() const override { return U; }
+		virtual unsigned int GetUniformCount() const { return U; }
 
 		template<typename T>
 		void Push(const std::string& name, const T& data) {}
 
 		template<>
-		void Push(const std::string& name, const float_t& data)
+		void Push(const std::string& name, const float& data)
 		{
 			Uniforms[Index++] = { UniformType::Float, Cursor, name };
-			memcpy(Buffer + Cursor, &data, sizeof(float_t));
-			Cursor += sizeof(float_t);
+			memcpy(Buffer + Cursor, &data, sizeof(float));
+			Cursor += sizeof(float);
 		}
 
 		template<>
@@ -85,6 +101,7 @@ namespace Valhalla::Heimdal
 			memcpy(Buffer + Cursor, glm::value_ptr(data), sizeof(glm::mat4));
 			Cursor += sizeof(glm::mat4);
 		}
+
 	};
 
 	class Shader : public RefCounted
@@ -99,16 +116,15 @@ namespace Valhalla::Heimdal
 		virtual void UploadUniformBuffer(const UniformBufferBase& uniformBuffer) = 0;
 
 		// Temporary while we don't have materials
-		virtual void SetFloat(const std::string& name, float_t value) = 0;
-		virtual void SetInt(const std::string& name, int32_t value) = 0;
+		virtual void SetFloat(const std::string& name, float value) = 0;
+		virtual void SetInt(const std::string& name, int value) = 0;
 		virtual void SetBool(const std::string& name, bool value) = 0;
 		virtual void SetFloat2(const std::string& name, const glm::vec2& value) = 0;
 		virtual void SetFloat3(const std::string& name, const glm::vec3& value) = 0;
-		virtual void SetMat3(const std::string& name, const glm::mat3& value) = 0;
 		virtual void SetMat4(const std::string& name, const glm::mat4& value) = 0;
 		virtual void SetMat4FromRenderThread(const std::string& name, const glm::mat4& value, bool bind = true) = 0;
 
-		virtual void SetIntArray(const std::string& name, int32_t* values, uint32_t size) = 0;
+		virtual void SetIntArray(const std::string& name, int* values, uint32_t size) = 0;
 
 		virtual const std::string& GetName() const = 0;
 
@@ -136,7 +152,7 @@ namespace Valhalla::Heimdal
 		static std::vector<Ref<Shader>> s_AllShaders;
 	};
 
-	// this should be eventually handled by the asset manager
+	// This should be eventually handled by the Asset Manager
 	class ShaderLibrary : public RefCounted
 	{
 	public:
@@ -151,4 +167,5 @@ namespace Valhalla::Heimdal
 	private:
 		std::unordered_map<std::string, Ref<Shader>> m_Shaders;
 	};
-} // namespace Valhalla::Heimdal
+
+}

@@ -1,7 +1,8 @@
 #include "vhpch.h"
 #include "Shader.h"
 
-//#include "Renderer.h"
+#include "Renderer.h"
+#include "Valhalla/Platform/OpenGL/OpenGLShader.h"
 
 namespace Valhalla::Heimdal
 {
@@ -14,7 +15,7 @@ namespace Valhalla::Heimdal
 		switch (RendererAPI::Current())
 		{
 			case RendererAPIType::None:		return nullptr;
-			case RendererAPIType::OpenGL:	result = nullptr;
+			case RendererAPIType::OpenGL:	result = Ref<Yggdrasil::OpenGLShader>::Create(filename);
 		}
 		s_AllShaders.push_back(result);
 		return nullptr;
@@ -26,8 +27,8 @@ namespace Valhalla::Heimdal
 
 		switch (RendererAPI::Current())
 		{
-			case RendererAPIType::None:		return nullptr;
-			case RendererAPIType::OpenGL:	result = nullptr;
+		case RendererAPIType::None:		return nullptr;
+		case RendererAPIType::OpenGL:	result = Yggdrasil::OpenGLShader::CreateFromString(source);
 		}
 		s_AllShaders.push_back(result);
 		return nullptr;

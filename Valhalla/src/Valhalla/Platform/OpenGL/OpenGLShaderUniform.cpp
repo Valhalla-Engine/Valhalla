@@ -90,19 +90,24 @@ namespace Valhalla::Yggdrasil
 		m_Uniforms.push_back(uniform);
 	}
 
-	Heimdal::ShaderUniformDeclaration* OpenGLShaderUniformBufferDeclaration::FindUniform(const std::string& name)
+	Heimdal::ShaderUniformDeclaration* OpenGLShaderUniformBufferDeclaration::FindUniform(std::string& name)
 	{
 		for (Heimdal::ShaderUniformDeclaration* uniform : m_Uniforms)
 		{
 			if (uniform->GetName() == name)
 				return uniform;
 		}
-
 		return nullptr;
+
 	}
 
-	OpenGLShaderResourceDeclaration::OpenGLShaderResourceDeclaration(Type type, const std::string& name, uint32_t count)
-		: m_Type(type), m_Name(name), m_Count(count) {}
+	OpenGLShaderResourceDeclaration::OpenGLShaderResourceDeclaration(Type type, const std::string & name, uint32_t count)
+		: m_Type(type), m_Name(name), m_Count(count)
+	{
+		m_Name = name;
+		m_Count = count;
+	}
+
 
 	OpenGLShaderResourceDeclaration::Type OpenGLShaderResourceDeclaration::StringToType(const std::string& type)
 	{

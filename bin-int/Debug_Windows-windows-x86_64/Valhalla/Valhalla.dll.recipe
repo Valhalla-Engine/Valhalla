@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Programs\Valhalla\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.dll</FullPath>
+      <FullPath>C:\dev\valhalla\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.dll</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
