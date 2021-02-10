@@ -1,2 +1,1 @@
-﻿     Creating library ..\bin\Dist-windows-x86_64\Odin\Odin.lib and object ..\bin\Dist-windows-x86_64\Odin\Odin.exp
-  Odin.vcxproj -> C:\dev\Valhalla\Odin\..\bin\Dist-windows-x86_64\Odin\Odin.exe
+﻿LINK : fatal error LNK1181: cannot open input file 'C:\dev\Valhalla\bin\Dist-windows-x86_64\Valhalla\Valhalla.lib'

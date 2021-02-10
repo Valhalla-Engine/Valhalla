@@ -1,33 +1,4 @@
-﻿  WindowsWindow.cpp
-C:\dev\Valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(38,29): warning C4996: 'std::codecvt_utf8_utf16<wchar_t,1114111,(std::codecvt_mode)0>': warning STL4017: std::wbuffer_convert, std::wstring_convert, and the <codecvt> header (containing std::codecvt_mode, std::codecvt_utf8, std::codecvt_utf16, and std::codecvt_utf8_utf16) are deprecated in C++17. (The std::codecvt class template is NOT deprecated.) The C++ Standard doesn't provide equivalent non-deprecated functionality; consider using MultiByteToWideChar() and WideCharToMultiByte() from <Windows.h> instead. You can define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING or _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to acknowledge that you have received this warning.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\codecvt(435,5): message : see declaration of 'std::codecvt_utf8_utf16'
-C:\dev\Valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(38,8): warning C4996: 'std::wstring_convert<std::codecvt_utf8_utf16<wchar_t,1114111,(std::codecvt_mode)0>,wchar_t,std::allocator<wchar_t>,std::allocator<char>>': warning STL4017: std::wbuffer_convert, std::wstring_convert, and the <codecvt> header (containing std::codecvt_mode, std::codecvt_utf8, std::codecvt_utf16, and std::codecvt_utf8_utf16) are deprecated in C++17. (The std::codecvt class template is NOT deprecated.) The C++ Standard doesn't provide equivalent non-deprecated functionality; consider using MultiByteToWideChar() and WideCharToMultiByte() from <Windows.h> instead. You can define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING or _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to acknowledge that you have received this warning.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\xlocbuf(301,55): message : see declaration of 'std::wstring_convert'
-C:\dev\Valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(38,58): warning C4996: 'std::wstring_convert<std::codecvt_utf8_utf16<wchar_t,1114111,(std::codecvt_mode)0>,wchar_t,std::allocator<wchar_t>,std::allocator<char>>::wstring_convert': warning STL4017: std::wbuffer_convert, std::wstring_convert, and the <codecvt> header (containing std::codecvt_mode, std::codecvt_utf8, std::codecvt_utf16, and std::codecvt_utf8_utf16) are deprecated in C++17. (The std::codecvt class template is NOT deprecated.) The C++ Standard doesn't provide equivalent non-deprecated functionality; consider using MultiByteToWideChar() and WideCharToMultiByte() from <Windows.h> instead. You can define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING or _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to acknowledge that you have received this warning.
-C:\dev\Valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(39,32): warning C4996: 'std::wstring_convert<std::codecvt_utf8_utf16<wchar_t,1114111,(std::codecvt_mode)0>,wchar_t,std::allocator<wchar_t>,std::allocator<char>>::from_bytes': warning STL4017: std::wbuffer_convert, std::wstring_convert, and the <codecvt> header (containing std::codecvt_mode, std::codecvt_utf8, std::codecvt_utf16, and std::codecvt_utf8_utf16) are deprecated in C++17. (The std::codecvt class template is NOT deprecated.) The C++ Standard doesn't provide equivalent non-deprecated functionality; consider using MultiByteToWideChar() and WideCharToMultiByte() from <Windows.h> instead. You can define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING or _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to acknowledge that you have received this warning.
-C:\dev\Valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(32,11): warning C4101: 'dmScreenSettings': unreferenced local variable
-C:\dev\Valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(75,14): warning C4244: 'initializing': conversion from 'clock_t' to 'float', possible loss of data
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\utility(152,16): warning C4244: 'initializing': conversion from 'int' to '_Ty1', possible loss of data
-          with
-          [
-              _Ty1=float
-          ]
-C:\dev\Valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(70): message : see reference to function template instantiation 'std::pair<float,float>::pair<int32_t&,int32_t&,0>(_Other1,_Other2) noexcept' being compiled
-          with
-          [
-              _Other1=int32_t &,
-              _Other2=int32_t &
-          ]
-C:\dev\Valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(70): message : see reference to function template instantiation 'std::pair<float,float>::pair<int32_t&,int32_t&,0>(_Other1,_Other2) noexcept' being compiled
-          with
-          [
-              _Other1=int32_t &,
-              _Other2=int32_t &
-          ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\include\utility(152,1): warning C4244: 'initializing': conversion from 'int' to '_Ty2', possible loss of data
-          with
-          [
-              _Ty2=float
-          ]
-     Creating library ..\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib and object ..\bin\Debug-windows-x86_64\Valhalla\Valhalla.exp
-  Valhalla.vcxproj -> C:\dev\Valhalla\Valhalla\..\bin\Debug-windows-x86_64\Valhalla\Valhalla.dll
+﻿  Application.cpp
+  vhpch.cpp
+C:\dev\Valhalla\Valhalla\src\Valhalla\Core\Application.cpp(1,10): fatal error C1083: Cannot open precompiled header file: '..\bin-int\Debug-windows-x86_64\Valhalla\Valhalla.pch': No such file or directory
+C:\dev\Valhalla\Valhalla\src\vhpch.cpp(1,10): fatal error C1083: Cannot open precompiled header file: '..\bin-int\Debug-windows-x86_64\Valhalla\Valhalla.pch': No such file or directory

@@ -1,41 +1,41 @@
 #pragma once
-
-#include "Valhalla/Core/Base.h"
-
+#include "Type.h"
+#include <type_traits>
 namespace Valhalla
 {
-	class VALHALLA_API RefCounted
+	class RefCounted
 	{
 	public:
+		// Increase m_RefCount by one
 		void IncRefCount() const
 		{
 			m_RefCount++;
 		}
 
+		// Decrease m_RefCount by one
 		void DecRefCount() const
 		{
 			m_RefCount--;
 		}
 
+		// returns the reference counter
 		uint32_t GetRefCount() const { return m_RefCount; }
-
 	private:
 		mutable uint32_t m_RefCount = 0;
 	};
 
-
 	template<typename T>
-	class VALHALLA_API Ref
+	class Ref
 	{
 	public:
 		Ref()
 			: m_Instance(nullptr) {}
 
-		Ref(std::nullptr_t)
+		Ref(std::nullptr_t n)
 			: m_Instance(nullptr) {}
 
 		Ref(T* instance)
-			:m_Instance(instance) 
+			: m_Instance(instance)
 		{
 			static_assert(std::is_base_of<RefCounted, T>::value, "Class is not RefCounted");
 
@@ -62,7 +62,7 @@ namespace Valhalla
 		}
 
 		Ref(const Ref<T>& other)
-			:m_Instance(other.m_Instance)
+			: m_Instance(other.m_Instance)
 		{
 			IncRef();
 		}
@@ -88,6 +88,7 @@ namespace Valhalla
 		{
 			other.IncRef();
 			DecRef();
+
 			m_Instance = other.m_Instance;
 			return *this;
 		}
@@ -121,11 +122,10 @@ namespace Valhalla
 		}
 
 		template<typename... Args>
-		static Ref<T> Create(Args&&... args)
+		static Ref<T> Create(Args&& ... args)
 		{
 			return Ref<T>(new T(std::forward<Args>(args)...));
 		}
-
 
 	private:
 
@@ -146,7 +146,6 @@ namespace Valhalla
 				}
 			}
 		}
-
 		template<class T2>
 		friend class Ref;
 		T* m_Instance;

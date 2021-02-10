@@ -1,12 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug_Windows|x64">
-      <Configuration>Debug_Windows</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_Other|x64">
-      <Configuration>Debug_Other</Configuration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
@@ -26,26 +22,20 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Windows|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Other|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
@@ -53,10 +43,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug_Windows|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug_Other|x64'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -66,41 +53,31 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Windows|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Debug_Windows-windows-x86_64\Valhalla\</OutDir>
-    <IntDir>..\bin-int\Debug_Windows-windows-x86_64\Valhalla\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\bin\Debug-windows-x86_64\Valhalla\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\Valhalla\</IntDir>
     <TargetName>Valhalla</TargetName>
-    <TargetExt>.dll</TargetExt>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Other|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Debug_Other-windows-x86_64\Valhalla\</OutDir>
-    <IntDir>..\bin-int\Debug_Other-windows-x86_64\Valhalla\</IntDir>
-    <TargetName>Valhalla</TargetName>
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\bin\Release-windows-x86_64\Valhalla\</OutDir>
     <IntDir>..\bin-int\Release-windows-x86_64\Valhalla\</IntDir>
     <TargetName>Valhalla</TargetName>
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\bin\Dist-windows-x86_64\Valhalla\</OutDir>
     <IntDir>..\bin-int\Dist-windows-x86_64\Valhalla\</IntDir>
     <TargetName>Valhalla</TargetName>
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Windows|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>vhpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>VH_BUILD_DLL;VH_DEBUG;VH_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor;vendor\GLFW\include;vendor\Glad\include;vendor\glm;vendor\ImGui;vendor\stb\include;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>VH_BUILD_DLL;VH_PLATFORM_WINDOWS;VH_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor;vendor\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -109,33 +86,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImportLibrary>..\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.dll\ (xcopy /Q /E /Y /I ..\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.dll ..\bin\Debug_Windows-windows-x86_64\Odin &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug_Windows-windows-x86_64\Valhalla\Valhalla.dll ..\bin\Debug_Windows-windows-x86_64\Odin &gt; nul)</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Other|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>vhpch.h</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>VH_BUILD_DLL;VH_DEBUG;VH_PLATFORM_OTHER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor;vendor\GLFW\include;vendor\Glad\include;vendor\glm;vendor\ImGui;vendor\stb\include;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImportLibrary>..\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.lib</ImportLibrary>
-    </Link>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.dll\ (xcopy /Q /E /Y /I ..\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.dll ..\bin\Debug_Other-windows-x86_64\Odin &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug_Other-windows-x86_64\Valhalla\Valhalla.dll ..\bin\Debug_Other-windows-x86_64\Odin &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib ..\bin\Debug-windows-x86_64\Odin &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib ..\bin\Debug-windows-x86_64\Odin &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,8 +96,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>vhpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>VH_BUILD_DLL;VH_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor;vendor\GLFW\include;vendor\Glad\include;vendor\glm;vendor\ImGui;vendor\stb\include;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>VH_BUILD_DLL;VH_PLATFORM_WINDOWS;VH_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor;vendor\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -157,11 +110,9 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImportLibrary>..\bin\Release-windows-x86_64\Valhalla\Valhalla.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-x86_64\Valhalla\Valhalla.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Valhalla\Valhalla.dll ..\bin\Release-windows-x86_64\Odin &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Valhalla\Valhalla.dll ..\bin\Release-windows-x86_64\Odin &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Release-windows-x86_64\Valhalla\Valhalla.lib\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Valhalla\Valhalla.lib ..\bin\Release-windows-x86_64\Odin &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Valhalla\Valhalla.lib ..\bin\Release-windows-x86_64\Odin &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -169,8 +120,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>vhpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>VH_BUILD_DLL;VH_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor;vendor\GLFW\include;vendor\Glad\include;vendor\glm;vendor\ImGui;vendor\stb\include;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>VH_BUILD_DLL;VH_PLATFORM_WINDOWS;VH_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor;vendor\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -183,104 +134,28 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImportLibrary>..\bin\Dist-windows-x86_64\Valhalla\Valhalla.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Dist-windows-x86_64\Valhalla\Valhalla.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Valhalla\Valhalla.dll ..\bin\Dist-windows-x86_64\Odin &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Valhalla\Valhalla.dll ..\bin\Dist-windows-x86_64\Odin &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Dist-windows-x86_64\Valhalla\Valhalla.lib\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Valhalla\Valhalla.lib ..\bin\Dist-windows-x86_64\Odin &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Valhalla\Valhalla.lib ..\bin\Dist-windows-x86_64\Odin &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Valhalla.h" />
     <ClInclude Include="src\Valhalla\Core\Application.h" />
-    <ClInclude Include="src\Valhalla\Core\Assert.h" />
     <ClInclude Include="src\Valhalla\Core\Base.h" />
-    <ClInclude Include="src\Valhalla\Core\Buffer.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\ApplicationEvent.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\Event.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\KeyEvent.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\MouseEvent.h" />
-    <ClInclude Include="src\Valhalla\Core\Input.h" />
-    <ClInclude Include="src\Valhalla\Core\KeyCodes.h" />
-    <ClInclude Include="src\Valhalla\Core\Layer.h" />
-    <ClInclude Include="src\Valhalla\Core\LayerStack.h" />
-    <ClInclude Include="src\Valhalla\Core\Log.h" />
-    <ClInclude Include="src\Valhalla\Core\Math\AABB.h" />
-    <ClInclude Include="src\Valhalla\Core\MouseCodes.h" />
     <ClInclude Include="src\Valhalla\Core\Ref.h" />
-    <ClInclude Include="src\Valhalla\Core\Timer.h" />
-    <ClInclude Include="src\Valhalla\Core\Timestep.h" />
-    <ClInclude Include="src\Valhalla\Core\Window.h" />
-    <ClInclude Include="src\Valhalla\Editor\EditorCamera.h" />
+    <ClInclude Include="src\Valhalla\Core\Type.h" />
     <ClInclude Include="src\Valhalla\EntryPoint.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLFrameBuffer.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLIndexBuffer.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLPipeline.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLContext.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLRenderPass.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLShaderUniform.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLTexture.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLVertexBuffer.h" />
-    <ClInclude Include="src\Valhalla\Platform\OpenGL\OpenGLWindow.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Camera.h" />
-    <ClInclude Include="src\Valhalla\Renderer\FrameBuffer.h" />
-    <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Material.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Pipeline.h" />
-    <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h" />
-    <ClInclude Include="src\Valhalla\Renderer\RendererContext.h" />
-    <ClInclude Include="src\Valhalla\Renderer\RenderPass.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Renderer.h" />
-    <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Shader.h" />
-    <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Texture.h" />
-    <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h" />
+    <ClInclude Include="src\Valhalla\vhpch.h" />
     <ClInclude Include="src\vhpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp" />
-    <ClCompile Include="src\Valhalla\Core\Base.cpp" />
-    <ClCompile Include="src\Valhalla\Core\Layer.cpp" />
-    <ClCompile Include="src\Valhalla\Core\LayerStack.cpp" />
-    <ClCompile Include="src\Valhalla\Core\Log.cpp" />
-    <ClCompile Include="src\Valhalla\Core\Timestep.cpp" />
-    <ClCompile Include="src\Valhalla\Editor\EditorCamera.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLIndexBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLInput.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLPipeline.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLRenderPass.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLShader.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLShaderUniform.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLTexture.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLVertexBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\OpenGL\OpenGLWindow.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\Camera.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\FrameBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\RendererContext.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\RenderPass.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\Texture.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp" />
     <ClCompile Include="src\vhpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
-      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="vendor\Glad\Glad.vcxproj">
-      <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
-    </ProjectReference>
     <ProjectReference Include="vendor\ImGui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#pragma once
 
 #ifdef VH_PLATFORM_WINDOWS
 #include <Windows.h>
@@ -19,9 +18,3 @@
 
 
 #include "Valhalla/Core/Base.h"
-#include "Valhalla/Core/Log.h"
-#include "Valhalla/Core/Events/Event.h"
-
-#ifdef VH_PLATFORM_WINDOWS
-	#include <Windows.h>
-#endif
