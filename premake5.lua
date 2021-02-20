@@ -4,8 +4,7 @@ workspace "Valhalla"
 
 	configurations
 	{
-		"Debug_Windows",
-		"Debug_Other",
+		"Debug",
 		"Release",
 		"Dist"
 	}
@@ -15,19 +14,17 @@ workspace "Valhalla"
 	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 	IncludeDir = {}
-	IncludeDir["GLFW"] = "Valhalla/vendor/GLFW/include"
-	IncludeDir["Glad"] = "Valhalla/vendor/Glad/include"
-	IncludeDir["stb"] = "Valhalla/vendor/stb/include"
 	IncludeDir["ImGui"] = "Valhalla/vendor/ImGui"
-	IncludeDir["glm"] = "Valhalla/vendor/glm"
 
-	include "Valhalla/vendor/GLFW"
-	include "Valhalla/vendor/Glad"
+
+	group "Dependencies"
 	include "Valhalla/vendor/ImGui"
+	group ""
 
+	group "Core"
 	project "Valhalla"
 		location "Valhalla"
-		kind "SharedLib"
+		kind "StaticLib"
 		language "C++"
 		characterset "MBCS"
 		cppdialect "C++17"
@@ -52,20 +49,12 @@ workspace "Valhalla"
 		{
 			"%{prj.name}/src",
 			"%{prj.name}/vendor",
-			"%{IncludeDir.GLFW}",
-			"%{IncludeDir.Glad}",
-			"%{IncludeDir.glm}",
-			"%{IncludeDir.ImGui}",
-			"%{IncludeDir.stb}",
-			"%{prj.name}/vendor/assimp/include"
+			"%{IncludeDir.ImGui}"
 		}
 
 		links
 		{
-			"GLFW",
-			"Glad",
-			"ImGui",
-			"opengl32.lib"
+			"ImGui"
 		}
 
 		filter "system:windows"
@@ -74,7 +63,7 @@ workspace "Valhalla"
 
 			defines
 			{
-				"VH_BUILD_DLL"
+				"VH_BUILD_DLL", "VH_PLATFORM_WINDOWS"
 			}
 
 			postbuildcommands
@@ -84,22 +73,10 @@ workspace "Valhalla"
 
 
 
-		filter "configurations:Debug_Windows"
+		filter "configurations:Debug"
 			defines "VH_DEBUG"
 			symbols "On"
-			defines
-			{
-				"VH_PLATFORM_WINDOWS"
-			}
 
-		filter "configurations:Debug_Other"
-			defines "VH_DEBUG"
-			symbols "On"
-			defines
-			{
-				
-				"VH_PLATFORM_OTHER"
-			}
 
 		filter "configurations:Release"
 			defines "VH_RELEASE"
@@ -109,11 +86,13 @@ workspace "Valhalla"
 			defines "VH_DIST"
 			optimize "on"
 
+	group ""
+
+	group"Tools"
 	project "Odin"
 		location "Odin"
 		language "C++"
 		kind "ConsoleApp"
-		entrypoint "mainCRTStartup"
 		cppdialect "C++17"
 		staticruntime "on"
 
@@ -138,7 +117,6 @@ workspace "Valhalla"
 			"%{prj.name}/src",
 			"Valhalla/src",
 			"Valhalla/vendor",
-			"%{IncludeDir.glm}"
 		}
 
 		postbuildcommands
@@ -151,18 +129,13 @@ workspace "Valhalla"
 
 			defines
 			{
-						
+					"VH_PLATFORM_WINDOWS"	
 			}
 
-		filter "configurations:Debug_Windows"
+		filter "configurations:Debug"
 			defines "VH_DEBUG"
 			symbols "On"
-			entrypoint "wWinMainCRTStartup"
 
-			defines
-			{
-				"VH_PLATFORM_WINDOWS"
-			}
 
 			links
 			{
@@ -170,31 +143,6 @@ workspace "Valhalla"
 
 			}
 
-			postbuildcommands
-			{
-				
-			}
-
-
-			filter "configurations:Debug_Other"
-			defines "VH_DEBUG"
-			symbols "On"
-
-			defines
-			{
-				"VH_PLATFORM_OTHER"
-			}
-
-			links
-			{
-				"Valhalla/vendor/assimp/bin/Debug/assimp-vc141-md.dll"
-
-			}
-
-			postbuildcommands
-			{
-				
-			}
 
 		filter "configurations:Release"
 			defines "VH_RELEASE"
@@ -202,13 +150,9 @@ workspace "Valhalla"
 
 			links
 			{
-				"Valhalla/vendor/assimp/bin/Release/assimp-vc141-mt.dll"
+				--"Valhalla/vendor/assimp/bin/Release/assimp-vc141-mt.dll"
 			}
 
-			postbuildcommands
-			{
-				
-			}
 
 		filter "configurations:Dist"
 			defines "VH_DIST"
@@ -216,10 +160,7 @@ workspace "Valhalla"
 
 		links
 		{
-			"Valhalla/vendor/assimp/bin/Release/assimp-vc141-mt.lib"
+			--"Valhalla/vendor/assimp/bin/Release/assimp-vc141-mt.lib"
 		}
 
-		postbuildcommands 
-		{
-			
-		}
+		group ""

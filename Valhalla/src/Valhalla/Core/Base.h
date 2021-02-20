@@ -1,36 +1,29 @@
 #pragma once
 
 #include <memory>
+#include "Type.h"
+#ifndef VH_PLATFORM_WINDOWS
+#error Valhalla only supports Windows!
+#endif // !VH_PLATFORM_WINDOWS
 
-#ifdef VH_PLATFORM_WINDOWS
-	#ifdef VH_BUILD_DLL
-		#define VALHALLA_API __declspec(dllexport)
-	#else
-		#define VALHALLA_API __declspec(dllimport)
-	#endif
-#else
-	#ifdef VH_BUILD_DLL
-		#define VALHALLA_API __declspec(dllexport)
-	#else
-		#define VALHALLA_API __declspec(dllimport)
-	#endif 
-#endif
+// __VA_ARGS__ expansion to get past MSVC "bug"
+#define VH_EXPAND_VARGS(x)  x
 
-#include "Ref.h"
-
-#define VH_EXPAND_VARGS(x) x
+// Bit Mask
+#define BIT(x) (1 << x)
 
 #define VH_BIND_EVENT_FN(fn) std::bind(&##fn, this, std::placeholders::_1)
 
-#include "Assert.h"
-
-#define BIT(x) (1 << x)
-
 namespace Valhalla
 {
-	void VALHALLA_API InitializeCore();
-
-	void VALHALLA_API ShutdownCore();
+	// Pointer wrapper for unique pointer
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+	template<typename T, typename... Args>
+	constexpr Scope<T> CreateScope(Args&& ... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
 
 	using byte = uint8_t;
 }

@@ -1,1 +1,2 @@
-﻿  Odin.vcxproj -> C:\dev\Valhalla\Odin\..\bin\Debug-windows-x86_64\Odin\Odin.exe
+﻿  Odin.cpp
+LINK : fatal error LNK1104: cannot open file 'C:\dev\Valhalla\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib'

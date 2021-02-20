@@ -1,14 +1,4 @@
-﻿  OrthographicCameraController.cpp
-C:\dev\Valhalla\Valhalla\src\Valhalla\Renderer\OrthographicCamera.h(29,32): warning C4251: 'Valhalla::Heimdal::OrthographicCamera::m_ProjectionMatrix': struct 'glm::mat<4,4,glm::f32,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::Heimdal::OrthographicCamera'
-C:\dev\Valhalla\Valhalla\vendor\glm\glm\fwd.hpp(520): message : see declaration of 'glm::mat<4,4,glm::f32,glm::packed_highp>'
-C:\dev\Valhalla\Valhalla\src\Valhalla\Renderer\OrthographicCamera.h(30,26): warning C4251: 'Valhalla::Heimdal::OrthographicCamera::m_ViewMatrix': struct 'glm::mat<4,4,glm::f32,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::Heimdal::OrthographicCamera'
-C:\dev\Valhalla\Valhalla\vendor\glm\glm\fwd.hpp(520): message : see declaration of 'glm::mat<4,4,glm::f32,glm::packed_highp>'
-C:\dev\Valhalla\Valhalla\src\Valhalla\Renderer\OrthographicCamera.h(31,36): warning C4251: 'Valhalla::Heimdal::OrthographicCamera::m_ViewProjectionMatrix': struct 'glm::mat<4,4,glm::f32,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::Heimdal::OrthographicCamera'
-C:\dev\Valhalla\Valhalla\vendor\glm\glm\fwd.hpp(520): message : see declaration of 'glm::mat<4,4,glm::f32,glm::packed_highp>'
-C:\dev\Valhalla\Valhalla\src\Valhalla\Renderer\OrthographicCamera.h(33,24): warning C4251: 'Valhalla::Heimdal::OrthographicCamera::m_Position': struct 'glm::vec<3,float,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::Heimdal::OrthographicCamera'
-C:\dev\Valhalla\Valhalla\vendor\glm\glm\fwd.hpp(420): message : see declaration of 'glm::vec<3,float,glm::packed_highp>'
-C:\dev\Valhalla\Valhalla\src\Valhalla\OrthographicCameraController.h(37,52): warning C4251: 'Valhalla::OrthographicCameraController::m_CameraPosition': struct 'glm::vec<3,float,glm::packed_highp>' needs to have dll-interface to be used by clients of class 'Valhalla::OrthographicCameraController'
-C:\dev\Valhalla\Valhalla\vendor\glm\glm\fwd.hpp(420): message : see declaration of 'glm::vec<3,float,glm::packed_highp>'
-C:\dev\Valhalla\Valhalla\src\Valhalla\OrthographicCameraController.cpp(50,38): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-     Creating library ..\bin\Dist-windows-x86_64\Valhalla\Valhalla.lib and object ..\bin\Dist-windows-x86_64\Valhalla\Valhalla.exp
-  Valhalla.vcxproj -> C:\dev\Valhalla\Valhalla\..\bin\Dist-windows-x86_64\Valhalla\Valhalla.dll
+﻿  Application.cpp
+  vhpch.cpp
+C:\dev\Valhalla\Valhalla\src\Valhalla\Core\Application.cpp(1,10): fatal error C1083: Cannot open precompiled header file: '..\bin-int\Dist-windows-x86_64\Valhalla\Valhalla.pch': No such file or directory
+C:\dev\Valhalla\Valhalla\src\vhpch.cpp(1,10): fatal error C1083: Cannot open precompiled header file: '..\bin-int\Dist-windows-x86_64\Valhalla\Valhalla.pch': No such file or directory

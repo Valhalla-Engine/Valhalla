@@ -8,6 +8,8 @@
 #include <limits>
 #include <cstddef>
 
+#include "type_mat3x2.hpp"
+
 namespace glm
 {
 	template<typename T, qualifier Q>

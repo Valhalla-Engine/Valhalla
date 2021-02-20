@@ -1,4 +1,6 @@
 #include <Valhalla.h>
+#include <Valhalla/EntryPoint.h>
+
 
 class Odin : public Valhalla::Application
 {
