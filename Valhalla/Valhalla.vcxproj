@@ -158,6 +158,8 @@
     <ClInclude Include="src\Valhalla\Core\Ref.h" />
     <ClInclude Include="src\Valhalla\Core\TimeStep.h" />
     <ClInclude Include="src\Valhalla\Core\Types.h" />
+    <ClInclude Include="src\Valhalla\Core\UUID.h" />
+    <ClInclude Include="src\Valhalla\Core\Window.h" />
     <ClInclude Include="src\Valhalla\Entrypoint.h" />
     <ClInclude Include="src\vhpch.h" />
   </ItemGroup>
@@ -166,6 +168,8 @@
     <ClCompile Include="src\Valhalla\Core\Base.cpp" />
     <ClCompile Include="src\Valhalla\Core\LayerStack.cpp" />
     <ClCompile Include="src\Valhalla\Core\Log.cpp" />
+    <ClCompile Include="src\Valhalla\Core\UUID.cpp" />
+    <ClCompile Include="src\Valhalla\Core\Window.cpp" />
     <ClCompile Include="src\vhpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

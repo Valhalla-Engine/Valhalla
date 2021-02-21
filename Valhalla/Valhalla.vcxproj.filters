@@ -49,6 +49,8 @@
     <ClInclude Include="src\Valhalla\Core\Input.h" />
     <ClInclude Include="src\Valhalla\Core\Assert.h" />
     <ClInclude Include="src\Valhalla\Core\Buffer.h" />
+    <ClInclude Include="src\Valhalla\Core\UUID.h" />
+    <ClInclude Include="src\Valhalla\Core\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
@@ -60,5 +62,7 @@
     <ClCompile Include="src\vhpch.cpp" />
     <ClCompile Include="src\Valhalla\Core\Log.cpp" />
     <ClCompile Include="src\Valhalla\Core\Base.cpp" />
+    <ClCompile Include="src\Valhalla\Core\UUID.cpp" />
+    <ClCompile Include="src\Valhalla\Core\Window.cpp" />
   </ItemGroup>
 </Project>
