@@ -16,24 +16,49 @@
     <ClInclude Include="src\Valhalla\Core\Base.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\KeyCodes.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Layer.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\LayerStack.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\MouseCodes.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Ref.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Valhalla\Core\Type.h">
+    <ClInclude Include="src\Valhalla\Core\TimeStep.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Valhalla\EntryPoint.h">
-      <Filter>Valhalla</Filter>
+    <ClInclude Include="src\Valhalla\Core\Types.h">
+      <Filter>Valhalla\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Valhalla\vhpch.h">
+    <ClInclude Include="src\Valhalla\Entrypoint.h">
       <Filter>Valhalla</Filter>
     </ClInclude>
     <ClInclude Include="src\vhpch.h" />
+    <ClInclude Include="src\Valhalla\Core\Events\Event.h" />
+    <ClInclude Include="src\Valhalla\Core\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Valhalla\Core\Events\KeyEvent.h" />
+    <ClInclude Include="src\Valhalla\Core\Events\MouseEvent.h" />
+    <ClInclude Include="src\Valhalla\Core\Log.h" />
+    <ClInclude Include="src\Valhalla\Core\Input.h" />
+    <ClInclude Include="src\Valhalla\Core\Assert.h" />
+    <ClInclude Include="src\Valhalla\Core\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
       <Filter>Valhalla\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\LayerStack.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\vhpch.cpp" />
+    <ClCompile Include="src\Valhalla\Core\Log.cpp" />
+    <ClCompile Include="src\Valhalla\Core\Base.cpp" />
   </ItemGroup>
 </Project>

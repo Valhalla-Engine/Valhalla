@@ -1,2 +1,0 @@
-C:\dev\Valhalla\Valhalla\vendor\GLFW\bin\Debug--windows--x86_64\GLFW\GLFW.pdb
-C:\dev\Valhalla\Valhalla\vendor\GLFW\bin-int\Debug--windows--x86_64\GLFW\GLFW.pdb

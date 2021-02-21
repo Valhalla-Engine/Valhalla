@@ -13,13 +13,6 @@ workspace "Valhalla"
 
 	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-	IncludeDir = {}
-	IncludeDir["ImGui"] = "Valhalla/vendor/ImGui"
-
-
-	group "Dependencies"
-	include "Valhalla/vendor/ImGui"
-	group ""
 
 	group "Core"
 	project "Valhalla"
@@ -36,6 +29,7 @@ workspace "Valhalla"
 		pchheader "vhpch.h"
 		pchsource "Valhalla/src/vhpch.cpp"
 
+
 		files
 		{
 			"%{prj.name}/src/**.h",
@@ -49,12 +43,11 @@ workspace "Valhalla"
 		{
 			"%{prj.name}/src",
 			"%{prj.name}/vendor",
-			"%{IncludeDir.ImGui}"
 		}
 
 		links
 		{
-			"ImGui"
+			--"ImGui"
 		}
 
 		filter "system:windows"
@@ -137,30 +130,14 @@ workspace "Valhalla"
 			symbols "On"
 
 
-			links
-			{
-				"Valhalla/vendor/assimp/bin/Debug/assimp-vc141-md.dll"
-
-			}
-
 
 		filter "configurations:Release"
 			defines "VH_RELEASE"
 			optimize "on"
 
-			links
-			{
-				--"Valhalla/vendor/assimp/bin/Release/assimp-vc141-mt.dll"
-			}
-
 
 		filter "configurations:Dist"
 			defines "VH_DIST"
 			optimize "on"
-
-		links
-		{
-			--"Valhalla/vendor/assimp/bin/Release/assimp-vc141-mt.lib"
-		}
 
 		group ""

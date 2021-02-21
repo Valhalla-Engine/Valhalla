@@ -1,4 +1,0 @@
-C:\dev\Valhalla\Valhalla\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.pdb
-C:\dev\Valhalla\Valhalla\vendor\Glad\bin-int\Debug-windows-x86_64\Glad\Glad.pdb
-C:\Programs\Valhalla\Valhalla\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.pdb
-C:\Programs\Valhalla\Valhalla\vendor\Glad\bin-int\Debug-windows-x86_64\Glad\Glad.pdb

@@ -1,7 +1,6 @@
 #pragma once
-#include "Type.h"
+#include "Types.h"
 #include "Base.h"
-
 
 namespace Valhalla
 {
@@ -13,16 +12,6 @@ namespace Valhalla
 
 		void Run();
 
-		void OnEvent(Event& e);
-
-		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* overlay);
-
-		inline Window& GetWindow() { return *m_Window;}
-
-		static inline Application& Get() { return *s_Instance; }
-
-	private:
 		
 	};
 

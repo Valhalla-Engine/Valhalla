@@ -1,25 +1,26 @@
 #pragma once
-#include "Type.h"
+
+#include "Types.h"
 #include <type_traits>
+
 namespace Valhalla
 {
 	class RefCounted
 	{
 	public:
-		// Increase m_RefCount by one
+
 		void IncRefCount() const
 		{
 			m_RefCount++;
 		}
 
-		// Decrease m_RefCount by one
 		void DecRefCount() const
 		{
 			m_RefCount--;
 		}
 
-		// returns the reference counter
 		uint32_t GetRefCount() const { return m_RefCount; }
+
 	private:
 		mutable uint32_t m_RefCount = 0;
 	};
@@ -74,7 +75,7 @@ namespace Valhalla
 			return *this;
 		}
 
-		Ref& operator=(const Ref<T>& other)
+		Ref& operator=(Ref<T>& other)
 		{
 			other.IncRef();
 			DecRef();
@@ -102,7 +103,7 @@ namespace Valhalla
 			other.m_Instance = nullptr;
 			return *this;
 		}
-
+		
 		operator bool() { return m_Instance != nullptr; }
 		operator bool() const { return m_Instance != nullptr; }
 
@@ -121,12 +122,17 @@ namespace Valhalla
 			m_Instance = instance;
 		}
 
-		template<typename... Args>
-		static Ref<T> Create(Args&& ... args)
+		template<typename T2>
+		Ref<T2> As()
+		{
+			return Ref<T2>(*this);
+		}
+
+		template<typename ... Args>
+		static Ref<T>Create(Args&& ... args)
 		{
 			return Ref<T>(new T(std::forward<Args>(args)...));
 		}
-
 	private:
 
 		void IncRef() const
@@ -135,7 +141,7 @@ namespace Valhalla
 				m_Instance->IncRefCount();
 		}
 
-		void DecRef() const
+		void DecRef()const
 		{
 			if (m_Instance)
 			{
@@ -146,6 +152,7 @@ namespace Valhalla
 				}
 			}
 		}
+
 		template<class T2>
 		friend class Ref;
 		T* m_Instance;

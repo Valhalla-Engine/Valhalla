@@ -1,4 +1,7 @@
-﻿  Application.cpp
-  vhpch.cpp
-C:\dev\Valhalla\Valhalla\src\Valhalla\Core\Application.cpp(1,10): fatal error C1083: Cannot open precompiled header file: '..\bin-int\Debug-windows-x86_64\Valhalla\Valhalla.pch': No such file or directory
-C:\dev\Valhalla\Valhalla\src\vhpch.cpp(1,10): fatal error C1083: Cannot open precompiled header file: '..\bin-int\Debug-windows-x86_64\Valhalla\Valhalla.pch': No such file or directory
+﻿  vhpch.cpp
+  Application.cpp
+  Base.cpp
+  LayerStack.cpp
+  Log.cpp
+  Generating Code...
+  Valhalla.vcxproj -> C:\Programs\Valhalla\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib
