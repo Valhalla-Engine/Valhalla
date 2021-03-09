@@ -15,7 +15,7 @@ namespace Valhalla
 	{
 		ButtonLeft = VK_LBUTTON,
 		ButtonRight = VK_RBUTTON,
-		ButtomMiddle = VK_MBUTTON
+		ButtonMiddle = VK_MBUTTON
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, MouseButton keycode)

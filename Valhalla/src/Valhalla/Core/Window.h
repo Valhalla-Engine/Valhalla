@@ -25,12 +25,12 @@ namespace Valhalla
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
 
-		virtual ~Window();
+		virtual ~Window() = default;
 
 		virtual void OnUpdate() = 0;
 
-		virtual uint32_t GetWidth() = 0;
-		virtual uint32_t GetHeight() = 0;
+		virtual uint32_t GetWidth() const = 0;
+		virtual uint32_t GetHeight() const = 0;
 		virtual std::pair<uint32_t, uint32_t> GetSize() const = 0;
 		virtual std::pair<float_t, float_t> GetWindowPos() const = 0;
 
@@ -38,11 +38,11 @@ namespace Valhalla
 
 		// Window Attributes
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
-		virtual void SetVSync(bool_t enabled) const = 0;
+		virtual void SetVSync(bool_t enabled) = 0;
 		virtual bool_t IsVSync() const = 0;
 
 		virtual const std::string& GetTitle() const = 0;
-		virtual void SetTitlte(const std::string& title) = 0;
+		virtual void SetTitle(const std::string& title) = 0;
 
 		virtual void* GetNativeWindow() const = 0;
 		

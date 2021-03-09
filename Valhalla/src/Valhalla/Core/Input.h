@@ -17,7 +17,7 @@ namespace Valhalla
 		static float_t GetMouseY();
 		static std::pair<float_t, float_t> GetMousePosition();
 
-		static void SetCursorMode(CursorMode ode);
-		static CursorMode GetCursorMode();
+		/*static void SetCursorMode(CursorMode mode);
+		static CursorMode GetCursorMode();*/
 	};
 }

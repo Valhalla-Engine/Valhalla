@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{15A0C35D-0
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Valhalla", "Valhalla\Valhalla.vcxproj", "{8AF51F08-76C2-7A13-9FDB-68BB8B07B0A1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{53E47842-3FC8-3998-A828-34EB942B241A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "Valhalla\vendor\ImGui\ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -28,6 +32,12 @@ Global
 		{8AF51F08-76C2-7A13-9FDB-68BB8B07B0A1}.Dist|x64.Build.0 = Dist|x64
 		{8AF51F08-76C2-7A13-9FDB-68BB8B07B0A1}.Release|x64.ActiveCfg = Release|x64
 		{8AF51F08-76C2-7A13-9FDB-68BB8B07B0A1}.Release|x64.Build.0 = Release|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|x64.ActiveCfg = Debug|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|x64.Build.0 = Debug|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Dist|x64.ActiveCfg = Dist|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Dist|x64.Build.0 = Dist|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.ActiveCfg = Release|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,5 +45,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CF188A7C-BB4F-8B0D-643C-71105052070F} = {DD376B17-49ED-E30C-D2E1-DDE33E96DA10}
 		{8AF51F08-76C2-7A13-9FDB-68BB8B07B0A1} = {15A0C35D-0158-05AB-6A5F-DE065636A09B}
+		{C0FF640D-2C14-8DBE-F595-301E616989EF} = {53E47842-3FC8-3998-A828-34EB942B241A}
 	EndGlobalSection
 EndGlobal

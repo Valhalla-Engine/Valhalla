@@ -52,6 +52,7 @@ namespace Valhalla
 		{
 			std::stringstream ss;
 			ss << "KeyReleasedEvent: " << m_KeyCode;
+			return ss.str();
 		}
 
 		EVENT_CLASS_TYPE(KeyReleased)
@@ -59,6 +60,7 @@ namespace Valhalla
 
 	class KeyTypedEvent : public KeyEvent
 	{
+	public:
 		KeyTypedEvent(KeyCode keycode)
 			: KeyEvent(keycode) {}
 

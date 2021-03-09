@@ -1,7 +1,2 @@
-﻿  vhpch.cpp
-  Application.cpp
-  Base.cpp
-  LayerStack.cpp
-  Log.cpp
-  Generating Code...
+﻿  Application.cpp
   Valhalla.vcxproj -> C:\Programs\Valhalla\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib

@@ -13,6 +13,13 @@ workspace "Valhalla"
 
 	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+	IncludeDir = {}
+	IncludeDir["ImGui"] = "Valhalla/vendor/ImGui"
+
+	group "Dependencies"
+	include "Valhalla/vendor/ImGui"
+	group ""
+
 
 	group "Core"
 	project "Valhalla"
@@ -43,11 +50,12 @@ workspace "Valhalla"
 		{
 			"%{prj.name}/src",
 			"%{prj.name}/vendor",
+			"{IncludeDir.ImGui}"
 		}
 
 		links
 		{
-			--"ImGui"
+			"ImGui"
 		}
 
 		filter "system:windows"

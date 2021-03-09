@@ -13,11 +13,11 @@ namespace Valhalla
 	#error Valhalla only supports Windows!
 #endif 
 
-#define VH_EXPANDS_VARGS(x) x
-
 #define BIT(x) (1 << x)
 
 #define VH_BIND_EVENT_FN(fn) std::bind(&##fn, this, std::placeholders::_1)
+
+#define VH_EXPAND_VARGS(x) x
 
 #include "Assert.h"
 

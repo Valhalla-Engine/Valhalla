@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>vhpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VH_BUILD_DLL;VH_PLATFORM_WINDOWS;VH_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor;..\{IncludeDir.ImGui};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -97,7 +97,7 @@
       <PrecompiledHeaderFile>vhpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VH_BUILD_DLL;VH_PLATFORM_WINDOWS;VH_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor;..\{IncludeDir.ImGui};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -121,7 +121,7 @@
       <PrecompiledHeaderFile>vhpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VH_BUILD_DLL;VH_PLATFORM_WINDOWS;VH_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor;..\{IncludeDir.ImGui};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -161,6 +161,8 @@
     <ClInclude Include="src\Valhalla\Core\UUID.h" />
     <ClInclude Include="src\Valhalla\Core\Window.h" />
     <ClInclude Include="src\Valhalla\Entrypoint.h" />
+    <ClInclude Include="src\Valhalla\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\vhpch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +172,15 @@
     <ClCompile Include="src\Valhalla\Core\Log.cpp" />
     <ClCompile Include="src\Valhalla\Core\UUID.cpp" />
     <ClCompile Include="src\Valhalla\Core\Window.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\vhpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="vendor\ImGui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

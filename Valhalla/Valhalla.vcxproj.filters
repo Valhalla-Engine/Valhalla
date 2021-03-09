@@ -7,13 +7,37 @@
     <Filter Include="Valhalla\Core">
       <UniqueIdentifier>{2220C2B8-8EE0-3DEF-571B-876CC39A82CB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Valhalla\Core\Events">
+      <UniqueIdentifier>{C6115271-B2A0-DB3A-5BBF-EF35472DECE0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Valhalla.h" />
     <ClInclude Include="src\Valhalla\Core\Application.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Assert.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Base.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Buffer.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\ApplicationEvent.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\Event.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\KeyEvent.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\MouseEvent.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Input.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\KeyCodes.h">
@@ -23,6 +47,9 @@
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\LayerStack.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Log.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\MouseCodes.h">
@@ -37,32 +64,39 @@
     <ClInclude Include="src\Valhalla\Core\Types.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\UUID.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Window.h">
+      <Filter>Valhalla\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Entrypoint.h">
       <Filter>Valhalla</Filter>
     </ClInclude>
     <ClInclude Include="src\vhpch.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\Event.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\ApplicationEvent.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\KeyEvent.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\MouseEvent.h" />
-    <ClInclude Include="src\Valhalla\Core\Log.h" />
-    <ClInclude Include="src\Valhalla\Core\Input.h" />
-    <ClInclude Include="src\Valhalla\Core\Assert.h" />
-    <ClInclude Include="src\Valhalla\Core\Buffer.h" />
-    <ClInclude Include="src\Valhalla\Core\UUID.h" />
-    <ClInclude Include="src\Valhalla\Core\Window.h" />
+    <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\Valhalla\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
       <Filter>Valhalla\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\Base.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Core\LayerStack.cpp">
       <Filter>Valhalla\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\Log.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\UUID.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Core\Window.cpp">
+      <Filter>Valhalla\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\vhpch.cpp" />
-    <ClCompile Include="src\Valhalla\Core\Log.cpp" />
-    <ClCompile Include="src\Valhalla\Core\Base.cpp" />
-    <ClCompile Include="src\Valhalla\Core\UUID.cpp" />
-    <ClCompile Include="src\Valhalla\Core\Window.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,54 @@
+#pragma once
+
+#include "Valhalla/Core/Window.h"
+
+namespace Valhalla
+{
+	class WindowsWindow : public Window
+	{
+	public:
+		WindowsWindow(const WindowProps& props);
+		virtual ~WindowsWindow();
+
+		void OnUpdate() override;
+
+		inline uint32_t GetWidth() const override { return m_Data.Width; }
+		inline uint32_t GetHeight() const override { return m_Data.Height; }
+
+		virtual std::pair<uint32_t, uint32_t> GetSize() const override { return { m_Data.Width, m_Data.Height }; }
+		virtual std::pair<float_t, float_t> GetWindowPos() const override;
+
+		// Window Attributes
+		virtual void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
+		virtual void SetVSync(bool_t enabled) override;
+		virtual bool_t IsVSync() const override;
+
+		virtual void Maximize() override;
+
+		virtual const std::string& GetTitle() const override { return m_Data.Title; }
+		virtual void SetTitle(const std::string& title) override;
+
+		inline void* GetNativeWindow() const { return m_Window; }
+
+		static LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
+	private:
+		virtual void Init(const WindowProps& props);
+		virtual void Shutdown();
+	private:
+		HWND m_Window;
+
+		HINSTANCE m_hInstance;
+
+		struct WindowData
+		{
+			std::string Title;
+			uint32_t Width, Height;
+			bool VSync;
+
+			EventCallbackFn EventCallback;
+		};
+
+		WindowData m_Data;
+		float_t m_LastFrameTime = 0.0f;
+	};
+}
