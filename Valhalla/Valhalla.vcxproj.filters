@@ -10,6 +10,12 @@
     <Filter Include="Valhalla\Core\Events">
       <UniqueIdentifier>{C6115271-B2A0-DB3A-5BBF-EF35472DECE0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Valhalla\Platform">
+      <UniqueIdentifier>{ff6da4d7-6411-4dda-875c-18332febcbd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Valhalla\Renderer">
+      <UniqueIdentifier>{58105ed7-c56f-48dc-b233-f1368619a984}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Valhalla.h" />
@@ -74,8 +80,12 @@
       <Filter>Valhalla</Filter>
     </ClInclude>
     <ClInclude Include="src\vhpch.h" />
-    <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="src\Valhalla\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Valhalla\Platform\Windows\WindowsInput.h">
+      <Filter>Valhalla\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h">
+      <Filter>Valhalla\Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
@@ -97,6 +107,8 @@
       <Filter>Valhalla\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\vhpch.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Valhalla\Platform</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
