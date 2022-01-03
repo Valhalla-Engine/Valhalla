@@ -1,6 +1,6 @@
 # Valhalla
 
-my first attempt at a game engine
+My attempt to make a game engine
 
 ## Getting started
 
