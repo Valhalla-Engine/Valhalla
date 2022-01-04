@@ -20,5 +20,16 @@ namespace Valhalla
 
 
 #define VH_BIND_EVENT_FN(fn) std::bind(&##fn, this std::placeholders::_1)
-
+#include "Log.h"
 #include "Assert.h"
+
+namespace Valhalla
+{
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+	template<typename T, typename... Args>
+	constexpr Scope<T> CreateScope(Args&&... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
+}

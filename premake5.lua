@@ -23,6 +23,8 @@ include "Dependencies.lua"
 group "Dependencies"
 include "Valhalla/vendor/GLFW"
 include "Valhalla/vendor/ImGui"
+include "Valhalla/vendor/Glad"
+include "Valhalla/vendor/Optick"
 group ""
 
 group "Core"
@@ -45,25 +47,47 @@ project "Valhalla"
         "%{prj.name}/src/**.c",
         "%{prj.name}/src/**.hpp",
         "%{prj.name}/src/**.cpp",
-        "%{prj.name}/src/**.inl"
+        "%{prj.name}/src/**.inl",
+
+        "%{prj.name}/vendor/yaml-cpp/src/**.cpp",
+        "%{prj.name}/vendor/yaml-cpp/src/**.h",
+        "%{prj.name}/vendor/yaml-cpp/include/**.h"
     }
 
     includedirs
     {
         "%{prj.name}/src",
         "%{prj.name}/vendor",
-        "%{IncludeDir.glm}",
+
+        "%{IncludeDir.Assimp}",
+        "%{IncludeDir.stb}",
+        "%{IncludeDir.yaml_cpp}",
         "%{IncludeDir.GLFW}",
-        "%{IncludeDir.imgui}"
+        "%{IncludeDir.Glad}",
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.ImGuiNodeEditor}",
+        "%{IncludeDir.entt}",
+        "%{IncludeDir.mono}",
+
+        "%{IncludeDir.Optick}"
+
 
     }
 
     links
     {
         "GLFW",
+        "Glad",
         "ImGui",
-        "opengl32.lib"
+        "Optick",
+        "opengl32.lib",
+
+        "%{Library.mono}"
     }
+
+    filter "files:Valhalla/vendor/yaml-cpp/src/**.cpp"
+    flags {"NoPCH"}
 
     filter "system:windows"
         systemversion "latest"
@@ -124,8 +148,13 @@ project "Odin"
         "%{prj.name}/src",
         "Valhalla/src",
         "Valhalla/vendor",
-        "%{IncludeDir.glm}",
-        "%{IncludeDir.ImGui}"
+        "%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.ImGuiNodeEditor}",
+		"%{IncludeDir.Optick}"
+
     }
 
     filter "system:windows"
@@ -140,13 +169,46 @@ project "Odin"
     filter "configurations:Debug"
         defines "VH_DEBUG"
         symbols "on"
+
+        links
+        {
+            "%{Library.Assimp_Debug}"
+        }
+
+        postbuildcommands
+        {
+            '{COPY} "%{Binaries.Assimp_Debug}" "%{cfg.targetdir}"',
+            '{COPY} "../Valhalla/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
+        }
     
     filter "configurations:Release"
         defines "VH_RELEASE"
         optimize "on"
+
+        links
+        {
+            "%{Library.Assimp_Release}"
+        }
+
+        postbuildcommands
+        {
+            '{COPY} "%{Binaries.Assimp_Release}" "%{cfg.targetdir}"',
+            '{COPY} "../Valhalla/vendor/mono/bin/Release/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
+        }
     
     filter "configurations:Dist"
         defines "VH_DIST"
         optimize "on"
+
+        links
+        {
+            "%{Library.Assimp_Release}"
+        }
+
+        postbuildcommands
+        {
+            '{COPY} "%{Binaries.Assimp_Release}" "%{cfg.targetdir}"',
+            '{COPY} "../Valhalla/vendor/mono/bin/Release/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
+        }
     
 group ""
