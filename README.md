@@ -2,6 +2,8 @@
 
 My attempt to make a game engine
 
+All the source code in the core part of the engine is currently taked from TheCherno's Game Engine Hazel https://www.youtube.com/c/TheChernoProject
+
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
