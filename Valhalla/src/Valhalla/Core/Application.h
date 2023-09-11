@@ -4,8 +4,11 @@
 #include "TimeStep.h"
 #include "Window.h"
 #include "LayerStack.h"
+#include "Timer.h"
 
 #include "Events/ApplicationEvent.h"
+
+#include "Valhalla/ImGui/ImGuiLayer.h"
 
 namespace Valhalla
 {
@@ -31,10 +34,15 @@ namespace Valhalla
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
+		void PopLayer(Layer* layer);
+		void PopOverlay(Layer* layer);
+		void RenderImGui();
 
 		inline Window& GetWindow() { return *m_Window; }
 
 		static inline Application& Get() { return *s_Instance; }
+
+		PerformanceProfiler* GetPerformanceProfiler() { return m_Profiler; }
 
 	private:
 		bool_t OnWindowResize(WindowResizeEvent& e);
@@ -46,7 +54,11 @@ namespace Valhalla
 		LayerStack m_LayerStack;
 		Timestep m_TimeStep;
 
+		ImGuiLayer* m_ImGuiLayer;
+
 		float_t m_LastFrameTime = 0.0f;
+
+		PerformanceProfiler* m_Profiler = nullptr;
 
 		static Application* s_Instance;
 	};

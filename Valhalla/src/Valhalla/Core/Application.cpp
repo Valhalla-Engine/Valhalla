@@ -1,6 +1,8 @@
 #include "vhpch.h"
 #include "Application.h"
 
+#include "Valhalla/Renderer/Renderer.h"
+
 
 namespace Valhalla
 {
@@ -13,15 +15,28 @@ namespace Valhalla
 		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(props.Name, props.WindowWidth, props.WindowHeight)));
+		m_Window->Init();
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 		//m_Window->Maximize();
 		m_Window->SetVSync(true);
+
+		m_Profiler = new PerformanceProfiler();
+
+		Heimdall::Renderer::Init();
+
+		m_ImGuiLayer = ImGuiLayer::Create();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	Application::~Application()
 	{
 		for (Layer* layer : m_LayerStack)
 			layer->OnDetach();
+
+		Heimdall::Renderer::Shutdown();
+
+		delete m_Profiler;
+		m_Profiler = nullptr;
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -36,6 +51,26 @@ namespace Valhalla
 		layer->OnAttach();
 	}
 
+	void Application::PopLayer(Layer* layer)
+	{
+		m_LayerStack.PopLayer(layer);
+		layer->OnDetach();
+	}
+
+	void Application::PopOverlay(Layer* layer)
+	{
+		m_LayerStack.PopOverlay(layer);
+		layer->OnDetach();
+	}
+
+	void Application::RenderImGui()
+	{
+		m_ImGuiLayer->Begin();
+
+		for (uint32_t i = 0; i < m_LayerStack.Size(); i++)
+			m_LayerStack[i]->OnImGuiRender();
+	}
+
 	void Application::Run()
 	{
 		OnInit();
@@ -43,12 +78,17 @@ namespace Valhalla
 		{
 			if (!m_Minimized)
 			{
+				Heimdall::Renderer::BeginFrame();
+
 				for (Layer* layer : m_LayerStack)
 					layer->OnUpdate(m_TimeStep);
+
+				RenderImGui();
+				m_ImGuiLayer->End();
+				Heimdall::Renderer::EndFrame();
 			}
 
 			m_Window->OnUpdate();
-
 		}
 		OnShutdown();
 	}

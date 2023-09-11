@@ -5,6 +5,9 @@
 #include "Base.h"
 #include "Events/Event.h"
 
+#include "Valhalla/Renderer/RendererContext.h"
+#include "Valhalla/Renderer/SwapChain.h"
+
 namespace Valhalla
 {
 	struct WindowProps
@@ -45,6 +48,11 @@ namespace Valhalla
 		virtual void SetTitle(const std::string& title) = 0;
 
 		virtual void* GetNativeWindow() const = 0;
+
+		virtual void Init() = 0;
+
+		virtual Ref<Heimdall::RendererContext> GetRendererContext() = 0;
+		virtual Ref<Heimdall::SwapChain> GetSwapChain() = 0;
 		
 		static Window* Create(const WindowProps& props = WindowProps());
 	};

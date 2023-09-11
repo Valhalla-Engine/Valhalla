@@ -10,7 +10,10 @@ namespace Valhalla
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
 		AppTick, AppUpdate, AppRender,
 		KeyPressed, KeyReleased, KeyTyped,
-		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
+		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled,
+		ScenePreStart, ScenePostStart, ScenePreStop, ScenePostStop,
+		EditorExitPlayMode,
+		SelectionChanged,
 	};
 
 	enum EventCategory
@@ -20,7 +23,9 @@ namespace Valhalla
 		EventCategoryInput			= BIT(1),
 		EventCategoryKeyboard		= BIT(2),
 		EventCategoryMouse			= BIT(3),
-		EventCategoryMouseButton	= BIT(4)
+		EventCategoryMouseButton	= BIT(4),
+		EventCategoryScene			= BIT(5),
+		EventCategoryEditor			= BIT(6)
 	};
 
 #define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::##type; }\

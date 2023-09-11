@@ -16,7 +16,7 @@
 
 #include <Windowsx.h>
 
-//extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace Valhalla
 {
@@ -34,7 +34,9 @@ namespace Valhalla
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
-		Init(props);
+		m_Data.Title = props.Title;
+		m_Data.Width = props.Width;
+		m_Data.Height = props.Height;
 	}
 
 	WindowsWindow::~WindowsWindow()
@@ -42,12 +44,8 @@ namespace Valhalla
 		Shutdown();
 	}
 
-	void WindowsWindow::Init(const WindowProps& props)
+	void WindowsWindow::Init()
 	{
-		m_Data.Title = props.Title;
-		m_Data.Width = props.Width;
-		m_Data.Height = props.Height;
-
 		VH_CORE_INFO("Creating Window {0} {1}x{2}", m_Data.Title, m_Data.Width, m_Data.Height);
 
 		m_hInstance = GetModuleHandle(0);
@@ -82,11 +80,17 @@ namespace Valhalla
 		ShowWindow(m_Window, SW_SHOW);
 		UpdateWindow(m_Window);
 		SetFocus(m_Window);
+
+		m_RendererContext = Heimdall::RendererContext::Create();
+		m_SwapChain = Heimdall::SwapChain::Create();
+		m_RendererContext->Init();
 	}
 
 	void WindowsWindow::Shutdown()
 	{
 		DestroyWindow(m_Window);
+		m_SwapChain->~SwapChain();
+		m_RendererContext->~RendererContext();
 	}
 
 	void WindowsWindow::OnUpdate()
@@ -132,8 +136,8 @@ namespace Valhalla
 	{
 		LRESULT result = NULL;
 
-		//if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
-			//return true;
+		if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
+			return true;
 
 		switch (msg)
 		{

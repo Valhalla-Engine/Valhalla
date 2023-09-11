@@ -30,9 +30,12 @@ namespace Valhalla
 
 		inline void* GetNativeWindow() const { return m_Window; }
 
+		virtual Ref<Heimdall::RendererContext> GetRendererContext() override { return m_RendererContext; }
+		virtual Ref<Heimdall::SwapChain> GetSwapChain() override { return m_SwapChain; }
+
 		static LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
+		virtual void Init() override;
 	private:
-		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 	private:
 		HWND m_Window;
@@ -50,5 +53,7 @@ namespace Valhalla
 
 		WindowData m_Data;
 		float_t m_LastFrameTime = 0.0f;
+		Ref<Heimdall::RendererContext> m_RendererContext;
+		Ref<Heimdall::SwapChain> m_SwapChain;
 	};
 }

@@ -26,19 +26,19 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -79,56 +79,81 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VH_PLATFORM_WINDOWS;VH_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Valhalla\src;..\Valhalla\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Valhalla\src;..\Valhalla\vendor;..\Valhalla\vendor\entt\include;..\Valhalla\vendor\ImGui;..;..\Valhalla\vendor\miniaudio\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>..\Valhalla\vendor\assimp\bin\Debug\assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul)
+IF EXIST "..\Valhalla\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul)
+IF EXIST "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VH_PLATFORM_WINDOWS;VH_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Valhalla\src;..\Valhalla\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Valhalla\src;..\Valhalla\vendor;..\Valhalla\vendor\entt\include;..\Valhalla\vendor\ImGui;..;..\Valhalla\vendor\miniaudio\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul)
+IF EXIST "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mt.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mt.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mt.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul)
+IF EXIST "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VH_PLATFORM_WINDOWS;VH_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Valhalla\src;..\Valhalla\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Valhalla\src;..\Valhalla\vendor;..\Valhalla\vendor\entt\include;..\Valhalla\vendor\ImGui;..;..\Valhalla\vendor\miniaudio\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul)
+IF EXIST "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mtd.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mtd.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mtd.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul)
+IF EXIST "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Odin.cpp" />

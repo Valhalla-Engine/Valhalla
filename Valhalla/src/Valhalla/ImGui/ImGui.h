@@ -27,6 +27,4 @@ namespace Valhalla::UI
 		PushID();
 		ImGui::Columns(2);
 	}
-
-	static void Property(const int8_t* )
 }

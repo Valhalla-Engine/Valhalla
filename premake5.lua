@@ -1,151 +1,229 @@
 workspace "Valhalla"
 	architecture "x64"
 	targetdir "build"
-
-	configurations
-	{
-		"Debug",
+	
+	configurations 
+	{ 
+		"Debug", 
 		"Release",
 		"Dist"
 	}
 
+	flags
+	{
+		"MultiProcessorCompile"
+	}
+
 	startproject "Odin"
+	
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+include "Dependencies.lua"
 
-	IncludeDir = {}
-	IncludeDir["ImGui"] = "Valhalla/vendor/ImGui"
+group "Dependencies"
+include "Valhalla/vendor/ImGui"
+include "Valhalla/vendor/Box2D"
+include "Valhalla/vendor/Optick"
+group ""
 
-	group "Dependencies"
-	include "Valhalla/vendor/ImGui"
-	group ""
+group "Core"
+project "Valhalla"
+	location "Valhalla"
+	kind "StaticLib"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
+	characterset "MBCS"
 
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	group "Core"
-	project "Valhalla"
-		location "Valhalla"
-		kind "StaticLib"
-		language "C++"
-		characterset "MBCS"
-		cppdialect "C++17"
-		staticruntime "on"
+	pchheader "vhpch.h"
+	pchsource "Valhalla/src/vhpch.cpp"
 
-		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	files 
+	{ 
+		"%{prj.name}/src/**.h", 
+		"%{prj.name}/src/**.c", 
+		"%{prj.name}/src/**.hpp", 
+		"%{prj.name}/src/**.cpp",
 
-		pchheader "vhpch.h"
-		pchsource "Valhalla/src/vhpch.cpp"
+		"%{prj.name}/vendor/FastNoise/**.cpp",
 
+		"%{prj.name}/vendor/yaml-cpp/src/**.cpp",
+		"%{prj.name}/vendor/yaml-cpp/src/**.h",
+		"%{prj.name}/vendor/yaml-cpp/include/**.h",
+		"%{prj.name}/vendor/VulkanMemoryAllocator/**.h",
+		"%{prj.name}/vendor/VulkanMemoryAllocator/**.cpp"
+	}
 
-		files
-		{
-			"%{prj.name}/src/**.h",
-			"%{prj.name}/src/**.c",
-			"%{prj.name}/src/**.hpp",
-			"%{prj.name}/src/**.cpp",
-			"%{prj.name}/src/**.inl"
+	includedirs
+	{
+		"%{prj.name}/src",
+		"%{prj.name}/vendor",
+
+		"%{IncludeDir.Assimp}",
+		"%{IncludeDir.stb}",
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.Vulkan}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.Box2D}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.mono}",
+		"%{IncludeDir.VulkanSDK}",
+				
+		"%{IncludeDir.NvidiaAftermath}",
+		"%{IncludeDir.miniaudio}"
+	}
+	
+	links
+	{ 
+		"ImGui",
+		"Box2D",
+		"Optick",
+
+		"%{Library.Vulkan}",
+		"%{Library.VulkanUtils}",
+
+		"%{Library.mono}",
+
+		"%{Library.NvidiaAftermath}",
+	}
+
+	defines
+	{
+		
+	}
+	
+	filter "files:Valhalla/vendor/FastNoise/**.cpp or files:Valhalla/vendor/yaml-cpp/src/**.cpp"
+   	flags { "NoPCH" }
+
+	filter "system:windows"
+		systemversion "latest"
+		
+		defines 
+		{ 
+			"VH_PLATFORM_WINDOWS",
+			"VH_BUILD_DLL"
 		}
 
-		includedirs
-		{
-			"%{prj.name}/src",
-			"%{prj.name}/vendor",
-			"{IncludeDir.ImGui}"
-		}
-
+	filter "configurations:Debug"
+		defines "VH_DEBUG"
+		symbols "On"
+				
 		links
-		{
-			"ImGui"
-		}
-
-		filter "system:windows"
-			cppdialect "C++17"
-			systemversion "latest"
-
-			defines
-			{
-				"VH_BUILD_DLL", "VH_PLATFORM_WINDOWS"
-			}
-
-			postbuildcommands
-			{
-				("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Odin")
-			}
-
-
-
-		filter "configurations:Debug"
-			defines "VH_DEBUG"
-			symbols "On"
-
-
-		filter "configurations:Release"
-			defines "VH_RELEASE"
-			optimize "On"
-
-		filter "configurations:Dist"
-			defines "VH_DIST"
-			optimize "on"
-
-	group ""
-
-	group"Tools"
-	project "Odin"
-		location "Odin"
-		language "C++"
-		kind "ConsoleApp"
-		cppdialect "C++17"
-		staticruntime "on"
-
-		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-		links
-		{
-			"Valhalla"
-		}
-
-		files
-		{
-			"%{prj.name}/src/**.h",
-			"%{prj.name}/src/**.c",
-			"%{prj.name}/src/**.hpp",
-			"%{prj.name}/src/**.cpp"
-		}
-
-		includedirs
-		{
-			"%{prj.name}/src",
-			"Valhalla/src",
-			"Valhalla/vendor",
-		}
-
-		postbuildcommands
 		{
 			
 		}
 
-		filter "system:windows"
-			systemversion "latest"
+	filter "configurations:Release"
+		defines
+		{
+			"VH_RELEASE"
+		}
 
-			defines
-			{
-					"VH_PLATFORM_WINDOWS"	
-			}
+		links
+		{
+		}
 
-		filter "configurations:Debug"
-			defines "VH_DEBUG"
-			symbols "On"
+		optimize "On"
 
+	filter "configurations:Dist"
+		defines "VH_DIST"
+		optimize "On"
 
+group "Tools"
+project "Odin"
+	location "Odin"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
+	
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-		filter "configurations:Release"
-			defines "VH_RELEASE"
-			optimize "on"
+	links 
+	{ 
+		"Valhalla"
+	}
+	
+	files 
+	{ 
+		"%{prj.name}/src/**.h", 
+		"%{prj.name}/src/**.c", 
+		"%{prj.name}/src/**.hpp", 
+		"%{prj.name}/src/**.cpp" 
+	}
+	
+	includedirs 
+	{
+		"%{prj.name}/src",
+		"Valhalla/src",
+		"Valhalla/vendor",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.Vulkan}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.miniaudio}"
+	}
 
+	postbuildcommands 
+	{
+		'{COPY} "../Valhalla/vendor/NvidiaAftermath/lib/x64/GFSDK_Aftermath_Lib.x64.dll" "%{cfg.targetdir}"'
+	}
+	
+	filter "system:windows"
+		systemversion "latest"
+				
+		defines 
+		{ 
+			"VH_PLATFORM_WINDOWS"
+		}
+	
+	filter "configurations:Debug"
+		defines "VH_DEBUG"
+		symbols "on"
 
-		filter "configurations:Dist"
-			defines "VH_DIST"
-			optimize "on"
+		links
+		{
+			"Valhalla/vendor/assimp/bin/Debug/assimp-vc142-mtd.lib"
+		}
 
-		group ""
+		postbuildcommands 
+		{
+			'{COPY} "../Valhalla/vendor/assimp/bin/Debug/assimp-vc142-mtd.dll" "%{cfg.targetdir}"',
+			'{COPY} "../Valhalla/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
+		}
+				
+	filter "configurations:Release"
+		defines "VH_RELEASE"
+		optimize "on"
+
+		links
+		{
+			"Valhalla/vendor/assimp/bin/Release/assimp-vc142-mt.lib"
+		}
+
+		postbuildcommands 
+		{
+			'{COPY} "../Valhalla/vendor/assimp/bin/Release/assimp-vc142-mt.dll" "%{cfg.targetdir}"',
+			'{COPY} "../Valhalla/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
+
+		}
+
+	filter "configurations:Dist"
+		defines "VH_DIST"
+		optimize "on"
+
+		links
+		{
+			"Valhalla/vendor/assimp/bin/Release/assimp-vc142-mt.lib"
+		}
+
+		postbuildcommands 
+		{
+			'{COPY} "../Valhalla/vendor/assimp/bin/Release/assimp-vc142-mtd.dll" "%{cfg.targetdir}"',
+			'{COPY} "../Valhalla/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
+		}
+
