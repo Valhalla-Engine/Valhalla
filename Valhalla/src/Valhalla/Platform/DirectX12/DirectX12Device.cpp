@@ -35,6 +35,15 @@ namespace Valhalla
 			}
 
 			factory->Release();
+
+			D3D12_COMMAND_QUEUE_DESC queueDesc = {};
+			queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+			queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+			DXCALL(m_Device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(m_GraphicsQueue.GetAddressOf())));
+			m_GraphicsQueue->SetName(L"Graphics Command Queue");
+			queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
+			DXCALL(m_Device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(m_ComputeQueue.GetAddressOf())));
+			m_ComputeQueue->SetName(L"Compute Command Queue");
 		}
 
 		DirectX12Device::~DirectX12Device()

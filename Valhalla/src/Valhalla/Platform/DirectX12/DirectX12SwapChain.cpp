@@ -52,8 +52,10 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<IDXGIFactory4> factory = nullptr;
 			DXCALL(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(&factory)));
 
+			m_ImageCount = swapChainDesc.BufferCount;
+
 			Microsoft::WRL::ComPtr<IDXGISwapChain1> swap;
-			DXCALL(factory->CreateSwapChainForHwnd(DirectX12Context::Get()->GetQueue().Get(), window, &swapChainDesc, nullptr, nullptr, &swap));
+			DXCALL(factory->CreateSwapChainForHwnd(DirectX12Context::GetCurrentDevice()->GetGraphicsQueue().Get(), window, &swapChainDesc, nullptr, nullptr, &swap));
 			factory->Release();
 			DXCALL(swap.As(&m_SwapChain));
 		}

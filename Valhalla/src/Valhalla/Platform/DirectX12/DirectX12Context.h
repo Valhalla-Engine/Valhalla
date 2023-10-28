@@ -31,7 +31,6 @@ namespace Valhalla
 
 			Ref<DirectX12Device> GetDevice() { return m_Device; }
 			Ref<DirectX12SwapChain> GetSwapChain() { return m_SwapChain; }
-			Microsoft::WRL::ComPtr<ID3D12CommandQueue> GetQueue() { return m_CommandQueue; }
 
 			static Ref<DirectX12Context> Get() { return Ref<DirectX12Context>(Heimdall::Renderer::GetContext()); }
 			static Ref<DirectX12Device> GetCurrentDevice() { return Get()->GetDevice(); }
@@ -40,7 +39,6 @@ namespace Valhalla
 		private:
 			Ref<DirectX12Device> m_Device;
 			Ref<DirectX12SwapChain> m_SwapChain;
-			Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_CommandQueue;
 		};
 	}
 }

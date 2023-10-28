@@ -93,7 +93,7 @@ namespace Valhalla
 		m_RendererContext->~RendererContext();
 	}
 
-	void WindowsWindow::OnUpdate()
+	void WindowsWindow::ProcessEvents()
 	{
 		MSG message;
 

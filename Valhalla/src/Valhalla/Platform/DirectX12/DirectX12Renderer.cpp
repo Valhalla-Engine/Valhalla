@@ -80,15 +80,12 @@ namespace Valhalla
 
 			DXCALL(m_CommandList->Close());
 
-			device->Release();
+			//device->Release();
 		}
 
 		void DirectX12Renderer::Shutdown()
 		{
-// 			/m_Fence->Release();
-// 			m_CommandList->Release();
-// 			m_RootSignature->Release();
-// 			m_Context->GetDevice()->GetDebug()->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_SUMMARY);
+
 		}
 
 		void DirectX12Renderer::BeginFrame()
@@ -124,10 +121,9 @@ namespace Valhalla
 			m_CommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_RenderTargets[m_FrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
 			m_CommandList->Close();
-			//m_ImGuiCommandList->Close();
 
 			ID3D12CommandList* ppCommandList[] = { m_CommandList.Get() };
-			m_Context->GetQueue()->ExecuteCommandLists(_countof(ppCommandList), ppCommandList);
+			m_Context->GetCurrentDevice()->GetGraphicsQueue()->ExecuteCommandLists(_countof(ppCommandList), ppCommandList);
 			m_Context->GetSwapChain()->GetSwapChain()->Present(0, 0);
 			WaitForFrame();
 		}
@@ -142,7 +138,7 @@ namespace Valhalla
 			}
 
 			const uint64_t fence = m_FenceValue;
-			DXCALL(m_Context->GetQueue()->Signal(m_Fence.Get(), fence));
+			DXCALL(m_Context->GetCurrentDevice()->GetGraphicsQueue()->Signal(m_Fence.Get(), fence));+
 			m_FenceValue++;
 
 			if (m_Fence->GetCompletedValue() < fence)

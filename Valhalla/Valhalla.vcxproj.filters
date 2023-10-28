@@ -146,6 +146,20 @@
     <ClInclude Include="src\Valhalla\Renderer\Camera.h" />
     <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Vertex.h" />
+    <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Editor\PanelManager.h" />
+    <ClInclude Include="src\Valhalla\Core\Hash.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RenderCommandBuffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RendererConfig.h" />
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Pipeline.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Shader.h" />
+    <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h" />
+    <ClInclude Include="src\Valhalla\Renderer\UniformBuffer.h" />
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
@@ -205,5 +219,16 @@
     <ClCompile Include="src\vhpch.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Camera.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Editor\PanelManager.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\RenderCommandBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\UniformBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.cpp" />
   </ItemGroup>
 </Project>

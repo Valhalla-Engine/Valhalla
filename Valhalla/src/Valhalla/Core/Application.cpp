@@ -4,19 +4,22 @@
 #include "Valhalla/Renderer/Renderer.h"
 
 
+//extern ImGuiContext* GImGui;
 namespace Valhalla
 {
 #define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const ApplicationProps& props)
+	Application::Application(const ApplicationSpecification& specs)
+		: m_Specification(specs)
 	{
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(props.Name, props.WindowWidth, props.WindowHeight)));
+		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(m_Specification.Name, 
+			m_Specification.WindowWidth, m_Specification.WindowHeight)));
 		m_Window->Init();
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window->SetEventCallback([this](Event& e) {OnEvent(e); });
 		//m_Window->Maximize();
 		m_Window->SetVSync(true);
 
@@ -88,20 +91,45 @@ namespace Valhalla
 				Heimdall::Renderer::EndFrame();
 			}
 
-			m_Window->OnUpdate();
+			ProcessEvents();
 		}
 		OnShutdown();
 	}
 
+	void Application::ProcessEvents()
+	{
+		m_Window->ProcessEvents();
+
+		std::scoped_lock<std::mutex> lock(m_EventQueueMutex);
+
+		while (m_EventQueue.size() > 0)
+		{
+			auto& func = m_EventQueue.front();
+			func();
+			m_EventQueue.pop();
+		}
+	}
+
 	void Application::OnEvent(Event& event)
 	{
-		EventDispatcher dispathcer(event);
-		dispathcer.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
-		dispathcer.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<WindowResizeEvent>([this](WindowResizeEvent& e) { return OnWindowResize(e); });
+		dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& e) { return OnWindowClose(e); });
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
 			(*--it)->OnEvent(event);
+			if (event.Handled)
+				break;
+		}
+
+		if (event.Handled)
+			return;
+
+		for (auto& eventCallback : m_EventCallbacks)
+		{
+			eventCallback(event);
+
 			if (event.Handled)
 				break;
 		}
@@ -112,10 +140,12 @@ namespace Valhalla
 		int32_t width = e.GetWidth(), height = e.GetHeight();
 		if (width == 0 || height == 0)
 		{
-			m_Minimized = true;
 			return false;
 		}
-		m_Minimized = false;
+
+		auto& window = m_Window;
+
+
 		return false;
 	}
 

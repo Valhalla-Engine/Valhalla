@@ -1,47 +1,5 @@
-﻿  vhpch.cpp
-  Application.cpp
-  Base.cpp
-  LayerStack.cpp
-  Log.cpp
-  UUID.cpp
-  Window.cpp
-  ImGuiBuild.cpp
-  ImGuiLayer.cpp
-  DirectX12Context.cpp
-  DirectX12Device.cpp
-  DirectX12ImGuiLayer.cpp
-  DirectX12Renderer.cpp
-  DirectX12SwapChain.cpp
-  WindowsWindow.cpp
-C:\dev\valhalla\Valhalla\src\Valhalla\Core\MouseCodes.h(19,3): warning C4091: 'typedef ': ignored on left of 'Valhalla::MouseButton' when no variable is declared (compiling source file src\Valhalla\Platform\Windows\WindowsWindow.cpp)
-C:\dev\valhalla\Valhalla\src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.cpp(76,69): warning C4244: '=': conversion from 'Valhalla::uint32_t' to 'float', possible loss of data
-C:\dev\valhalla\Valhalla\src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.cpp(77,70): warning C4244: '=': conversion from 'Valhalla::uint32_t' to 'float', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\utility(172,16): warning C4244: 'initializing': conversion from 'LONG' to '_Ty1', possible loss of data
-          with
-          [
-              _Ty1=Valhalla::float_t
-          ] (compiling source file src\Valhalla\Platform\Windows\WindowsWindow.cpp)
-C:\dev\valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(127,25): message : see reference to function template instantiation 'std::pair<Valhalla::float_t,Valhalla::float_t>::pair<LONG&,LONG&,0>(_Other1,_Other2) noexcept' being compiled
-          with
-          [
-              _Other1=LONG &,
-              _Other2=LONG &
-          ]
-C:\dev\valhalla\Valhalla\src\Valhalla\Platform\Windows\WindowsWindow.cpp(127,3): message : see reference to function template instantiation 'std::pair<Valhalla::float_t,Valhalla::float_t>::pair<LONG&,LONG&,0>(_Other1,_Other2) noexcept' being compiled
-          with
-          [
-              _Other1=LONG &,
-              _Other2=LONG &
-          ]
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\utility(172,54): warning C4244: 'initializing': conversion from 'LONG' to '_Ty2', possible loss of data
-          with
-          [
-              _Ty2=Valhalla::float_t
-          ] (compiling source file src\Valhalla\Platform\Windows\WindowsWindow.cpp)
-  RenderCommandQueue.cpp
-  Renderer.cpp
-  RendererContext.cpp
-  SwapChain.cpp
+﻿  Renderer.cpp
+C:\dev\valhalla\Valhalla\src\Valhalla\Renderer\Renderer.cpp(49,59): warning C4267: 'argument': conversion from 'size_t' to 'Valhalla::uint32_t', possible loss of data
 mono-2.0-sgen.lib(mono-2.0-sgen.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in vulkan-1.lib(vulkan-1.dll); second definition ignored
 GFSDK_Aftermath_Lib.x64.lib(GFSDK_Aftermath_Lib.x64.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in vulkan-1.lib(vulkan-1.dll); second definition ignored
   Valhalla.vcxproj -> C:\dev\valhalla\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib

@@ -1,14 +1,21 @@
 #include <Valhalla.h>
 #include <Valhalla/Entrypoint.h>
 
-class Odin : public Valhalla::Application
+class OdinApplication : public Valhalla::Application
 {
 public:
-	Odin() {}
-	~Odin() {}
+	OdinApplication(const Valhalla::ApplicationSpecification& specifications) : Application(specifications){}
+	~OdinApplication() {}
 };
 
-Valhalla::Application* Valhalla::CreateApplication()
+Valhalla::Application* Valhalla::CreateApplication(int argc, char** argv)
 {
-	return new Odin();
+	Valhalla::ApplicationSpecification specification;
+	specification.Name = "Odin";
+	specification.WindowWidth = 1600;
+	specification.WindowHeight = 900;
+	specification.StartMaximized = true;
+	specification.VSync = true;
+
+	return new OdinApplication(specification);
 }

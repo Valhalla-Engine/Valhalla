@@ -19,10 +19,14 @@ namespace Valhalla
 			virtual void BeginFrame() override;
 			virtual void OnResize(uint32_t width, uint32_t height) override;
 
+			virtual uint32_t GetImageCount() const override{ return m_ImageCount; }
+			virtual uint32_t GetCurrentBackBufferIndex() const override { return m_SwapChain->GetCurrentBackBufferIndex(); }
+
 			Microsoft::WRL::ComPtr<IDXGISwapChain3> GetSwapChain() { return m_SwapChain; }
 		private:
 			Microsoft::WRL::ComPtr<IDXGISwapChain3> m_SwapChain;
 			uint32_t m_4xMSAAQuality;
+			uint32_t m_ImageCount;
 		};
 	}
 }
