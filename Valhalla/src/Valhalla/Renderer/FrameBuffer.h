@@ -2,10 +2,14 @@
 
 #include "Valhalla/Renderer/Image.h"
 
+#include "Valhalla/Core/Ref.h"
+
 namespace Valhalla
 {
 	namespace Heimdall
 	{
+		class FrameBuffer;
+
 		enum class FrameBufferBlendMode
 		{
 			None = 0,

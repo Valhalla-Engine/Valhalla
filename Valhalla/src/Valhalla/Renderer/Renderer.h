@@ -64,6 +64,8 @@ namespace Valhalla
 			static void WaitAndRender();
 			static void SwapQueues();
 
+			static uint32_t GetRenderQueueIndex();
+
 			static void BeginFrame();
 			static void EndFrame();
 

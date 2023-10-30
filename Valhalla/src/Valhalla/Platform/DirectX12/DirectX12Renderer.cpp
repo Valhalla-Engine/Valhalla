@@ -56,15 +56,21 @@ namespace Valhalla
 				DSVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 				DSVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
+				VH_CORE_INFO("Creating DescriptorHeaps");
+
 				for (size_t i = 0; i < s_Data->DescriptorHeaps.size(); i++)
 				{
-					device->GetDevice()->CreateDescriptorHeap()
+					device->GetDevice()->CreateDescriptorHeap(&RTVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].RTVHeap.GetAddressOf()));
+					device->GetDevice()->CreateDescriptorHeap(&SRVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].SRVHeap.GetAddressOf()));
+					device->GetDevice()->CreateDescriptorHeap(&CBVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].CBVHeap.GetAddressOf()));
+					device->GetDevice()->CreateDescriptorHeap(&UAVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].UAVHeap.GetAddressOf()));
+					device->GetDevice()->CreateDescriptorHeap(&SamplerHeapDesc, 
+						IID_PPV_ARGS(s_Data->DescriptorHeaps[i].SamplerHeap.GetAddressOf()));
+					device->GetDevice()->CreateDescriptorHeap(&DSVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].DSVHeap.GetAddressOf()));
 				}
-
 			});
 
-			instance = this;
-
+			/*
 			m_Context = Heimdall::Renderer::GetContext().As<DirectX12Context>();
 			Microsoft::WRL::ComPtr<ID3D12Device> device = m_Context->GetDevice()->GetDevice();
 
@@ -133,7 +139,7 @@ namespace Valhalla
 
 			DXCALL(m_CommandList->Close());
 
-			//device->Release();
+			//device->Release();*/
 		}
 
 		void DirectX12Renderer::Shutdown()
@@ -143,7 +149,7 @@ namespace Valhalla
 
 		void DirectX12Renderer::BeginFrame()
 		{
-			m_FrameIndex = m_Context->GetSwapChain()->GetSwapChain()->GetCurrentBackBufferIndex();
+			/*m_FrameIndex = m_Context->GetSwapChain()->GetSwapChain()->GetCurrentBackBufferIndex();
 
 			m_CommandAllocator->Reset();
 
@@ -164,21 +170,21 @@ namespace Valhalla
 
 			const float clearcolor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
 			m_CommandList->ClearRenderTargetView(rtvHandle, clearcolor, 0, nullptr);
-			m_CommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			m_CommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);*/
 
 
 		}
 
 		void DirectX12Renderer::EndFrame()
 		{
-			m_CommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_RenderTargets[m_FrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+			/*m_CommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_RenderTargets[m_FrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
 			m_CommandList->Close();
 
 			ID3D12CommandList* ppCommandList[] = { m_CommandList.Get() };
 			m_Context->GetCurrentDevice()->GetGraphicsQueue()->ExecuteCommandLists(_countof(ppCommandList), ppCommandList);
 			m_Context->GetSwapChain()->GetSwapChain()->Present(0, 0);
-			WaitForFrame();
+			WaitForFrame();*/
 		}
 
 		void DirectX12Renderer::WaitForFrame()

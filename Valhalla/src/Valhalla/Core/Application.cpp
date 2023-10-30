@@ -26,6 +26,7 @@ namespace Valhalla
 		m_Profiler = new PerformanceProfiler();
 
 		Heimdall::Renderer::Init();
+		Heimdall::Renderer::WaitAndRender();
 
 		m_ImGuiLayer = ImGuiLayer::Create();
 		PushOverlay(m_ImGuiLayer);
@@ -88,6 +89,7 @@ namespace Valhalla
 
 				RenderImGui();
 				m_ImGuiLayer->End();
+				Heimdall::Renderer::WaitAndRender();
 				Heimdall::Renderer::EndFrame();
 			}
 

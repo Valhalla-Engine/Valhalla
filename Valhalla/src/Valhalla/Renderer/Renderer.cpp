@@ -87,6 +87,16 @@ namespace Valhalla
 			delete s_CommandQueue[1];
 		}
 
+		void Renderer::WaitAndRender()
+		{
+			s_CommandQueue[GetRenderQueueIndex()]->Execute();
+		}
+
+		uint32_t Renderer::GetRenderQueueIndex()
+		{
+			return (s_RenderCommandQueueSubmissionIndex + 1) % s_RenderCommandQueueCount;
+		}
+
 		void Renderer::BeginFrame()
 		{
 			s_RendererAPI->BeginFrame();

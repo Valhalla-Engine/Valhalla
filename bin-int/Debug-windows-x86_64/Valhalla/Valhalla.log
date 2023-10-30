@@ -1,6 +1,5 @@
-﻿  Renderer.cpp
-  Shader.cpp
-C:\dev\valhalla\Valhalla\src\Valhalla\Renderer\Renderer.cpp(82,59): warning C4267: 'argument': conversion from 'size_t' to 'Valhalla::uint32_t', possible loss of data
+﻿  DirectX12Renderer.cpp
+C:\dev\valhalla\Valhalla\src\Valhalla\Platform\DirectX12\DirectX12Renderer.cpp(200,92): warning C4552: '+': result of expression not used
 mono-2.0-sgen.lib(mono-2.0-sgen.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in vulkan-1.lib(vulkan-1.dll); second definition ignored
 GFSDK_Aftermath_Lib.x64.lib(GFSDK_Aftermath_Lib.x64.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in vulkan-1.lib(vulkan-1.dll); second definition ignored
   Valhalla.vcxproj -> C:\dev\valhalla\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib

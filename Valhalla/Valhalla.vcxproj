@@ -178,6 +178,7 @@
     <ClInclude Include="src\Valhalla\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Context.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Device.h" />
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12FrameBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.h" />
@@ -191,6 +192,8 @@
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Valhalla\Renderer\Camera.h" />
+    <ClInclude Include="src\Valhalla\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Image.h" />
     <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h" />
     <ClInclude Include="src\Valhalla\Renderer\Pipeline.h" />
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandBuffer.h" />
@@ -219,6 +222,7 @@
     <ClCompile Include="src\Valhalla\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Context.cpp" />
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Device.cpp" />
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12FrameBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.cpp" />
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.cpp" />
@@ -229,6 +233,7 @@
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandBuffer.cpp" />
