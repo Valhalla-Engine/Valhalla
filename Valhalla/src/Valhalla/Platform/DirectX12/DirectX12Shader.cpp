@@ -8,19 +8,35 @@ namespace Valhalla
 	{
 		DirectX12Shader::DirectX12Shader(const std::string& path, bool forceCompile, bool disableOptimization)
 		{
+			m_Name = "Test";
+
 			DXCALL(DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(m_Utils.GetAddressOf())));
 			DXCALL(DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(m_Compiler.GetAddressOf())));
 			DXCALL(m_Utils->CreateDefaultIncludeHandler(m_IncludeHandler.GetAddressOf()));
 
-			DXCALL(CompileShader(path, L"VSMain", L"vs_6_0", disableOptimization)->GetResult(m_VertexShader.GetAddressOf()));
-			DXCALL(CompileShader(path, L"PSMain", L"ps_6_0", disableOptimization)->GetResult(m_PixelShader.GetAddressOf()));
+			auto vertexCompiled = CompileShader(path, L"VSMain", L"vs_6_0", disableOptimization);
+			auto pixelCompiled = CompileShader(path, L"PSMain", L"ps_6_0", disableOptimization);
+
+			DXCALL(vertexCompiled->GetResult(m_VertexShader.GetAddressOf()));
+			DXCALL(pixelCompiled->GetResult(m_PixelShader.GetAddressOf()));
+
+			Microsoft::WRL::ComPtr<IDxcBlob> reflectionblob;
+			DXCALL(vertexCompiled->GetOutput(DXC_OUT_REFLECTION, IID_PPV_ARGS(reflectionblob.GetAddressOf()), nullptr));
+
+			DxcBuffer reflectionBuffer;
+			reflectionBuffer.Ptr = reflectionblob->GetBufferPointer();
+			reflectionBuffer.Size = reflectionblob->GetBufferSize();
+			reflectionBuffer.Encoding = 0;
+
+			DXCALL(m_Utils->CreateReflection(&reflectionBuffer, IID_PPV_ARGS(m_Reflection.GetAddressOf())));
 		}
 
 		DirectX12Shader::~DirectX12Shader()
 		{
 		}
 
-		Microsoft::WRL::ComPtr<IDxcResult> DirectX12Shader::CompileShader(const std::string& path, LPCWSTR entrypoint, LPCWSTR target, bool disableOptimization)
+		Microsoft::WRL::ComPtr<IDxcResult> DirectX12Shader::CompileShader(const std::string& path, LPCWSTR entrypoint, 
+			LPCWSTR target, bool disableOptimization)
 		{
 			std::vector<LPCWSTR> compilationArgs
 			{
@@ -65,6 +81,8 @@ namespace Valhalla
 			{
 				VH_CORE_ERROR(errors->GetStringPointer());
 			}
+
+			return result;
 		}
 
 
@@ -82,6 +100,7 @@ namespace Valhalla
 
 		size_t DirectX12Shader::GetHash() const
 		{
+			return 0;
 		}
 
 		void DirectX12Shader::AddShaderReloadedCallback(const ShaderReloadedCallback& callback)
@@ -89,20 +108,102 @@ namespace Valhalla
 
 		}
 
-		D3D12_SHADER_BYTECODE DirectX12Shader::GetVertexShader()
+		D3D12_INPUT_LAYOUT_DESC DirectX12Shader::GetInputLayout()
 		{
-			D3D12_SHADER_BYTECODE bytecode = {};
-			bytecode.pShaderBytecode = m_VertexShader->GetBufferPointer();
-			bytecode.BytecodeLength = m_VertexShader->GetBufferSize();
-			return bytecode;
+			D3D12_SHADER_DESC shaderDesc{};
+			DXCALL(m_Reflection->GetDesc(&shaderDesc));
+
+			std::vector<D3D12_INPUT_ELEMENT_DESC> InputElements;
+			for (size_t i = 0; i < shaderDesc.InputParameters; i++)
+			{
+				D3D12_SIGNATURE_PARAMETER_DESC signatureDesc;
+				m_Reflection->GetInputParameterDesc(i, &signatureDesc);
+
+				D3D12_INPUT_ELEMENT_DESC desc;
+				desc.SemanticName = signatureDesc.SemanticName;
+				desc.SemanticIndex = signatureDesc.SemanticIndex;
+				desc.InputSlot = 0;
+				desc.AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+				desc.InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+				desc.InstanceDataStepRate = 0;
+
+				if (signatureDesc.Mask == 1)
+				{
+					switch (signatureDesc.ComponentType)
+					{
+						case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32_UINT; break;
+						case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32_SINT; break;
+						case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32_FLOAT; break;
+					}
+				}
+				else if (signatureDesc.Mask <= 3)
+				{
+					switch (signatureDesc.ComponentType)
+					{
+						case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32G32_UINT; break;
+						case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32G32_SINT; break;
+						case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32G32_FLOAT; break;
+					}
+				}
+				else if (signatureDesc.Mask <= 7)
+				{
+					switch (signatureDesc.ComponentType)
+					{
+						case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32G32B32_UINT; break;
+						case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32G32B32_SINT; break;
+						case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32G32B32_FLOAT; break;
+					}
+				}
+				else if (signatureDesc.Mask <= 15)
+				{
+					switch (signatureDesc.ComponentType)
+					{
+						case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32G32B32A32_UINT; break;
+						case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32G32B32A32_SINT; break;
+						case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; break;
+					}
+				}
+
+				InputElements.push_back(desc);
+			}
+
+			return { InputElements.data(), static_cast<uint32_t>(InputElements.size()) };
 		}
 
-		D3D12_SHADER_BYTECODE DirectX12Shader::GetPixelShader()
+		std::vector<D3D12_ROOT_PARAMETER1> DirectX12Shader::GetRootParameters()
 		{
-			D3D12_SHADER_BYTECODE bytecode = {};
-			bytecode.pShaderBytecode = m_PixelShader->GetBufferPointer();
-			bytecode.BytecodeLength = m_PixelShader->GetBufferSize();
-			return bytecode;
+			std::vector<D3D12_ROOT_PARAMETER1> rootParameters;
+
+			D3D12_SHADER_DESC shaderDesc{};
+			DXCALL(m_Reflection->GetDesc(&shaderDesc));
+
+			for (size_t i = 0; i < shaderDesc.BoundResources; i++)
+			{
+				D3D12_SHADER_INPUT_BIND_DESC shaderBindDesc;
+				DXCALL(m_Reflection->GetResourceBindingDesc(i, &shaderBindDesc));
+
+				if (shaderBindDesc.Type = D3D_SIT_CBUFFER)
+				{
+					ID3D12ShaderReflectionConstantBuffer* shaderBuffer = m_Reflection->GetConstantBufferByIndex(i);
+
+					D3D12_SHADER_BUFFER_DESC bufferDesc;
+					shaderBuffer->GetDesc(&bufferDesc);
+
+					D3D12_ROOT_PARAMETER1 root;
+					root.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+					root.Descriptor = { shaderBindDesc.BindPoint, shaderBindDesc.Space, D3D12_ROOT_DESCRIPTOR_FLAG_NONE };
+
+					rootParameters.push_back(root);
+					shaderBuffer = nullptr;
+				}
+
+				else if (shaderBindDesc.Type == D3D_SIT_TEXTURE)
+				{
+
+				}
+			}
+
+			return rootParameters;
 		}
 	}
 }

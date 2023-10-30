@@ -11,20 +11,20 @@ namespace Valhalla
 	{
 		namespace Utils
 		{
-			static D3D_PRIMITIVE_TOPOLOGY GetDirectXTopology(Heimdall::PrimitiveTopology topology)
+			static D3D12_PRIMITIVE_TOPOLOGY_TYPE GetDirectXTopology(Heimdall::PrimitiveTopology topology)
 			{
 				switch (topology)
 				{
-					case Heimdall::PrimitiveTopology::Points:			return D3D_PRIMITIVE_TOPOLOGY_POINTLIST;
-					case Heimdall::PrimitiveTopology::Lines:			return D3D_PRIMITIVE_TOPOLOGY_LINELIST;
-					case Heimdall::PrimitiveTopology::Triangles:		return D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-					case Heimdall::PrimitiveTopology::LineStrip:		return D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
-					case Heimdall::PrimitiveTopology::TriangleStrip:	return D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
-					case Heimdall::PrimitiveTopology::TriangleFan:		return D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
+					case Heimdall::PrimitiveTopology::Points:			return D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
+					case Heimdall::PrimitiveTopology::Lines:			return D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
+					case Heimdall::PrimitiveTopology::Triangles:		return D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+					case Heimdall::PrimitiveTopology::LineStrip:		return D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED;
+					case Heimdall::PrimitiveTopology::TriangleStrip:	return D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED;
+					case Heimdall::PrimitiveTopology::TriangleFan:		return D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED;
 				}
 
 				VH_CORE_ASSERT(false, "Unknown Topology");
-				return D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+				return D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED;
 			}
 
 			static D3D12_COMPARISON_FUNC GetDirectXCompareOperator(const Heimdall::DepthCompareOperator compareOp)
@@ -80,7 +80,24 @@ namespace Valhalla
 				auto device = DirectX12Context::GetCurrentDevice();
 				Ref<DirectX12Shader> directX12Shader = Ref<DirectX12Shader>(instance->m_Specification.shader);
 
-				
+				D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc;
+				pipelineDesc.pRootSignature = instance->m_PipelineLayout.Get();
+				pipelineDesc.VS = directX12Shader->GetVertexShader();
+				pipelineDesc.PS = directX12Shader->GetPixelShader();
+				pipelineDesc.InputLayout = directX12Shader->GetInputLayout();
+				pipelineDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+				pipelineDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+				pipelineDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+				pipelineDesc.SampleMask = UINT_MAX;
+				pipelineDesc.PrimitiveTopologyType = Utils::GetDirectXTopology(instance->m_Specification.Topology);
+				pipelineDesc.NumRenderTargets = 1;
+				pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+				pipelineDesc.SampleDesc.Count = 0;
+				pipelineDesc.SampleDesc.Quality = 1;
+				pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+
+				DXCALL(device->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, 
+					IID_PPV_ARGS(instance->m_Pipeline.GetAddressOf())));
 			});
 		}
 	}

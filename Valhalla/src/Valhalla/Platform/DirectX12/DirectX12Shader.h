@@ -6,6 +6,8 @@
 
 #include "Valhalla/Renderer/Shader.h"
 
+#pragma comment(lib, "dxcompiler.lib")
+
 namespace Valhalla
 {
 	namespace Yggdrasil
@@ -13,6 +15,12 @@ namespace Valhalla
 		class DirectX12Shader : public Heimdall::Shader
 		{
 		public:
+			struct ReflectionData
+			{
+				std::unordered_map<std::string, Heimdall::ShaderResourceDeclaration> Resources;
+				std::unordered_map<std::string, Heimdall::ShaderBuffer> ConstantBuffers;
+			};
+
 			DirectX12Shader() = default;
 			DirectX12Shader(const std::string& path, bool forceCompile, bool disableOptimization);
 			virtual ~DirectX12Shader();
@@ -25,13 +33,14 @@ namespace Valhalla
 			void SetMacro(const std::string& name, const std::string& value) override {}
 
 			D3D12_INPUT_LAYOUT_DESC GetInputLayout();
+			std::vector<D3D12_ROOT_PARAMETER1> GetRootParameters();
 
 			D3D12_SHADER_BYTECODE GetVertexShader() { return { m_VertexShader->GetBufferPointer(), m_VertexShader->GetBufferSize() }; }
 			D3D12_SHADER_BYTECODE GetPixelShader() { return {m_PixelShader->GetBufferPointer(), m_PixelShader->GetBufferSize()}; }
 
 			virtual const std::string& GetName() const override { return m_Name; }
-			virtual const std::unordered_map<std::string, Heimdall::ShaderBuffer>& GetShaderBuffers() const override {  }
-			virtual const std::unordered_map<std::string, Heimdall::ShaderResourceDeclaration>& GetResources() const override {}
+			virtual const std::unordered_map<std::string, Heimdall::ShaderBuffer>& GetShaderBuffers() const override { return  m_ReflectionData.ConstantBuffers; }
+			virtual const std::unordered_map<std::string, Heimdall::ShaderResourceDeclaration>& GetResources() const override { return m_ReflectionData.Resources; }
 			virtual void AddShaderReloadedCallback(const ShaderReloadedCallback& callback) override;
 
 		private:
@@ -42,6 +51,8 @@ namespace Valhalla
 			std::string m_Name;
 			Microsoft::WRL::ComPtr<IDxcBlob> m_VertexShader;
 			Microsoft::WRL::ComPtr<IDxcBlob> m_PixelShader;
+
+			ReflectionData m_ReflectionData;
 
 			/*Compiler stuff*/
 			Microsoft::WRL::ComPtr<IDxcCompiler3> m_Compiler;

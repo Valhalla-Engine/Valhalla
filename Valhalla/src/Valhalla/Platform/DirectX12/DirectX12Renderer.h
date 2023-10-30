@@ -8,6 +8,16 @@ namespace Valhalla
 {
 	namespace Yggdrasil
 	{
+		struct DirectX12DescriptorHeaps
+		{
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> RTVHeap;
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> SRVHeap;
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> CBVHeap;
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> UAVHeap;
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> SamplerHeap;
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> DSVHeap;
+		};
+
 		class DirectX12Renderer : public Heimdall::RendererAPI
 		{
 		public:

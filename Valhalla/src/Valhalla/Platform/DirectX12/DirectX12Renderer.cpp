@@ -8,8 +8,61 @@ namespace Valhalla
 {
 	namespace Yggdrasil
 	{
+		struct DirectX12RendererData
+		{
+			std::vector<DirectX12DescriptorHeaps> DescriptorHeaps;
+		};
+
+		static DirectX12RendererData* s_Data;
+
 		void DirectX12Renderer::Init()
 		{
+			s_Data = new DirectX12RendererData();
+
+			const auto& config = Heimdall::Renderer::GetConfig();
+			s_Data->DescriptorHeaps.resize(config.FramesInFlight);
+
+			Heimdall::Renderer::Submit([]() mutable
+			{
+				auto device = DirectX12Context::GetCurrentDevice();
+
+				D3D12_DESCRIPTOR_HEAP_DESC RTVHeapDesc;
+				RTVHeapDesc.NumDescriptors = 1000;
+				RTVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+				RTVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+
+				D3D12_DESCRIPTOR_HEAP_DESC SRVHeapDesc;
+				SRVHeapDesc.NumDescriptors = 1000;
+				SRVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+				SRVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+				
+				D3D12_DESCRIPTOR_HEAP_DESC CBVHeapDesc;
+				CBVHeapDesc.NumDescriptors = 1000;
+				CBVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+				CBVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+				D3D12_DESCRIPTOR_HEAP_DESC UAVHeapDesc;
+				UAVHeapDesc.NumDescriptors = 1000;
+				UAVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+				UAVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+				D3D12_DESCRIPTOR_HEAP_DESC SamplerHeapDesc;
+				SamplerHeapDesc.NumDescriptors = 1000;
+				SamplerHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
+				SamplerHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+				D3D12_DESCRIPTOR_HEAP_DESC DSVHeapDesc;
+				DSVHeapDesc.NumDescriptors = 1000;
+				DSVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+				DSVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+
+				for (size_t i = 0; i < s_Data->DescriptorHeaps.size(); i++)
+				{
+					device->GetDevice()->CreateDescriptorHeap()
+				}
+
+			});
+
 			instance = this;
 
 			m_Context = Heimdall::Renderer::GetContext().As<DirectX12Context>();

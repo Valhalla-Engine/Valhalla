@@ -17,10 +17,16 @@ namespace Valhalla
 
 		};
 
+		struct RendererData
+		{
+			Ref<ShaderLibrary> m_ShaderLibrary;
+		};
+
 		static std::unordered_map<size_t, ShaderDependencies> s_ShaderDependencies;
 
 		static RendererConfig s_Config;
 
+		static RendererData* s_Data = nullptr;
 		constexpr static uint32_t s_RenderCommandQueueCount = 2;
 		static RenderCommandQueue* s_CommandQueue[s_RenderCommandQueueCount];
 		static std::atomic<uint32_t> s_RenderCommandQueueSubmissionIndex = 0;
@@ -28,7 +34,12 @@ namespace Valhalla
 
 		void Renderer::RegisterShaderDependency(Ref<Shader> shader, Ref<Pipeline> pipeline)
 		{
+			s_ShaderDependencies[shader->GetHash()].Pipelines.push_back(pipeline);
+		}
 
+		Ref<ShaderLibrary> Renderer::GetShaderLibrary()
+		{
+			return s_Data->m_ShaderLibrary;
 		}
 
 		static RendererAPI* InitRendererAPI()
@@ -43,6 +54,8 @@ namespace Valhalla
 
 		void Renderer::Init()
 		{
+			s_Data = new RendererData();
+
 			s_CommandQueue[0] = new RenderCommandQueue();
 			s_CommandQueue[1] = new RenderCommandQueue();
 
@@ -51,12 +64,18 @@ namespace Valhalla
 
 			s_RendererAPI = InitRendererAPI();
 
+			s_Data->m_ShaderLibrary = Ref<ShaderLibrary>::Create();
+
+			Renderer::GetShaderLibrary()->Load("Resources/Shaders/Shader.hlsl");
+
 			s_RendererAPI->Init();
 		}
 
 		void Renderer::Shutdown()
 		{
 			s_RendererAPI->Shutdown();
+
+			delete s_Data;
 
 			for (size_t i = 0; i < s_Config.FramesInFlight; i++)
 			{

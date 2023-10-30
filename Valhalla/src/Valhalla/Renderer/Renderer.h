@@ -22,6 +22,8 @@ namespace Valhalla
 				return Application::Get().GetWindow().GetRendererContext();
 			}
 
+			static Ref<ShaderLibrary> GetShaderLibrary();
+
 			static void Init();
 			static void Shutdown();
 

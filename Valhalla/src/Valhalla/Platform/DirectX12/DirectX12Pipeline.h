@@ -30,7 +30,7 @@ namespace Valhalla
 
 			Microsoft::WRL::ComPtr<ID3D12PipelineState> m_Pipeline = nullptr;
 			Microsoft::WRL::ComPtr<ID3D12RootSignature> m_PipelineLayout = nullptr;
-			Microsoft::WRL::ComPtr<ID3D12PipelineLibrary> m_PipelineCache = nullptr;
+			D3D12_CACHED_PIPELINE_STATE m_PipelineCache;
 		};
 	}
 }

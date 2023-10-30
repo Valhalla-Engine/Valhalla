@@ -1,6 +1,9 @@
 #include "vhpch.h"
 #include "Shader.h"
 
+
+#include "Valhalla/Platform/DirectX12/DirectX12Shader.h"
+
 #include "Valhalla/Renderer/RendererAPI.h"
 
 namespace Valhalla
@@ -20,6 +23,7 @@ namespace Valhalla
 
 				case RendererAPIType::DirectX12:
 				{
+					result = Ref<Yggdrasil::DirectX12Shader>::Create(filepath, forceCompile, disableOptimization);
 					break;
 				}
 
@@ -27,9 +31,9 @@ namespace Valhalla
 				{
 					break;
 				}
-
-				return result;
 			}
+
+			return result;
 		}
 
 		Ref<Shader> Shader::CreateFromString(const std::string& source)
@@ -63,6 +67,7 @@ namespace Valhalla
 		{
 			Ref<Shader> shader = Shader::Create(path.data(), forceCompile, disableOptimization);
 			VH_CORE_ASSERT(m_Shaders.find(shader->GetName()) == m_Shaders.end());
+			std::string name = shader->GetName();
 			m_Shaders[shader->GetName()] = shader;
 		}
 
