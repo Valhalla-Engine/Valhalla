@@ -34,6 +34,8 @@ namespace Valhalla
 
 		void RenderCommandQueue::Execute()
 		{
+			VH_CORE_TRACE("RenderCommandQueue::Execute-- {0} commands, {1} bytes", m_CommandCount, (m_CommandBufferPtr - m_CommandBuffer));
+
 			byte* buffer = m_CommandBuffer;
 
 			for (uint32_t i = 0; i < m_CommandCount; i++)

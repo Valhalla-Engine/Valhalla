@@ -16,10 +16,12 @@ namespace Valhalla
 
 			void Execute();
 
+			uint32_t GetCount() { return m_CommandCount; }
+
 		private:
 			uint8_t* m_CommandBuffer;
 			uint8_t* m_CommandBufferPtr;
-			uint32_t m_CommandCount;
+			uint32_t m_CommandCount = 0;
 		};
 	}
 }
