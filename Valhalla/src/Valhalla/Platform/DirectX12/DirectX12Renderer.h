@@ -29,29 +29,19 @@ namespace Valhalla
 			virtual void BeginFrame() override;
 			virtual void EndFrame() override;
 
+			static std::vector<DirectX12DescriptorHeaps>& GetHeaps();
+			static DirectX12DescriptorHeaps& GetFrameHeaps(uint32_t frameIndex);
+
 			void WaitForFrame();
 
-			static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetRTVHeap() { return instance->m_RenderTargetViewHeap; }
-			static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetSRVHeap() { return instance->m_ShaderResourceViewHeap; }
-			static Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return instance->m_CommandList; }
-			static Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> GetImGuiCommandList() { return instance->m_ImGuiCommandList; }
 
 		private:
 			Microsoft::WRL::ComPtr<ID3D12RootSignature> m_RootSignature;
 			Microsoft::WRL::ComPtr<ID3D12Resource> m_RenderTargets[2];
-			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_CommandAllocator;
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RenderTargetViewHeap;
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_ShaderResourceViewHeap;
-			Microsoft::WRL::ComPtr<ID3D12PipelineState> m_PipelineState;
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_CommandList;
 
-			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_ImGuiCommandAllocator;
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_ImGuiCommandList;
+			std::vector<Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> m_RTVHeaps;
 
 			Ref<DirectX12Context> m_Context;
-
-			uint32_t m_RTVDescriptorSize;
-
 
 			CD3DX12_VIEWPORT m_viewport;
 			CD3DX12_RECT m_ScissorRect;

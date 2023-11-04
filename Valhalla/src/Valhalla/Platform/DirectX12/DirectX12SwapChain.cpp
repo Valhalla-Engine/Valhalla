@@ -18,7 +18,7 @@ namespace Valhalla
 
 		DirectX12SwapChain::~DirectX12SwapChain()
 		{
-
+			m_SwapChain->Release();
 		}
 
 		void DirectX12SwapChain::Init()

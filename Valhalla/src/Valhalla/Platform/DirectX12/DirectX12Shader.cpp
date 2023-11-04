@@ -79,7 +79,7 @@ namespace Valhalla
 			DXCALL(result->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&errors), nullptr));
 			if (errors && errors->GetStringPointer() > 0)
 			{
-				VH_CORE_ERROR(errors->GetStringPointer());
+				//VH_CORE_ERROR(errors->GetStringPointer());
 			}
 
 			return result;

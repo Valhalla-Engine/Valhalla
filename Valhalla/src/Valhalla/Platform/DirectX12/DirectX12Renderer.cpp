@@ -13,7 +13,17 @@ namespace Valhalla
 			std::vector<DirectX12DescriptorHeaps> DescriptorHeaps;
 		};
 
-		static DirectX12RendererData* s_Data;
+		static DirectX12RendererData* s_Data = nullptr;
+
+		std::vector<DirectX12DescriptorHeaps>& DirectX12Renderer::GetHeaps()
+		{
+			return s_Data->DescriptorHeaps;
+		}
+
+		DirectX12DescriptorHeaps& DirectX12Renderer::GetFrameHeaps(uint32_t frameIndex)
+		{
+			return s_Data->DescriptorHeaps[frameIndex];
+		}
 
 		void DirectX12Renderer::Init()
 		{
@@ -22,51 +32,53 @@ namespace Valhalla
 			const auto& config = Heimdall::Renderer::GetConfig();
 			s_Data->DescriptorHeaps.resize(config.FramesInFlight);
 
+			
 			Heimdall::Renderer::Submit([]() mutable
 			{
 				auto device = DirectX12Context::GetCurrentDevice();
+				auto data = DirectX12Renderer::GetHeaps();
 
-				D3D12_DESCRIPTOR_HEAP_DESC RTVHeapDesc;
+				D3D12_DESCRIPTOR_HEAP_DESC RTVHeapDesc = {};
 				RTVHeapDesc.NumDescriptors = 1000;
 				RTVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 				RTVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
-				D3D12_DESCRIPTOR_HEAP_DESC SRVHeapDesc;
+				D3D12_DESCRIPTOR_HEAP_DESC SRVHeapDesc = {};
 				SRVHeapDesc.NumDescriptors = 1000;
 				SRVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 				SRVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 				
-				D3D12_DESCRIPTOR_HEAP_DESC CBVHeapDesc;
+				D3D12_DESCRIPTOR_HEAP_DESC CBVHeapDesc = {};
 				CBVHeapDesc.NumDescriptors = 1000;
 				CBVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 				CBVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-				D3D12_DESCRIPTOR_HEAP_DESC UAVHeapDesc;
+				D3D12_DESCRIPTOR_HEAP_DESC UAVHeapDesc = {};
 				UAVHeapDesc.NumDescriptors = 1000;
 				UAVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 				UAVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-				D3D12_DESCRIPTOR_HEAP_DESC SamplerHeapDesc;
+				D3D12_DESCRIPTOR_HEAP_DESC SamplerHeapDesc = {};
 				SamplerHeapDesc.NumDescriptors = 1000;
 				SamplerHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
 				SamplerHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-				D3D12_DESCRIPTOR_HEAP_DESC DSVHeapDesc;
+				D3D12_DESCRIPTOR_HEAP_DESC DSVHeapDesc = {};
 				DSVHeapDesc.NumDescriptors = 1000;
 				DSVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 				DSVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
 				VH_CORE_INFO("Creating DescriptorHeaps");
 
-				for (size_t i = 0; i < s_Data->DescriptorHeaps.size(); i++)
+				for (size_t i = 0; i < data.size(); i++)
 				{
-					device->GetDevice()->CreateDescriptorHeap(&RTVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].RTVHeap.GetAddressOf()));
-					device->GetDevice()->CreateDescriptorHeap(&SRVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].SRVHeap.GetAddressOf()));
-					device->GetDevice()->CreateDescriptorHeap(&CBVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].CBVHeap.GetAddressOf()));
-					device->GetDevice()->CreateDescriptorHeap(&UAVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].UAVHeap.GetAddressOf()));
-					device->GetDevice()->CreateDescriptorHeap(&SamplerHeapDesc, 
-						IID_PPV_ARGS(s_Data->DescriptorHeaps[i].SamplerHeap.GetAddressOf()));
-					device->GetDevice()->CreateDescriptorHeap(&DSVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].DSVHeap.GetAddressOf()));
+					DXCALL(device->GetDevice()->CreateDescriptorHeap(&RTVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].RTVHeap.GetAddressOf())));
+					DXCALL(device->GetDevice()->CreateDescriptorHeap(&SRVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].SRVHeap.GetAddressOf())));
+					DXCALL(device->GetDevice()->CreateDescriptorHeap(&CBVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].CBVHeap.GetAddressOf())));
+					DXCALL(device->GetDevice()->CreateDescriptorHeap(&UAVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].UAVHeap.GetAddressOf())));
+					DXCALL(device->GetDevice()->CreateDescriptorHeap(&SamplerHeapDesc, 
+						IID_PPV_ARGS(s_Data->DescriptorHeaps[i].SamplerHeap.GetAddressOf())));
+					DXCALL(device->GetDevice()->CreateDescriptorHeap(&DSVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].DSVHeap.GetAddressOf())));
 				}
 			});
 
@@ -149,30 +161,7 @@ namespace Valhalla
 
 		void DirectX12Renderer::BeginFrame()
 		{
-			/*m_FrameIndex = m_Context->GetSwapChain()->GetSwapChain()->GetCurrentBackBufferIndex();
-
-			m_CommandAllocator->Reset();
-
-			m_CommandList->Reset(m_CommandAllocator.Get(), m_PipelineState.Get());
-
-
-			m_CommandList->SetDescriptorHeaps(1, m_ShaderResourceViewHeap.GetAddressOf());
-
-			m_CommandList->SetGraphicsRootSignature(m_RootSignature.Get());
-			m_CommandList->RSSetViewports(1, &m_viewport);
-			m_CommandList->RSSetScissorRects(1, &m_ScissorRect);
-
-			m_CommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_RenderTargets[m_FrameIndex].Get(),
-				D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
-
-			CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_RenderTargetViewHeap->GetCPUDescriptorHandleForHeapStart(), m_FrameIndex, m_RTVDescriptorSize);
-			m_CommandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
-
-			const float clearcolor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
-			m_CommandList->ClearRenderTargetView(rtvHandle, clearcolor, 0, nullptr);
-			m_CommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);*/
-
-
+			s_Data->DescriptorHeaps[0].RTVHeap->SetName(L"Test");
 		}
 
 		void DirectX12Renderer::EndFrame()

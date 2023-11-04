@@ -10,6 +10,9 @@
     <Filter Include="Valhalla\Core\Events">
       <UniqueIdentifier>{C6115271-B2A0-DB3A-5BBF-EF35472DECE0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Valhalla\Editor">
+      <UniqueIdentifier>{8053A9F5-ECDE-16BA-F5EF-99AE61FA72BA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Valhalla\ImGui">
       <UniqueIdentifier>{34EA70D1-20B8-64D7-094C-D5FDF5B8403C}</UniqueIdentifier>
     </Filter>
@@ -43,6 +46,9 @@
     <ClInclude Include="src\Valhalla\Core\Events\ApplicationEvent.h">
       <Filter>Valhalla\Core\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\EditorEvent.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Events\Event.h">
       <Filter>Valhalla\Core\Events</Filter>
     </ClInclude>
@@ -51,6 +57,12 @@
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Events\MouseEvent.h">
       <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Events\SceneEvent.h">
+      <Filter>Valhalla\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Hash.h">
+      <Filter>Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Input.h">
       <Filter>Valhalla\Core</Filter>
@@ -88,6 +100,12 @@
     <ClInclude Include="src\Valhalla\Core\Window.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Editor\EditorPanel.h">
+      <Filter>Valhalla\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Editor\PanelManager.h">
+      <Filter>Valhalla\Editor</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\EntryPoint.h">
       <Filter>Valhalla</Filter>
     </ClInclude>
@@ -103,13 +121,31 @@
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Device.h">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12FrameBuffer.h">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.h">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.h">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.h">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.h">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Renderer.h">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.h">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12SwapChain.h">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.h">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\VD3D12.h">
@@ -124,6 +160,24 @@
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h">
       <Filter>Valhalla\Platform\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\Camera.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\FrameBuffer.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\Image.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\Pipeline.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\RenderCommandBuffer.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
@@ -133,33 +187,31 @@
     <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\RendererConfig.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RendererContext.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\Shader.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\SwapChain.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\UniformBuffer.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\Vertex.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\vhpch.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\EditorEvent.h" />
-    <ClInclude Include="src\Valhalla\Core\Events\SceneEvent.h" />
-    <ClInclude Include="src\Valhalla\Editor\EditorPanel.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Camera.h" />
-    <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h" />
-    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Vertex.h" />
-    <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h" />
-    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.h" />
-    <ClInclude Include="src\Valhalla\Editor\PanelManager.h" />
-    <ClInclude Include="src\Valhalla\Core\Hash.h" />
-    <ClInclude Include="src\Valhalla\Renderer\RenderCommandBuffer.h" />
-    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.h" />
-    <ClInclude Include="src\Valhalla\Renderer\RendererConfig.h" />
-    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Pipeline.h" />
-    <ClInclude Include="src\Valhalla\Renderer\Shader.h" />
-    <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h" />
-    <ClInclude Include="src\Valhalla\Renderer\UniformBuffer.h" />
-    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
@@ -180,6 +232,9 @@
     <ClCompile Include="src\Valhalla\Core\Window.cpp">
       <Filter>Valhalla\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Editor\PanelManager.cpp">
+      <Filter>Valhalla\Editor</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\ImGui\ImGuiBuild.cpp">
       <Filter>Valhalla\ImGui</Filter>
     </ClCompile>
@@ -192,17 +247,50 @@
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Device.cpp">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12FrameBuffer.cpp">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.cpp">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.cpp">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.cpp">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.cpp">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Renderer.cpp">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.cpp">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12SwapChain.cpp">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.cpp">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp">
       <Filter>Valhalla\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\Camera.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\FrameBuffer.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\RenderCommandBuffer.cpp">
+      <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp">
       <Filter>Valhalla\Renderer</Filter>
@@ -213,22 +301,18 @@
     <ClCompile Include="src\Valhalla\Renderer\RendererContext.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\Shader.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\SwapChain.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\UniformBuffer.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\vhpch.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\Camera.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Editor\PanelManager.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\RenderCommandBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Valhalla\Renderer\UniformBuffer.cpp" />
-    <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.cpp" />
   </ItemGroup>
 </Project>

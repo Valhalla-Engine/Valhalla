@@ -14,20 +14,25 @@ namespace Valhalla
 			auto& device = DirectX12Context::GetCurrentDevice()->GetDevice();
 			uint32_t framesInFlight = Heimdall::Renderer::GetConfig().FramesInFlight;
 
-			DXCALL(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, 
-				IID_PPV_ARGS(m_CommandAllocator.GetAddressOf())));
+			m_CommandAllocators.resize(framesInFlight);
+			for (size_t i = 0; i < m_CommandAllocators.size(); i++)
+			{
+				DXCALL(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
+					IID_PPV_ARGS(m_CommandAllocators[i].GetAddressOf())));
+				m_CommandAllocators[i]->Reset();
 #if VH_DEBUG
-			std::wstring temp = std::wstring(debugName.begin(), debugName.end());
-			m_CommandAllocator->SetName(temp.c_str());
+				std::wstring temp = std::wstring(debugName.begin(), debugName.end());
+				m_CommandAllocators[i]->SetName(temp.c_str());
 #endif
+			}
 
 			if (count == 0)
 				count = framesInFlight;
 			m_CommandBuffers.resize(count);
-			for (auto& list : m_CommandBuffers)
+			for (size_t i = 0; i < m_CommandBuffers.size(); i++)
 			{
 				DXCALL(device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, 
-					m_CommandAllocator.Get(), nullptr, IID_PPV_ARGS(list.GetAddressOf())));
+					m_CommandAllocators[i].Get(), nullptr, IID_PPV_ARGS(m_CommandBuffers[i].GetAddressOf())));
 			}
 
 			m_Fences.resize(count);
@@ -43,19 +48,24 @@ namespace Valhalla
 		{
 			auto& device = DirectX12Context::GetCurrentDevice()->GetDevice();
 			uint32_t framesInFlight = Heimdall::Renderer::GetConfig().FramesInFlight;
-
-			DXCALL(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, 
-				IID_PPV_ARGS(m_CommandAllocator.GetAddressOf())));
+			m_CommandAllocators.resize(framesInFlight);
+			for (size_t i = 0; i < m_CommandAllocators.size(); i++)
+			{
+				DXCALL(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
+					IID_PPV_ARGS(m_CommandAllocators[i].GetAddressOf())));
+				m_CommandAllocators[i]->Reset();
 #if VH_DEBUG
-			std::wstring temp = std::wstring(debugName.begin(), debugName.end());
-			m_CommandAllocator->SetName(temp.c_str());
+				std::wstring temp = std::wstring(debugName.begin(), debugName.end());
+				m_CommandAllocators[i]->SetName(temp.c_str());
 #endif
+			}
 
 			m_CommandBuffers.resize(framesInFlight);
-			for (auto& list : m_CommandBuffers)
+			for (size_t i = 0; i < m_CommandBuffers.size(); i++)
 			{
 				DXCALL(device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
-					m_CommandAllocator.Get(), nullptr, IID_PPV_ARGS(list.GetAddressOf())));
+					m_CommandAllocators[i].Get(), nullptr, IID_PPV_ARGS(m_CommandBuffers[i].GetAddressOf())));
+				m_CommandBuffers[i]->Close();
 			}
 
 			m_Fences.resize(framesInFlight);
@@ -78,8 +88,8 @@ namespace Valhalla
 
 				instance->m_ActiveCommandBuffer = commandBuffer;
 
-				instance->m_CommandAllocator->Reset();
-				instance->m_ActiveCommandBuffer->Reset(instance->m_CommandAllocator.Get(), nullptr);
+				instance->m_CommandAllocators[frameIndex]->Reset();
+				instance->m_ActiveCommandBuffer->Reset(instance->m_CommandAllocators[frameIndex].Get(), nullptr);
 			});
 		}
 

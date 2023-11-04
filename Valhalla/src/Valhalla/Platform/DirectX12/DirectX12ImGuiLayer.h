@@ -3,6 +3,8 @@
 #include "Valhalla/ImGui/ImGuiLayer.h"
 #include "VD3D12.h"
 
+#include "Valhalla/Renderer/RenderCommandBuffer.h"
+
 namespace Valhalla
 {
 	namespace Yggdrasil
@@ -22,9 +24,8 @@ namespace Valhalla
 			virtual void OnImGuiRender() override;
 
 		private:
+			Ref<Heimdall::RenderCommandBuffer> m_RenderCommandBuffer;
 			float_t m_Time = 0.0f;
-			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_ImGuiAllocator;
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_ImGuiList;
 		};
 	}
 }

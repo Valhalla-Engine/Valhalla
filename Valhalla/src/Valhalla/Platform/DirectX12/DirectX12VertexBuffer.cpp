@@ -14,7 +14,7 @@ namespace Valhalla
 			m_Usage = usage;
 
 			Microsoft::WRL::ComPtr<ID3D12Device> device = DirectX12Context::GetCurrentDevice()->GetDevice();
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = DirectX12Renderer::GetCommandList();
+			//Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = DirectX12Renderer::GetCommandList();
 
 			DXCALL(device->CreateCommittedResource(
 				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
@@ -38,26 +38,26 @@ namespace Valhalla
 			srd.RowPitch = size;
 			srd.SlicePitch = size;
 
-			cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_VertexBuffer.Get(), D3D12_RESOURCE_STATE_COMMON,
+			/*cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_VertexBuffer.Get(), D3D12_RESOURCE_STATE_COMMON,
 				D3D12_RESOURCE_STATE_COPY_DEST));
 			UpdateSubresources<1>(cmdList.Get(), m_VertexBuffer.Get(), m_UploadVertexBuffer.Get(), 
 				0, 0, 1, &srd);
 			cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_VertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST,
-				D3D12_RESOURCE_STATE_GENERIC_READ));
+				D3D12_RESOURCE_STATE_GENERIC_READ));*/
 
 			D3D12_VERTEX_BUFFER_VIEW vbv;
 			vbv.BufferLocation = m_VertexBuffer->GetGPUVirtualAddress();
 			vbv.StrideInBytes = stride;
 			vbv.SizeInBytes = size;
 
-			cmdList->IASetVertexBuffers(0, 1, &vbv);
+			//cmdList->IASetVertexBuffers(0, 1, &vbv);
 		}
 
 		DirectX12VertexBuffer::DirectX12VertexBuffer(uint32_t size, uint32_t stride, Heimdall::VertexBufferUsage usage)
 			: m_Usage(usage)
 		{
 			Microsoft::WRL::ComPtr<ID3D12Device> device = DirectX12Context::GetCurrentDevice()->GetDevice();
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = DirectX12Renderer::GetCommandList();
+			//Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = DirectX12Renderer::GetCommandList();
 
 			DXCALL(device->CreateCommittedResource(
 				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),

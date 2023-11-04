@@ -14,8 +14,7 @@ namespace Valhalla
 {
 	namespace Yggdrasil
 	{
-		static bool show_demo_window = true;
-		static bool show_another_window = true;
+		static std::vector<Microsoft::WRL::ComPtr<ID3D12CommandList>> s_ImGuiCommandBuffers;
 
 		DirectX12ImGuiLayer::DirectX12ImGuiLayer()
 		{
@@ -41,16 +40,34 @@ namespace Valhalla
 			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-			Microsoft::WRL::ComPtr<ID3D12Device> device = DirectX12Context::GetCurrentDevice()->GetDevice();
 
 			ImGui::StyleColorsDark();
-			//SetDarkThemeColors();
+			SetDarkTheme2VColors();
 
-			ImGui_ImplWin32_Init(static_cast<HWND>(Application::Get().GetWindow().GetNativeWindow()));
-			ImGui_ImplDX12_Init(device.Get(), 2,
-				DXGI_FORMAT_R8G8B8A8_UNORM, DirectX12Renderer::GetSRVHeap().Get(), DirectX12Renderer::GetSRVHeap().Get()->GetCPUDescriptorHandleForHeapStart(),
-				DirectX12Renderer::GetSRVHeap().Get()->GetGPUDescriptorHandleForHeapStart());
-			device->Release();
+			ImGuiStyle& style = ImGui::GetStyle();
+			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+			{
+				style.WindowRounding = 0.0f;
+				style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+			}
+			style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15f, 0.15f, 0.15f, style.Colors[ImGuiCol_WindowBg].w);
+
+			DirectX12ImGuiLayer* instance = this;
+			Heimdall::Renderer::Submit([]()
+			{
+				Application& app = Application::Get();
+				HWND window = static_cast<HWND>(app.GetWindow().GetNativeWindow());
+
+				auto context = DirectX12Context::Get();
+				auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
+
+				uint32_t frameIndex = Heimdall::Renderer::RT_GetCurrentFrameIndex();
+
+				ImGui_ImplWin32_Init(static_cast<HWND>(Application::Get().GetWindow().GetNativeWindow()));
+				ImGui_ImplDX12_Init(device.Get(), 2,
+					DXGI_FORMAT_R8G8B8A8_UNORM, DirectX12Renderer::GetFrameHeaps(frameIndex).SRVHeap.Get(), DirectX12Renderer::GetFrameHeaps(frameIndex).SRVHeap.Get()->GetCPUDescriptorHandleForHeapStart(),
+					DirectX12Renderer::GetFrameHeaps(frameIndex).SRVHeap.Get()->GetGPUDescriptorHandleForHeapStart());
+			});
 		}
 
 		void DirectX12ImGuiLayer::OnDetach()
@@ -75,7 +92,7 @@ namespace Valhalla
 			auto drawdata = ImGui::GetDrawData();
 			drawdata->DisplaySize.x = Application::Get().GetWindow().GetWidth();
 			drawdata->DisplaySize.y = Application::Get().GetWindow().GetHeight();
-			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), DirectX12Renderer::GetCommandList().Get());
+			//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), DirectX12Renderer::GetCommandList().Get());
 
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();

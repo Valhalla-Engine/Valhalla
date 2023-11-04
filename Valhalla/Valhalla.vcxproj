@@ -180,13 +180,13 @@
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Device.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12FrameBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.h" />
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Renderer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12SwapChain.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.h" />
-    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\VD3D12.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\d3dx12.h" />
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsInput.h" />

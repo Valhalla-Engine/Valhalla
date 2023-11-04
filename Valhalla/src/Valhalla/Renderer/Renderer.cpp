@@ -28,7 +28,7 @@ namespace Valhalla
 
 		static RendererData* s_Data = nullptr;
 		constexpr static uint32_t s_RenderCommandQueueCount = 2;
-		static RenderCommandQueue* s_CommandQueue[s_RenderCommandQueueCount];
+		static RenderCommandQueue* s_CommandQueue;
 		static std::atomic<uint32_t> s_RenderCommandQueueSubmissionIndex = 0;
 		static RenderCommandQueue s_ResourceFreeQueue[3];
 
@@ -56,8 +56,7 @@ namespace Valhalla
 		{
 			s_Data = new RendererData();
 
-			s_CommandQueue[0] = new RenderCommandQueue();
-			s_CommandQueue[1] = new RenderCommandQueue();
+			s_CommandQueue = new RenderCommandQueue();
 
 			s_Config.FramesInFlight = std::min<uint32_t>(s_Config.FramesInFlight,
 				Application::Get().GetWindow().GetSwapChain()->GetImageCount());
@@ -83,13 +82,12 @@ namespace Valhalla
 				queue.Execute();
 			}
 
-			delete s_CommandQueue[0];
-			delete s_CommandQueue[1];
+			delete s_CommandQueue;
 		}
 
 		void Renderer::WaitAndRender()
 		{
-			s_CommandQueue[GetRenderQueueIndex()]->Execute();
+			s_CommandQueue->Execute();
 		}
 
 		uint32_t Renderer::GetRenderQueueIndex()
@@ -129,7 +127,7 @@ namespace Valhalla
 
 		RenderCommandQueue& Renderer::GetRenderCommandQueue()
 		{
-			return *s_CommandQueue[s_RenderCommandQueueSubmissionIndex];
+			return *s_CommandQueue;
 		}
 	}
 }

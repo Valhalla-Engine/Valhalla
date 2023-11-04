@@ -39,7 +39,7 @@ namespace Valhalla
 			};
 
 			std::string m_DebugName;
-			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_CommandAllocator;
+			std::vector<Microsoft::WRL::ComPtr<ID3D12CommandAllocator>> m_CommandAllocators;
 			std::vector<Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>> m_CommandBuffers;
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_ActiveCommandBuffer;
 			std::vector<WaitFence> m_Fences;

@@ -28,8 +28,8 @@ namespace Valhalla
 		Heimdall::Renderer::Init();
 		Heimdall::Renderer::WaitAndRender();
 
-		m_ImGuiLayer = ImGuiLayer::Create();
-		PushOverlay(m_ImGuiLayer);
+		//m_ImGuiLayer = ImGuiLayer::Create();
+		//PushOverlay(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -87,8 +87,8 @@ namespace Valhalla
 				for (Layer* layer : m_LayerStack)
 					layer->OnUpdate(m_TimeStep);
 
-				RenderImGui();
-				m_ImGuiLayer->End();
+				//RenderImGui();
+				//m_ImGuiLayer->End();
 				Heimdall::Renderer::WaitAndRender();
 				Heimdall::Renderer::EndFrame();
 			}
