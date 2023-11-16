@@ -148,6 +148,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Valhalla.h" />
+    <ClInclude Include="src\Valhalla\Asset\Asset.h" />
+    <ClInclude Include="src\Valhalla\Asset\AssetType.h" />
     <ClInclude Include="src\Valhalla\Core\Application.h" />
     <ClInclude Include="src\Valhalla\Core\Assert.h" />
     <ClInclude Include="src\Valhalla\Core\Base.h" />
@@ -186,6 +188,7 @@
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Renderer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12SwapChain.h" />
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12UniformBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\VD3D12.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\d3dx12.h" />
@@ -202,6 +205,7 @@
     <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Valhalla\Renderer\RendererConfig.h" />
     <ClInclude Include="src\Valhalla\Renderer\RendererContext.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RendererResource.h" />
     <ClInclude Include="src\Valhalla\Renderer\Shader.h" />
     <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h" />
     <ClInclude Include="src\Valhalla\Renderer\SwapChain.h" />
