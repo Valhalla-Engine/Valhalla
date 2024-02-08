@@ -4,6 +4,8 @@
 
 #include "Valhalla/Renderer/FrameBuffer.h"
 
+#include "DirectX12Image.h"
+
 namespace Valhalla
 {
 	namespace Yggdrasil
@@ -25,6 +27,13 @@ namespace Valhalla
 			virtual uint32_t GetWidth() const override { return m_Width; }
 			virtual uint32_t GetHeight() const override { return m_Height; }
 
+			virtual Ref<Heimdall::Image2D> GetImage(uint32_t attachmentIndex = 0) const override { return m_AttachmentImages[attachmentIndex]; }
+			virtual Ref<Heimdall::Image2D> GetDepthImage() const override { return m_DepthAttachmentImage; }
+			virtual size_t GetColorAttachmentCount() const override { return m_Specification.SwapChainTarget ? 1 : m_AttachmentImages.size(); }
+			virtual bool HasDepthAttachment() const { return (bool)m_DepthAttachmentImage; }
+			
+			void Invalidate();
+			void RT_Invalidate();
 
 		private:
 			Heimdall::FrameBufferSpecification m_Specification;
@@ -33,9 +42,10 @@ namespace Valhalla
 
 			std::vector<D3D12_CLEAR_VALUE> m_ClearValues;
 
-			/*Add DirectX Structures*/
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RTVHeap;
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_DSVHeap;
+			Microsoft::WRL::ComPtr<ID3D12Resource> m_DepthStencilBuffer;
+			Microsoft::WRL::ComPtr<ID3D12Resource> m_FrameBuffer;
+			std::vector<Ref<Heimdall::Image2D>> m_AttachmentImages;
+			Ref<Heimdall::Image2D> m_DepthAttachmentImage;
 
 			std::vector<std::function<void(Ref<Heimdall::FrameBuffer>)>> m_ResizeCallbacks;
 		};

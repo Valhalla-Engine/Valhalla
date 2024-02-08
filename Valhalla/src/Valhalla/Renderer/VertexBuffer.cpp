@@ -10,13 +10,13 @@ namespace Valhalla
 {
 	namespace Heimdall
 	{
-		Ref<VertexBuffer> VertexBuffer::Create(void* data, uint32_t size, uint32_t stride, VertexBufferUsage usage)
+		Ref<VertexBuffer> VertexBuffer::Create(void* data, uint32_t size, VertexBufferUsage usage)
 		{
 			switch (RendererAPI::Current())
 			{
 				case RendererAPIType::None:			return nullptr;
 				case RendererAPIType::DirectX11:	return nullptr;
-				case RendererAPIType::DirectX12:	return Ref<Yggdrasil::DirectX12VertexBuffer>::Create(data, size, stride, usage);
+				case RendererAPIType::DirectX12:	return nullptr;
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
 			VH_CORE_ASSERT(false, "Unknown RendererAPI");
@@ -29,7 +29,7 @@ namespace Valhalla
 			{
 				case RendererAPIType::None:			return nullptr;
 				case RendererAPIType::DirectX11:	return nullptr;
-				case RendererAPIType::DirectX12:	return Ref<Yggdrasil::DirectX12VertexBuffer>::Create(size, stride, usage);
+				case RendererAPIType::DirectX12:	return nullptr;
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
 			VH_CORE_ASSERT(false, "Unknown RendererAPI");

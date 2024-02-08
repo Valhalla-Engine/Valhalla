@@ -121,7 +121,7 @@ namespace Valhalla
 
 			virtual uint32_t GetSize() const = 0;
 			
-			static Ref<VertexBuffer> Create(void* data, uint32_t size, uint32_t stride, VertexBufferUsage usage = VertexBufferUsage::Static);
+			static Ref<VertexBuffer> Create(void* data, uint32_t size, VertexBufferUsage usage = VertexBufferUsage::Static);
 			static Ref<VertexBuffer> Create(uint32_t size, uint32_t stride, VertexBufferUsage usage = VertexBufferUsage::Dynamic);
 		};
 	}

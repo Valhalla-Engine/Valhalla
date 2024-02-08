@@ -1,4 +1,9 @@
-﻿  DirectX12SwapChain.cpp
+﻿  DirectX12Renderer.cpp
+C:\Dev\Valhalla\Valhalla\src\Valhalla\Platform\DirectX12\DirectX12Renderer.cpp(118,92): warning C4552: '+': result of expression not used
+  (compiling source file '/src/Valhalla/Platform/DirectX12/DirectX12Renderer.cpp')
+  
 mono-2.0-sgen.lib(mono-2.0-sgen.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in vulkan-1.lib(vulkan-1.dll); second definition ignored
 GFSDK_Aftermath_Lib.x64.lib(GFSDK_Aftermath_Lib.x64.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in vulkan-1.lib(vulkan-1.dll); second definition ignored
+Mesh.obj : warning LNK4006: "struct DirectX::XMFLOAT4X4 __vectorcall DirectX::XMFLOAT4X4Identity(void)" (?XMFLOAT4X4Identity@DirectX@@YQ?AUXMFLOAT4X4@1@XZ) already defined in MeshFactory.obj; second definition ignored
+AssimpMeshImporter.obj : warning LNK4006: "struct DirectX::XMFLOAT4X4 __vectorcall DirectX::XMFLOAT4X4Identity(void)" (?XMFLOAT4X4Identity@DirectX@@YQ?AUXMFLOAT4X4@1@XZ) already defined in MeshFactory.obj; second definition ignored
   Valhalla.vcxproj -> C:\Dev\Valhalla\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib

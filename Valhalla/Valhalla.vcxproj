@@ -149,7 +149,9 @@
   <ItemGroup>
     <ClInclude Include="src\Valhalla.h" />
     <ClInclude Include="src\Valhalla\Asset\Asset.h" />
+    <ClInclude Include="src\Valhalla\Asset\AssetManager.h" />
     <ClInclude Include="src\Valhalla\Asset\AssetType.h" />
+    <ClInclude Include="src\Valhalla\Asset\AssimpMeshImporter.h" />
     <ClInclude Include="src\Valhalla\Core\Application.h" />
     <ClInclude Include="src\Valhalla\Core\Assert.h" />
     <ClInclude Include="src\Valhalla\Core\Base.h" />
@@ -166,6 +168,8 @@
     <ClInclude Include="src\Valhalla\Core\Layer.h" />
     <ClInclude Include="src\Valhalla\Core\LayerStack.h" />
     <ClInclude Include="src\Valhalla\Core\Log.h" />
+    <ClInclude Include="src\Valhalla\Core\Math\AABB.h" />
+    <ClInclude Include="src\Valhalla\Core\Math\DirectXMathExtended.h" />
     <ClInclude Include="src\Valhalla\Core\MouseCodes.h" />
     <ClInclude Include="src\Valhalla\Core\Ref.h" />
     <ClInclude Include="src\Valhalla\Core\TimeStep.h" />
@@ -182,6 +186,7 @@
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Device.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12FrameBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.h" />
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Image.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.h" />
@@ -195,26 +200,41 @@
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Valhalla\Renderer\Camera.h" />
+    <ClInclude Include="src\Valhalla\Renderer\ComputePass.h" />
     <ClInclude Include="src\Valhalla\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Valhalla\Renderer\Image.h" />
     <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Mesh.h" />
+    <ClInclude Include="src\Valhalla\Renderer\MeshFactory.h" />
     <ClInclude Include="src\Valhalla\Renderer\Pipeline.h" />
+    <ClInclude Include="src\Valhalla\Renderer\PipelineCompute.h" />
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandBuffer.h" />
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RenderPass.h" />
     <ClInclude Include="src\Valhalla\Renderer\Renderer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RendererCapabilities.h" />
     <ClInclude Include="src\Valhalla\Renderer\RendererConfig.h" />
     <ClInclude Include="src\Valhalla\Renderer\RendererContext.h" />
     <ClInclude Include="src\Valhalla\Renderer\RendererResource.h" />
+    <ClInclude Include="src\Valhalla\Renderer\RendererStats.h" />
+    <ClInclude Include="src\Valhalla\Renderer\SceneEnvironment.h" />
     <ClInclude Include="src\Valhalla\Renderer\Shader.h" />
     <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h" />
+    <ClInclude Include="src\Valhalla\Renderer\StorageBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\StorageBufferSet.h" />
     <ClInclude Include="src\Valhalla\Renderer\SwapChain.h" />
+    <ClInclude Include="src\Valhalla\Renderer\Texture.h" />
     <ClInclude Include="src\Valhalla\Renderer\UniformBuffer.h" />
+    <ClInclude Include="src\Valhalla\Renderer\UniformBufferSet.h" />
     <ClInclude Include="src\Valhalla\Renderer\Vertex.h" />
     <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h" />
+    <ClInclude Include="src\Valhalla\Utilities\AssimpLogStream.h" />
     <ClInclude Include="src\vhpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Valhalla\Asset\AssimpMeshImporter.cpp" />
     <ClCompile Include="src\Valhalla\Core\Application.cpp" />
     <ClCompile Include="src\Valhalla\Core\Base.cpp" />
     <ClCompile Include="src\Valhalla\Core\LayerStack.cpp" />
@@ -237,16 +257,28 @@
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\ComputePass.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Image.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\MeshFactory.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\PipelineCompute.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandBuffer.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\RenderPass.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\RendererContext.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\RendererStats.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\SceneEnvironment.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\StorageBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\StorageBufferSet.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\SwapChain.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\Texture.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\UniformBuffer.cpp" />
+    <ClCompile Include="src\Valhalla\Renderer\UniformBufferSet.cpp" />
     <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp" />
     <ClCompile Include="src\vhpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

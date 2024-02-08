@@ -21,6 +21,7 @@ namespace Valhalla
 			Prefab,
 			Mesh,
 			StaticMesh,
+			MeshSource,
 			Texture,
 			EnvMap
 		};
@@ -34,6 +35,7 @@ namespace Valhalla
 				if (assetType == "Prefab")			return AssetType::Prefab;
 				if (assetType == "Mesh")			return AssetType::Mesh;
 				if (assetType == "StaticMesh")		return AssetType::StaticMesh;
+				if (assetType == "MeshSource")		return AssetType::MeshSource;
 				if (assetType == "Texture")			return AssetType::Texture;
 				if (assetType == "EnvMap")			return AssetType::EnvMap;
 
@@ -50,6 +52,7 @@ namespace Valhalla
 					case AssetType::Prefab:			return "Prefab";
 					case AssetType::Mesh:			return "Mesh";
 					case AssetType::StaticMesh:		return "StaticMesh";
+					case AssetType::MeshSource:		return "MeshSource";
 					case AssetType::Texture:		return "Texture";
 					case AssetType::EnvMap:			return "EnvMap";
 				}

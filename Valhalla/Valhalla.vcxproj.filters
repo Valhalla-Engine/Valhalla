@@ -4,11 +4,17 @@
     <Filter Include="Valhalla">
       <UniqueIdentifier>{8AF51F08-76C2-7A13-9FDB-68BB8B07B0A1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Valhalla\Asset">
+      <UniqueIdentifier>{9929E4D0-85F7-D7D6-6E8B-48FD5AF8B33B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Valhalla\Core">
       <UniqueIdentifier>{2220C2B8-8EE0-3DEF-571B-876CC39A82CB}</UniqueIdentifier>
     </Filter>
     <Filter Include="Valhalla\Core\Events">
       <UniqueIdentifier>{C6115271-B2A0-DB3A-5BBF-EF35472DECE0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Valhalla\Core\Math">
+      <UniqueIdentifier>{3BEAE379-27CE-A4CF-902E-9F227C318F51}</UniqueIdentifier>
     </Filter>
     <Filter Include="Valhalla\Editor">
       <UniqueIdentifier>{8053A9F5-ECDE-16BA-F5EF-99AE61FA72BA}</UniqueIdentifier>
@@ -28,9 +34,24 @@
     <Filter Include="Valhalla\Renderer">
       <UniqueIdentifier>{7014215C-DC2A-1FF2-25A2-AA1391F7EF79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Valhalla\Utilities">
+      <UniqueIdentifier>{750EA4A7-61F2-64FD-CA52-5F50B6554F7F}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Valhalla.h" />
+    <ClInclude Include="src\Valhalla\Asset\Asset.h">
+      <Filter>Valhalla\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Asset\AssetManager.h">
+      <Filter>Valhalla\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Asset\AssetType.h">
+      <Filter>Valhalla\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Asset\AssimpMeshImporter.h">
+      <Filter>Valhalla\Asset</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Application.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
@@ -78,6 +99,12 @@
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Log.h">
       <Filter>Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Math\AABB.h">
+      <Filter>Valhalla\Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\Math\DirectXMathExtended.h">
+      <Filter>Valhalla\Core\Math</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\MouseCodes.h">
       <Filter>Valhalla\Core</Filter>
@@ -127,6 +154,9 @@
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.h">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Image.h">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.h">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
@@ -143,6 +173,9 @@
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12SwapChain.h">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12UniformBuffer.h">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.h">
@@ -163,6 +196,9 @@
     <ClInclude Include="src\Valhalla\Renderer\Camera.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\ComputePass.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\FrameBuffer.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
@@ -172,7 +208,16 @@
     <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\Mesh.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\MeshFactory.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Pipeline.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\PipelineCompute.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandBuffer.h">
@@ -181,10 +226,19 @@
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\RenderPass.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Renderer.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\Renderer2D.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\RendererCapabilities.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RendererConfig.h">
@@ -193,16 +247,37 @@
     <ClInclude Include="src\Valhalla\Renderer\RendererContext.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\RendererResource.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\RendererStats.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\SceneEnvironment.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Shader.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\StorageBuffer.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\StorageBufferSet.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\SwapChain.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\Texture.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\UniformBuffer.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\UniformBufferSet.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Vertex.h">
@@ -211,9 +286,15 @@
     <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Utilities\AssimpLogStream.h">
+      <Filter>Valhalla\Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="src\vhpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Valhalla\Asset\AssimpMeshImporter.cpp">
+      <Filter>Valhalla\Asset</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
       <Filter>Valhalla\Core</Filter>
     </ClCompile>
@@ -280,13 +361,28 @@
     <ClCompile Include="src\Valhalla\Renderer\Camera.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\ComputePass.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\FrameBuffer.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\Image.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\Mesh.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\MeshFactory.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\PipelineCompute.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandBuffer.cpp">
@@ -295,19 +391,40 @@
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\RenderPass.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Renderer.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\RendererContext.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\RendererStats.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\SceneEnvironment.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Shader.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\StorageBuffer.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\StorageBufferSet.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\SwapChain.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\Texture.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\UniformBuffer.cpp">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Valhalla\Renderer\UniformBufferSet.cpp">
       <Filter>Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp">
