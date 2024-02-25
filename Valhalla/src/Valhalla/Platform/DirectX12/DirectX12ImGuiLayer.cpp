@@ -53,7 +53,7 @@ namespace Valhalla
 			style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15f, 0.15f, 0.15f, style.Colors[ImGuiCol_WindowBg].w);
 
 			DirectX12ImGuiLayer* instance = this;
-			Heimdall::Renderer::Submit([]()
+			Heimdall::Renderer::Submit([instance]()
 			{
 				Application& app = Application::Get();
 				HWND window = static_cast<HWND>(app.GetWindow().GetNativeWindow());
@@ -63,10 +63,15 @@ namespace Valhalla
 
 				uint32_t frameIndex = Heimdall::Renderer::RT_GetCurrentFrameIndex();
 
-				ImGui_ImplWin32_Init(static_cast<HWND>(Application::Get().GetWindow().GetNativeWindow()));
+				ImGui_ImplWin32_Init(window);
 				ImGui_ImplDX12_Init(device.Get(), 2,
 					DXGI_FORMAT_R8G8B8A8_UNORM, DirectX12Renderer::GetFrameHeaps(frameIndex).SRVHeap.Get(), DirectX12Renderer::GetFrameHeaps(frameIndex).SRVHeap.Get()->GetCPUDescriptorHandleForHeapStart(),
 					DirectX12Renderer::GetFrameHeaps(frameIndex).SRVHeap.Get()->GetGPUDescriptorHandleForHeapStart());
+
+				uint32_t framesInFlight = Heimdall::Renderer::GetConfig().FramesInFlight;
+				s_ImGuiCommandBuffers.resize(framesInFlight);
+				for (size_t i = 0; i < framesInFlight; i++)
+					s_ImGuiCommandBuffers[i] = DirectX12Context::GetCurrentDevice()->CreateSecondaryCommandBuffer("ImGuiSecondaryCommandBuffer");
 			});
 		}
 

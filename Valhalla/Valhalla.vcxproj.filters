@@ -4,6 +4,9 @@
     <Filter Include="Valhalla">
       <UniqueIdentifier>{8AF51F08-76C2-7A13-9FDB-68BB8B07B0A1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Valhalla\Asset">
+      <UniqueIdentifier>{9929E4D0-85F7-D7D6-6E8B-48FD5AF8B33B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Valhalla\Core">
       <UniqueIdentifier>{2220C2B8-8EE0-3DEF-571B-876CC39A82CB}</UniqueIdentifier>
     </Filter>
@@ -31,6 +34,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Valhalla.h" />
+    <ClInclude Include="src\Valhalla\Asset\Asset.h">
+      <Filter>Valhalla\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Asset\AssetType.h">
+      <Filter>Valhalla\Asset</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Application.h">
       <Filter>Valhalla\Core</Filter>
     </ClInclude>
@@ -145,6 +154,9 @@
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12SwapChain.h">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12UniformBuffer.h">
+      <Filter>Valhalla\Platform\DirectX12</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.h">
       <Filter>Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
@@ -191,6 +203,9 @@
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RendererContext.h">
+      <Filter>Valhalla\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Renderer\RendererResource.h">
       <Filter>Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Shader.h">

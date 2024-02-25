@@ -1,10 +1,18 @@
 #include "vhpch.h"
 #include "DirectX12Device.h"
+#include "DirectX12Context.h"
 
 namespace Valhalla
 {
 	namespace Yggdrasil
 	{
+		DirectX12CommandAllocator::DirectX12CommandAllocator()
+		{
+			auto context = DirectX12Context::GetCurrentDevice();
+			auto directXDevice = 
+		}
+
+
 		DirectX12Device::DirectX12Device()
 		{
 			uint32_t factoryFlags = 0;

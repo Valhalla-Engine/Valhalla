@@ -83,7 +83,6 @@ project "Valhalla"
 		"Optick",
 
 		"%{Library.Vulkan}",
-		"%{Library.VulkanUtils}",
 
 		"%{Library.mono}",
 

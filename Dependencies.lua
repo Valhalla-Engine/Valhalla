@@ -29,7 +29,6 @@ LibraryDir["DirectXTK"] = "%{wks.location}/Valhalla/vendor/DirectXTK/Bin/"
 Library = {}
 Library["mono"] = "%{wks.location}/Valhalla/vendor/mono/lib/Debug/mono-2.0-sgen.lib"
 Library["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"
-Library["VulkanUtils"] = "%{LibraryDir.VulkanSDK}/VkLayer_utils.lib"
 Library["NvidiaAftermath"] = "%{LibraryDir.NvidiaAftermath}/GFSDK_Aftermath_Lib.x64.lib"
 
 Library["DirectXTK_Debug"] = "%{LibraryDir.DirectXTK}/Debug-windows-x86_64/DirectXTK/DirectXTK.lib"
