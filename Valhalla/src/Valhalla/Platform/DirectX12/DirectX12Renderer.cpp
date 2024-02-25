@@ -81,77 +81,6 @@ namespace Valhalla
 					DXCALL(device->GetDevice()->CreateDescriptorHeap(&DSVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].DSVHeap.GetAddressOf())));
 				}
 			});
-
-			/*
-			m_Context = Heimdall::Renderer::GetContext().As<DirectX12Context>();
-			Microsoft::WRL::ComPtr<ID3D12Device> device = m_Context->GetDevice()->GetDevice();
-
-			m_FrameIndex = 0;
-			m_viewport = CD3DX12_VIEWPORT(0.0f, 0.0f, static_cast<float>(Application::Get().GetWindow().GetWidth()),
-				static_cast<float>(Application::Get().GetWindow().GetHeight()));
-			m_ScissorRect = CD3DX12_RECT(0, 0, static_cast<LONG>(Application::Get().GetWindow().GetWidth()),
-				static_cast<LONG>(Application::Get().GetWindow().GetHeight()));
-			m_RTVDescriptorSize = 0;
-
-			m_RTVDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-
-			m_FrameIndex = m_Context->GetSwapChain()->GetSwapChain()->GetCurrentBackBufferIndex();
-
-			D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
-			rtvHeapDesc.NumDescriptors = 2;
-			rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-			rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-			DXCALL(device->CreateDescriptorHeap(&rtvHeapDesc,
-				IID_PPV_ARGS(&m_RenderTargetViewHeap)));
-			m_RenderTargetViewHeap->SetName(L"Render Target View Heap");
-
-			D3D12_DESCRIPTOR_HEAP_DESC SRVHeapDesc = {};
-			SRVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-			SRVHeapDesc.NumDescriptors = 1;
-			SRVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-			DXCALL(device->CreateDescriptorHeap(&SRVHeapDesc, IID_PPV_ARGS(&m_ShaderResourceViewHeap)));
-			m_ShaderResourceViewHeap->SetName(L"Shader ResourceViewHeap");
-
-			m_RTVDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-
-			CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_RenderTargetViewHeap->GetCPUDescriptorHandleForHeapStart());
-
-			for (uint32_t i = 0; i < 2; i++)
-			{
-				m_Context->GetSwapChain()->GetSwapChain()->GetBuffer(i, IID_PPV_ARGS(&m_RenderTargets[i]));
-				device->CreateRenderTargetView(m_RenderTargets[i].Get(), nullptr, rtvHandle);
-				rtvHandle.Offset(1, m_RTVDescriptorSize);
-				std::wstring temp(L"Render Target #%s", i);
-				m_RenderTargets[i]->SetName(temp.c_str());
-			}
-
-			DXCALL(device->CreateCommandAllocator(
-				D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_CommandAllocator.GetAddressOf())));
-			m_CommandAllocator->SetName(L"Main Command Allocator");
-
-			CD3DX12_ROOT_SIGNATURE_DESC rootsignature;
-			rootsignature.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-
-			Microsoft::WRL::ComPtr<ID3DBlob> signature;
-			Microsoft::WRL::ComPtr<ID3DBlob> error;
-
-			DXCALL(D3D12SerializeRootSignature(&rootsignature, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error));
-			DXCALL(device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(),
-				IID_PPV_ARGS(&m_RootSignature)));
-			m_RootSignature->SetName(L"Main Root Signature");
-
-			DXCALL(device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
-				m_CommandAllocator.Get(), m_PipelineState.Get(), IID_PPV_ARGS(&m_CommandList)));
-
-			m_CommandList->SetName(L"Main Command List");
-
-			DXCALL(device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence)));
-			m_FenceValue++;
-			m_Fence->SetName(L"Main Fence");
-
-			DXCALL(m_CommandList->Close());
-
-			//device->Release();*/
 		}
 
 		void DirectX12Renderer::Shutdown()
@@ -162,6 +91,7 @@ namespace Valhalla
 		void DirectX12Renderer::BeginFrame()
 		{
 			s_Data->DescriptorHeaps[0].RTVHeap->SetName(L"Test");
+			CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(s_Data->DescriptorHeaps[0].RTVHeap->GetCPUDescriptorHandleForHeapStart(), 0);
 		}
 
 		void DirectX12Renderer::EndFrame()
@@ -194,6 +124,42 @@ namespace Valhalla
 				DXCALL(m_Fence->SetEventOnCompletion(fence, m_fenceEvent));
 				WaitForSingleObject(m_fenceEvent, INFINITE);
 			}
+		}
+
+		void DirectX12Renderer::BeginRenderPass(Ref<Heimdall::RenderCommandBuffer> buffer, Ref<Heimdall::RenderPass> pass, bool explicitClear)
+		{
+
+
+		}
+
+		void DirectX12Renderer::EndRenderPass(Ref<Heimdall::RenderCommandBuffer> commandBuffer)
+		{
+
+		}
+
+		void DirectX12Renderer::SubmitFillScreenQuad(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader)
+		{
+
+		}
+
+		void DirectX12Renderer::SubmitFullscreenQuadWithOverrides(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader, Buffer vertexShaderOverrides, Buffer fragmentShaderOverrides)
+		{
+
+		}
+
+		std::pair<Ref<Heimdall::TextureCube>, Ref<Heimdall::TextureCube>> DirectX12Renderer::CreateEnvironmentMap(const std::string& filepath)
+		{
+			return {};
+		}
+
+		Ref<Heimdall::TextureCube> DirectX12Renderer::CreatePreethamSky(float turbidity, float azimuth, float inclination)
+		{
+			return nullptr;
+		}
+
+		void DirectX12Renderer::RenderGeometry(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader, Ref<Heimdall::VertexBuffer> vertexBuffer, Ref<Heimdall::IndexBuffer> indexBuffer, const DirectX::XMFLOAT4X4& transform, uint32_t indexCount)
+		{
+
 		}
 	}
 }

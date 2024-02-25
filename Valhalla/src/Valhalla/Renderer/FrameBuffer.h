@@ -41,7 +41,7 @@ namespace Valhalla
 
 		struct FrameBufferSpecification
 		{
-			float_t scale = 1.0f;
+			float_t Scale = 1.0f;
 			uint32_t Width = 0;
 			uint32_t Height = 0;
 			float_t ClearColor[4] = {0.0f, 0.0f, 0.0f, 1.0f};
@@ -62,7 +62,14 @@ namespace Valhalla
 
 			bool Transfer = false;
 
+			Ref<Image2D> ExistingImage;
+			std::vector<uint32_t> ExistingImageLayer;
+
+			std::map<uint32_t, Ref<Image2D>> ExistingImages;
+
 			Ref<FrameBuffer> ExisitingFrameBuffer;
+
+			std::string DebugName;
 		};
 
 		class FrameBuffer : public RefCounted
@@ -79,6 +86,11 @@ namespace Valhalla
 
 			virtual uint32_t GetWidth() const = 0;
 			virtual uint32_t GetHeight() const = 0;
+
+			virtual Ref<Image2D> GetImage(uint32_t attachmentIndex = 0) const = 0;
+			virtual size_t GetColorAttachmentCount() const = 0;
+			virtual bool HasDepthAttachment() const = 0;
+			virtual Ref<Image2D> GetDepthImage() const = 0;
 
 			virtual const FrameBufferSpecification& GetSpecifications() const = 0;
 

@@ -3,6 +3,7 @@
 #include "RendererContext.h"
 #include "RendererConfig.h"
 #include "RenderCommandQueue.h"
+#include "IndexBuffer.h"
 
 #include "Valhalla/Renderer/Pipeline.h"
 #include "Valhalla/Renderer/Shader.h"
@@ -63,6 +64,8 @@ namespace Valhalla
 
 			static void WaitAndRender();
 			static void SwapQueues();
+
+			static void RenderMesh(Ref<VertexBuffer> vertexBuffer, Ref<IndexBuffer> indexBuffer);
 
 			static uint32_t GetRenderQueueIndex();
 

@@ -29,6 +29,19 @@ namespace Valhalla
 			virtual void BeginFrame() override;
 			virtual void EndFrame() override;
 
+			virtual void BeginRenderPass(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::RenderPass> renderPass, bool explicitClear = false) override;
+			virtual void EndRenderPass(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer) override;
+
+			virtual void SubmitFillScreenQuad(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader) override;
+			virtual void SubmitFullscreenQuadWithOverrides(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader, Buffer vertexShaderOverrides, Buffer fragmentShaderOverrides) override;
+
+			virtual std::pair<Ref<Heimdall::TextureCube>, Ref<Heimdall::TextureCube>> CreateEnvironmentMap(const std::string& filepath) override;
+			virtual Ref<Heimdall::TextureCube> CreatePreethamSky(float turbidity, float azimuth, float inclination) override;
+
+
+			virtual void RenderGeometry(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader, Ref<Heimdall::VertexBuffer> vertexBuffer, Ref<Heimdall::IndexBuffer> indexBuffer, const DirectX::XMFLOAT4X4& transform, uint32_t indexCount = 0) override;
+
+
 			static std::vector<DirectX12DescriptorHeaps>& GetHeaps();
 			static DirectX12DescriptorHeaps& GetFrameHeaps(uint32_t frameIndex);
 

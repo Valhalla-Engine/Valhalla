@@ -108,6 +108,7 @@ namespace Valhalla
 
 		class Image2D : public Image
 		{
+		public:
 			static Ref<Image2D> Create(ImageSpecification specification, Buffer buffer);
 			static Ref<Image2D> Create(ImageSpecification specification, const void* data = nullptr);
 			virtual void Resize(const DirectX::XMFLOAT2& size) = 0;

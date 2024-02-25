@@ -186,12 +186,12 @@ project "Odin"
 
 		links
 		{
-			"Valhalla/vendor/assimp/bin/Debug/assimp-vc142-mtd.lib"
+			--"Valhalla/vendor/assimp/bin/Debug/assimp-vc142-mtd.lib"
 		}
 
 		postbuildcommands 
 		{
-			'{COPY} "../Valhalla/vendor/assimp/bin/Debug/assimp-vc142-mtd.dll" "%{cfg.targetdir}"',
+			--'{COPY} "../Valhalla/vendor/assimp/bin/Debug/assimp-vc142-mtd.dll" "%{cfg.targetdir}"',
 			'{COPY} "../Valhalla/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
 		}
 				
@@ -206,7 +206,7 @@ project "Odin"
 
 		postbuildcommands 
 		{
-			'{COPY} "../Valhalla/vendor/assimp/bin/Release/assimp-vc142-mt.dll" "%{cfg.targetdir}"',
+			--'{COPY} "../Valhalla/vendor/assimp/bin/Release/assimp-vc142-mt.dll" "%{cfg.targetdir}"',
 			'{COPY} "../Valhalla/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
 
 		}
@@ -222,7 +222,7 @@ project "Odin"
 
 		postbuildcommands 
 		{
-			'{COPY} "../Valhalla/vendor/assimp/bin/Release/assimp-vc142-mtd.dll" "%{cfg.targetdir}"',
+			--'{COPY} "../Valhalla/vendor/assimp/bin/Release/assimp-vc142-mtd.dll" "%{cfg.targetdir}"',
 			'{COPY} "../Valhalla/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
 		}
 

@@ -91,11 +91,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\Valhalla\vendor\assimp\bin\Debug\assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul)
-IF EXIST "..\Valhalla\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\assimp\bin\Debug\assimp-vc142-mtd.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul)
 IF EXIST "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Debug-windows-x86_64\Odin" &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -123,7 +121,6 @@ IF EXIST "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll"\ (xcopy /Q /E /Y 
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul)
-IF EXIST "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mt.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mt.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mt.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul)
 IF EXIST "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Release-windows-x86_64\Odin" &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -151,7 +148,6 @@ IF EXIST "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll"\ (xcopy /Q /E /Y 
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\NvidiaAftermath\lib\x64\GFSDK_Aftermath_Lib.x64.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul)
-IF EXIST "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mtd.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mtd.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\assimp\bin\Release\assimp-vc142-mtd.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul)
 IF EXIST "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll"\ (xcopy /Q /E /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul) ELSE (xcopy /Q /Y /I "..\Valhalla\vendor\mono\bin\Debug\mono-2.0-sgen.dll" "..\bin\Dist-windows-x86_64\Odin" &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
