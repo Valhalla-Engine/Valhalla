@@ -18,12 +18,30 @@ namespace Valhalla
 
 		DirectX12SwapChain::~DirectX12SwapChain()
 		{
+		}
+
+		void DirectX12SwapChain::Destroy()
+		{
 
 		}
 
-		void DirectX12SwapChain::Init()
+		void DirectX12SwapChain::Init(Ref<Heimdall::RendererContext>& context)
+		{
+			m_Device = context.As<DirectX12Context>()->GetDevice();
+		}
+
+		void DirectX12SwapChain::InitSurface()
+		{
+			
+		}
+
+		void DirectX12SwapChain::CreateSwapchain(uint32_t* width, uint32_t* height, bool vsync)
 		{
 			Microsoft::WRL::ComPtr<ID3D12Device> device = DirectX12Context::GetCurrentDevice()->GetDevice();
+
+			m_Width = *width;
+			m_Height = *height;
+			m_VSync = vsync;
 
 			D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevel;
 			QualityLevel.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -33,11 +51,9 @@ namespace Valhalla
 			DXCALL(device->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS,
 				&QualityLevel, sizeof(QualityLevel)));
 
-			device->Release();
-
 			m_4xMSAAQuality = QualityLevel.NumQualityLevels;
 
-			m_SwapChain.Reset();
+			m_SwapChain.Reset(); 
 
 			HWND window = static_cast<HWND>(Application::Get().GetWindow().GetNativeWindow());
 
@@ -54,10 +70,9 @@ namespace Valhalla
 
 			m_ImageCount = swapChainDesc.BufferCount;
 
-			Microsoft::WRL::ComPtr<IDXGISwapChain1> swap;
+			IDXGISwapChain1* swap;
 			DXCALL(factory->CreateSwapChainForHwnd(DirectX12Context::GetCurrentDevice()->GetGraphicsQueue().Get(), window, &swapChainDesc, nullptr, nullptr, &swap));
-			factory->Release();
-			DXCALL(swap.As(&m_SwapChain));
+			DXCALL(swap->QueryInterface(IID_PPV_ARGS(&m_SwapChain)));
 		}
 
 		void DirectX12SwapChain::Present()

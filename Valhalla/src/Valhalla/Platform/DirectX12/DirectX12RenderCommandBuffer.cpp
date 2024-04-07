@@ -11,7 +11,7 @@ namespace Valhalla
 		DirectX12RenderCommandBuffer::DirectX12RenderCommandBuffer(uint32_t count, std::string debugName)
 			: m_DebugName(std::move(debugName))
 		{
-			auto& device = DirectX12Context::GetCurrentDevice()->GetDevice();
+			auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
 			uint32_t framesInFlight = Heimdall::Renderer::GetConfig().FramesInFlight;
 
 			m_CommandAllocators.resize(framesInFlight);
@@ -46,7 +46,7 @@ namespace Valhalla
 		DirectX12RenderCommandBuffer::DirectX12RenderCommandBuffer(std::string debugName)
 			: m_DebugName(std::move(debugName))
 		{
-			auto& device = DirectX12Context::GetCurrentDevice()->GetDevice();
+			auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
 			uint32_t framesInFlight = Heimdall::Renderer::GetConfig().FramesInFlight;
 			m_CommandAllocators.resize(framesInFlight);
 			for (size_t i = 0; i < m_CommandAllocators.size(); i++)

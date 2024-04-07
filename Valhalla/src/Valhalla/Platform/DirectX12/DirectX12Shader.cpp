@@ -77,9 +77,9 @@ namespace Valhalla
 
 			Microsoft::WRL::ComPtr<IDxcBlobUtf8> errors;
 			DXCALL(result->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&errors), nullptr));
-			if (errors && errors->GetStringPointer() > 0)
+			if (errors && errors->GetStringPointer() && errors->GetStringPointer()[0] != '\0')
 			{
-				//VH_CORE_ERROR(errors->GetStringPointer());
+				VH_CORE_ERROR(errors->GetStringPointer());
 			}
 
 			return result;

@@ -1,444 +1,766 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Valhalla">
-      <UniqueIdentifier>{8AF51F08-76C2-7A13-9FDB-68BB8B07B0A1}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Asset">
-      <UniqueIdentifier>{9929E4D0-85F7-D7D6-6E8B-48FD5AF8B33B}</UniqueIdentifier>
+    <Filter Include="src\Valhalla">
+      <UniqueIdentifier>{81F89938-6D5B-29DD-16E1-61930223F55F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Core">
-      <UniqueIdentifier>{2220C2B8-8EE0-3DEF-571B-876CC39A82CB}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\Asset">
+      <UniqueIdentifier>{D049C82E-BC2D-8984-258E-83D711917306}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Core\Events">
-      <UniqueIdentifier>{C6115271-B2A0-DB3A-5BBF-EF35472DECE0}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\Core">
+      <UniqueIdentifier>{7995F72F-E5AB-F5C5-2E23-81E79A78C64D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Core\Math">
-      <UniqueIdentifier>{3BEAE379-27CE-A4CF-902E-9F227C318F51}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\Core\Events">
+      <UniqueIdentifier>{3D3F917B-2964-E0FB-52AF-C58B3E33DF19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Editor">
-      <UniqueIdentifier>{8053A9F5-ECDE-16BA-F5EF-99AE61FA72BA}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\Core\Math">
+      <UniqueIdentifier>{F24DBB70-DE47-E4C2-C7B4-7AD3B34D4A2F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\ImGui">
-      <UniqueIdentifier>{34EA70D1-20B8-64D7-094C-D5FDF5B8403C}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\Editor">
+      <UniqueIdentifier>{977A1110-03DC-EE1D-8C49-35D0F8A925DD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Platform">
-      <UniqueIdentifier>{1E0D4481-8A23-4217-D39A-CD383FF0129F}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\ImGui">
+      <UniqueIdentifier>{6B0A552F-57EE-1585-C04E-10D8AC510007}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Platform\DirectX12">
-      <UniqueIdentifier>{632C9D0C-CF39-CBF2-5820-C7DDC42C97A9}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\Platform">
+      <UniqueIdentifier>{F55552D6-61C2-0DD1-2AB6-A52E96E12F39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Platform\Windows">
-      <UniqueIdentifier>{58F5A303-C4B7-D78D-0D68-661A7969B06B}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\Platform\DirectX12">
+      <UniqueIdentifier>{FAAD019F-6691-10DF-6F94-3E1BDBF6D62F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Renderer">
-      <UniqueIdentifier>{7014215C-DC2A-1FF2-25A2-AA1391F7EF79}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\Platform\Windows">
+      <UniqueIdentifier>{2F25FD5A-9B3D-E484-64EA-731ED0C1781E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Valhalla\Utilities">
-      <UniqueIdentifier>{750EA4A7-61F2-64FD-CA52-5F50B6554F7F}</UniqueIdentifier>
+    <Filter Include="src\Valhalla\Renderer">
+      <UniqueIdentifier>{475D2FB1-B3C9-EAAB-7CBD-8209E8E80C14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Valhalla\Utilities">
+      <UniqueIdentifier>{2C727B9E-186C-A4F0-01D9-3A01ED710A5D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\FastNoise">
+      <UniqueIdentifier>{EEFAAAA2-DAF3-C9F4-0326-AF79EF7DA900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\imgui">
+      <UniqueIdentifier>{5D3BD0F0-499E-5F95-F223-984BDE652B18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\imgui\misc">
+      <UniqueIdentifier>{58F0AC6F-C406-AB05-0D7E-362779D37B8D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\imgui\misc\cpp">
+      <UniqueIdentifier>{2AD6F862-9642-B45D-5F36-4CBBCB61D6C5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\yaml-cpp">
+      <UniqueIdentifier>{C5B3FC54-313F-6A19-3A50-ED0DA65AC619}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\yaml-cpp\include">
+      <UniqueIdentifier>{38D04F32-A407-98C9-AD11-FCEC19C8BEC2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\yaml-cpp\include\yaml-cpp">
+      <UniqueIdentifier>{EAF52FF2-D646-1B34-FFAA-09F6EB5AAE9D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\yaml-cpp\include\yaml-cpp\contrib">
+      <UniqueIdentifier>{EA87E472-D604-D8B5-FF81-D8C9EB5D7449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\yaml-cpp\include\yaml-cpp\node">
+      <UniqueIdentifier>{FFEED84C-6BB3-D73C-3419-0807A09C7372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\yaml-cpp\include\yaml-cpp\node\detail">
+      <UniqueIdentifier>{E131EE05-CD44-EE5E-762E-CB4B62208BAC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\yaml-cpp\src">
+      <UniqueIdentifier>{5CCC2628-C82D-0436-519B-4AE8BDFB3AF5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\yaml-cpp\src\contrib">
+      <UniqueIdentifier>{5CB0BB24-C8BD-E90A-51A4-E5F5BDB0B5C1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Valhalla.h" />
+    <ClInclude Include="src\Valhalla.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Valhalla\Asset\Asset.h">
-      <Filter>Valhalla\Asset</Filter>
+      <Filter>src\Valhalla\Asset</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="src\Valhalla\Asset\AssetType.h">
-      <Filter>Valhalla\Asset</Filter>
-    </ClInclude>
-=======
     <ClInclude Include="src\Valhalla\Asset\AssetManager.h">
-      <Filter>Valhalla\Asset</Filter>
+      <Filter>src\Valhalla\Asset</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Asset\AssetType.h">
-      <Filter>Valhalla\Asset</Filter>
+      <Filter>src\Valhalla\Asset</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Asset\AssimpMeshImporter.h">
-      <Filter>Valhalla\Asset</Filter>
+      <Filter>src\Valhalla\Asset</Filter>
     </ClInclude>
->>>>>>> ea4fffa3e9e070374b9e2e2d4d1e0a0ca07e122b
     <ClInclude Include="src\Valhalla\Core\Application.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Assert.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Base.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Buffer.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Events\ApplicationEvent.h">
-      <Filter>Valhalla\Core\Events</Filter>
+      <Filter>src\Valhalla\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Events\EditorEvent.h">
-      <Filter>Valhalla\Core\Events</Filter>
+      <Filter>src\Valhalla\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Events\Event.h">
-      <Filter>Valhalla\Core\Events</Filter>
+      <Filter>src\Valhalla\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Events\KeyEvent.h">
-      <Filter>Valhalla\Core\Events</Filter>
+      <Filter>src\Valhalla\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Events\MouseEvent.h">
-      <Filter>Valhalla\Core\Events</Filter>
+      <Filter>src\Valhalla\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Events\SceneEvent.h">
-      <Filter>Valhalla\Core\Events</Filter>
+      <Filter>src\Valhalla\Core\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Hash.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Input.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\KeyCodes.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Layer.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\LayerStack.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Log.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Core\LogCustomFormatters.h">
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Math\AABB.h">
-      <Filter>Valhalla\Core\Math</Filter>
+      <Filter>src\Valhalla\Core\Math</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Math\DirectXMathExtended.h">
-      <Filter>Valhalla\Core\Math</Filter>
+      <Filter>src\Valhalla\Core\Math</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\MouseCodes.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Ref.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\TimeStep.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Timer.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Types.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\UUID.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Core\Window.h">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Editor\EditorPanel.h">
-      <Filter>Valhalla\Editor</Filter>
+      <Filter>src\Valhalla\Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Editor\PanelManager.h">
-      <Filter>Valhalla\Editor</Filter>
+      <Filter>src\Valhalla\Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\EntryPoint.h">
-      <Filter>Valhalla</Filter>
+      <Filter>src\Valhalla</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\ImGui\ImGui.h">
-      <Filter>Valhalla\ImGui</Filter>
+      <Filter>src\Valhalla\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\ImGui\ImGuiLayer.h">
-      <Filter>Valhalla\ImGui</Filter>
+      <Filter>src\Valhalla\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Context.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Device.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12FrameBuffer.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Image.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Renderer.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12SwapChain.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12UniformBuffer.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\VD3D12.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\DirectX12\d3dx12.h">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsInput.h">
-      <Filter>Valhalla\Platform\Windows</Filter>
+      <Filter>src\Valhalla\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Platform\Windows\WindowsWindow.h">
-      <Filter>Valhalla\Platform\Windows</Filter>
+      <Filter>src\Valhalla\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Camera.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\ComputePass.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\FrameBuffer.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Image.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\IndexBuffer.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Mesh.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\MeshFactory.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Pipeline.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\PipelineCompute.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandBuffer.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RenderCommandQueue.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RenderPass.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Renderer.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Renderer2D.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RendererAPI.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RendererCapabilities.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RendererConfig.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RendererContext.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\RendererResource.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
     <ClInclude Include="src\Valhalla\Renderer\RendererStats.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\SceneEnvironment.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
->>>>>>> ea4fffa3e9e070374b9e2e2d4d1e0a0ca07e122b
     <ClInclude Include="src\Valhalla\Renderer\Shader.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\ShaderUniform.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\StorageBuffer.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\StorageBufferSet.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\SwapChain.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Texture.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\UniformBuffer.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\UniformBufferSet.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\Vertex.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Renderer\VertexBuffer.h">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Utilities\AssimpLogStream.h">
-      <Filter>Valhalla\Utilities</Filter>
+      <Filter>src\Valhalla\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="src\vhpch.h" />
+    <ClInclude Include="src\vhpch.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\misc\cpp\imgui_stdlib.h">
+      <Filter>vendor\imgui\misc\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\anchor.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\binary.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\contrib\anchordict.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\contrib</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\contrib\graphbuilder.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\contrib</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\depthguard.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\dll.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\emitfromevents.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\emitter.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\emitterdef.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\emittermanip.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\emitterstyle.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\eventhandler.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\exceptions.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\mark.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\convert.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\detail\impl.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\detail\iterator.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\detail\iterator_fwd.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\detail\memory.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\detail\node.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\detail\node_data.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\detail\node_iterator.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\detail\node_ref.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\emit.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\impl.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\iterator.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\node.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\parse.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\ptr.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\node\type.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp\node</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\noexcept.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\null.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\ostream_wrapper.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\parser.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\stlemitter.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\traits.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\include\yaml-cpp\yaml.h">
+      <Filter>vendor\yaml-cpp\include\yaml-cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\collectionstack.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\contrib\graphbuilderadapter.h">
+      <Filter>vendor\yaml-cpp\src\contrib</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\directives.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\emitterstate.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\emitterutils.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\exp.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\indentation.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\nodebuilder.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\nodeevents.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\ptr_vector.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\regex_yaml.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\regeximpl.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\scanner.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\scanscalar.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\scantag.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\setting.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\singledocparser.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\stream.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\streamcharsource.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\stringsource.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\tag.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\yaml-cpp\src\token.h">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Valhalla\Editor\EditorConsoleSink.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Asset\AssimpMeshImporter.cpp">
-      <Filter>Valhalla\Asset</Filter>
+      <Filter>src\Valhalla\Asset</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Core\Application.cpp">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Core\Base.cpp">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Core\LayerStack.cpp">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Core\Log.cpp">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Core\UUID.cpp">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Core\Window.cpp">
-      <Filter>Valhalla\Core</Filter>
+      <Filter>src\Valhalla\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Editor\PanelManager.cpp">
-      <Filter>Valhalla\Editor</Filter>
+      <Filter>src\Valhalla\Editor</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\ImGui\ImGuiBuild.cpp">
-      <Filter>Valhalla\ImGui</Filter>
+      <Filter>src\Valhalla\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\ImGui\ImGuiLayer.cpp">
-      <Filter>Valhalla\ImGui</Filter>
+      <Filter>src\Valhalla\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Context.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Device.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12FrameBuffer.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12IndexBuffer.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Pipeline.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12RenderCommandBuffer.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Renderer.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Shader.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12SwapChain.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12VertexBuffer.cpp">
-      <Filter>Valhalla\Platform\DirectX12</Filter>
+      <Filter>src\Valhalla\Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Platform\Windows\WindowsWindow.cpp">
-      <Filter>Valhalla\Platform\Windows</Filter>
+      <Filter>src\Valhalla\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Camera.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\ComputePass.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\FrameBuffer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Image.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\IndexBuffer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Mesh.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\MeshFactory.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Pipeline.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\PipelineCompute.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandBuffer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\RenderCommandQueue.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\RenderPass.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Renderer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\RendererContext.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\RendererStats.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\SceneEnvironment.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Shader.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\StorageBuffer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\StorageBufferSet.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\SwapChain.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\Texture.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\UniformBuffer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\UniformBufferSet.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Valhalla\Renderer\VertexBuffer.cpp">
-      <Filter>Valhalla\Renderer</Filter>
+      <Filter>src\Valhalla\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\vhpch.cpp" />
+    <ClCompile Include="src\vhpch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\FastNoise\FastNoise.cpp">
+      <Filter>vendor\FastNoise</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\misc\cpp\imgui_stdlib.cpp">
+      <Filter>vendor\imgui\misc\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\binary.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\contrib\graphbuilder.cpp">
+      <Filter>vendor\yaml-cpp\src\contrib</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\contrib\graphbuilderadapter.cpp">
+      <Filter>vendor\yaml-cpp\src\contrib</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\convert.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\depthguard.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\directives.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\emit.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\emitfromevents.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\emitter.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\emitterstate.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\emitterutils.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\exceptions.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\exp.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\node.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\node_data.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\nodebuilder.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\nodeevents.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\null.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\ostream_wrapper.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\parse.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\parser.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\regex_yaml.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\scanner.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\scanscalar.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\scantag.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\scantoken.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\simplekey.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\singledocparser.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\stream.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\tag.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\yaml-cpp\src\yamlmemory.cpp">
+      <Filter>vendor\yaml-cpp\src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

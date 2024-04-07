@@ -1,36 +1,199 @@
+include "./vendor/premake_customization/ordered_pairs.lua"
+
+-- Utility function for converting the first character to uppercase
+function firstToUpper(str)
+	return (str:gsub("^%l", string.upper))
+end
+
+-- Grab Vulkan SDK path
 VULKAN_SDK = os.getenv("VULKAN_SDK")
 
-IncludeDir = {}
-IncludeDir["Assimp"] = "%{wks.location}/Valhalla/vendor/assimp/include"
-IncludeDir["stb"] = "%{wks.location}/Valhalla/vendor/stb/include"
-IncludeDir["yaml_cpp"] = "%{wks.location}/Valhalla/vendor/yaml-cpp/include"
-IncludeDir["ImGui"] = "%{wks.location}/Valhalla/vendor/ImGui"
-IncludeDir["Box2D"] = "%{wks.location}/Valhalla/vendor/Box2D/include"
-IncludeDir["entt"] = "%{wks.location}/Valhalla/vendor/entt/include"
-IncludeDir["FastNoise"] = "%{wks.location}/Valhalla/vendor/FastNoise"
-IncludeDir["mono"] = "%{wks.location}/Valhalla/vendor/mono/include"
-IncludeDir["PhysX"] = "%{wks.location}/Valhalla/vendor/PhysX/include"
-IncludeDir["shaderc"] = "%{wks.location}/Valhalla/vendor/shaderc/include"
-IncludeDir["SPIRV_Cross"] = "%{wks.location}/Valhalla/vendor/SPIRV-Cross"
-IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
-IncludeDir["NvidiaAftermath"] = "%{wks.location}/Valhalla/vendor/NvidiaAftermath/include"
-IncludeDir["miniaudio"] = "%{wks.location}/Valhalla/vendor/miniaudio/include"
-IncludeDir["Optick"] = "%{wks.location}/Valhalla/vendor/Optick/src"
-IncludeDir["DirectXTK"] = "%{wks.location}/Valhalla/vendor/DirectXTK/Inc"
+--[[
+	If you're adding a new dependency all you have to do to get it linking
+	and included is define it properly in the table below, here's some example usage:
 
-LibraryDir = {}
+	MyDepName = {
+		LibName = "my_dep_name",
+		LibDir = "some_path_to_dependency_lib_dir",
+		IncludeDir = "my_include_dir",
+		Windows = { DebugLibName = "my_dep_name_debug" },
+		Configurations = "Debug,Release"
+	}
 
-LibraryDir["PhysX"] = "%{wks.location}/Valhalla/vendor/PhysX/lib/%{cfg.buildcfg}"
-LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
-LibraryDir["VulkanSDK_Debug"] = "%{wks.location}/Valhalla/vendor/VulkanSDK/Lib"
-LibraryDir["NvidiaAftermath"] = "%{wks.location}/Valhalla/vendor/NvidiaAftermath/lib/x64"
-LibraryDir["DirectXTK"] = "%{wks.location}/Valhalla/vendor/DirectXTK/Bin/"
+	MyDepName - This is just for organizational purposes, it doesn't actually matter for the build process
+	LibName - This is the name of the .lib file that you want e.g Hazelnut to link against (you shouldn't include the .lib extension since Linux uses .a)
+	LibDir - Indicates which directory the lib file is located in, this can include "%{cfg.buildcfg}" if you have a dedicated Debug / Release directory
+	IncludeDir - Pretty self explanatory, the filepath that will be included in externalincludedirs
+	Windows - This defines a platform-specific scope for this dependency, anything defined in that scope will only apply for Windows, you can also add one for Linux
+	DebugLibName - Use this if the .lib file has a different name in Debug builds (e.g "shaderc_sharedd" vs "shaderc_shared")
+	Configurations - Defines a list of configurations that this dependency should be used in, if no Configurations is specified all configs will link and include this dependency (which is what we want in most cases)
 
-Library = {}
-Library["mono"] = "%{wks.location}/Valhalla/vendor/mono/lib/Debug/mono-2.0-sgen.lib"
-Library["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"
-Library["NvidiaAftermath"] = "%{LibraryDir.NvidiaAftermath}/GFSDK_Aftermath_Lib.x64.lib"
+	Most of the properties I've listed can be used in either the "global" dependency scope OR in a specific platform scope,
+	the only property that doesn't support that is "Configurations" which HAS to be defined in the global scope.
 
-Library["DirectXTK_Debug"] = "%{LibraryDir.DirectXTK}/Debug-windows-x86_64/DirectXTK/DirectXTK.lib"
-Library["DirectXTK_Release"] = "%{LibraryDir.DirectXTK}/Release-windows-x86_64/DirectXTK/DirectXTK.lib"
+	Of course you can put only SOME properties in a platform scope, and others in the global scope if you want to.
 
+	Naturally I suggest taking a look at existing dependency definitions when adding a new dependency.
+
+	Remember that in most cases you only need to update this list, no need to manually add dependencies to the "links" list or "includedirs" list
+
+	HEADER-ONLY LIBRARIES: If your dependency is header-only you shouldn't specify e.g LibName, just add IncludeDir and it'll be treated like a header-only library
+
+]]--
+
+Dependencies = {
+	Vulkan = {
+		Windows = {
+			LibName = "vulkan-1",
+			IncludeDir = "%{VULKAN_SDK}/Include/",
+			LibDir = "%{VULKAN_SDK}/Lib/",
+		},
+	},
+	DirectXCompiler = {
+		LibName = "dxcompiler",
+	},
+	NvidiaAftermath = {
+		LibName = "GFSDK_Aftermath_Lib.x64",
+		IncludeDir = "%{wks.location}/Valhalla/vendor/NvidiaAftermath/include",
+		Windows = { LibDir = "%{wks.location}/Valhalla/vendor/NvidiaAftermath/lib/x64/windows/" },
+	},
+	Assimp = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/assimp/include",
+		Windows = { LibName = "assimp-vc143-mt", DebugLibName = "assimp-vc143-mtd", LibDir = "%{wks.location}/Valhalla/vendor/assimp/bin/windows/%{cfg.buildcfg}/" },
+		Configurations = "Debug,Release"
+	},
+	Mono = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/mono/include",
+		Windows = { LibName = "mono-2.0-sgen", LibDir = "%{wks.location}/Valhalla/vendor/mono/lib/windows/%{cfg.buildcfg}/" },
+	},
+	GLFW = {
+		-- No need to specify LibDir for GLFW since it's automatically handled by premake
+		LibName = "GLFW",
+		IncludeDir = "%{wks.location}/Valhalla/vendor/GLFW/include",
+	},
+	GLM = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/glm",
+	},
+	EnTT = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/entt/include",
+	},
+	ImGui = {
+		LibName = "ImGui",
+		IncludeDir = "%{wks.location}/Valhalla/vendor/imgui",
+	},
+	ImGuiNodeEditor = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/imgui-node-editor",
+	},
+	FastNoise = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/FastNoise",
+	},
+	MiniAudio = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/miniaudio/include",
+	},
+	Box2D = {
+		LibName = "Box2D",
+		IncludeDir = "%{wks.location}/Valhalla/vendor/Box2D/include",
+	},
+	STB = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/stb/include",
+	},
+	YAML_CPP = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/yaml-cpp/include",
+	},
+	WS2 = {
+		Windows = { LibName = "ws2_32", },
+	},
+	Dbghelp = { Windows = { LibName = "	Dbghelp" }, },
+}
+
+-- NOTE(Peter): Probably don't touch these functions unless you know what you're doing (or just ask me if you need help extending them)
+
+function LinkDependency(table, is_debug, target)
+
+	-- Setup library directory
+	if table.LibDir ~= nil then
+		libdirs { table.LibDir }
+	end
+
+	-- Try linking
+	local libraryName = nil
+	if table.LibName ~= nil then
+		libraryName = table.LibName
+	end
+
+	if table.DebugLibName ~= nil and is_debug and target == "Windows" then
+		libraryName = table.DebugLibName
+	end
+
+	if libraryName ~= nil then
+		links { libraryName }
+		return true
+	end
+
+	return false
+end
+
+function AddDependencyIncludes(table)
+	if table.IncludeDir ~= nil then
+		externalincludedirs { table.IncludeDir }
+	end
+end
+
+function ProcessDependencies(config_name)
+	local target = firstToUpper(os.target())
+
+	for key, libraryData in orderedPairs(Dependencies) do
+
+		-- Always match config_name if no Configurations list is specified
+		local matchesConfiguration = true
+
+		if config_name ~= nil and libraryData.Configurations ~= nil then
+			matchesConfiguration = string.find(libraryData.Configurations, config_name)
+		end
+
+		local isDebug = config_name == "Debug"
+
+		if matchesConfiguration then
+			local continueLink = true
+
+			-- Process Platform Scope
+			if libraryData[target] ~= nil then
+				continueLink = not LinkDependency(libraryData[target], isDebug, target)
+				AddDependencyIncludes(libraryData[target])
+			end
+
+			-- Process Global Scope
+			if continueLink then
+				LinkDependency(libraryData, isDebug, target)
+			end
+
+			AddDependencyIncludes(libraryData)
+		end
+
+	end
+end
+
+function IncludeDependencies(config_name)
+	local target = firstToUpper(os.target())
+
+	for key, libraryData in orderedPairs(Dependencies) do
+
+		-- Always match config_name if no Configurations list is specified
+		local matchesConfiguration = true
+
+		if config_name ~= nil and libraryData.Configurations ~= nil then
+			matchesConfiguration = string.find(libraryData.Configurations, config_name)
+		end
+
+		if matchesConfiguration then
+			-- Process Global Scope
+			AddDependencyIncludes(libraryData)
+
+			-- Process Platform Scope
+			if libraryData[target] ~= nil then
+				AddDependencyIncludes(libraryData[target])
+			end
+		end
+
+	end
+end

@@ -1,0 +1,12 @@
+[01:47:59] [trace] HAZEL: Valhalla Engine v0.1a
+[01:47:59] [trace] HAZEL: Initializing...
+[01:47:59] [info] HAZEL: Creating Window Odin 1600x900
+[01:47:59] [info] HAZEL: Start of RendererContext Create
+[01:47:59] [error] HAZEL: warning: DXIL signing library (dxil.dll,libdxil.so) not found.  Resulting DXIL will not be signed for use in release environments.
+
+
+[01:47:59] [error] HAZEL: warning: DXIL signing library (dxil.dll,libdxil.so) not found.  Resulting DXIL will not be signed for use in release environments.
+
+
+[01:47:59] [info] HAZEL: Creating DescriptorHeaps
+[01:48:00] [trace] HAZEL: Shutting down...

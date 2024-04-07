@@ -13,9 +13,9 @@ namespace Valhalla
 			DirectX12CommandAllocator();
 			~DirectX12CommandAllocator();
 
-			Microsoft::WRL::ComPtr<ID3D12CommandList> AllocateCommandList(bool begin, bool compute = false);
-			void FlushCommandList(Microsoft::WRL::ComPtr<ID3D12CommandList> commandBuffer);
-			void FlushCommandList(Microsoft::WRL::ComPtr<ID3D12CommandList> commandBuffer, 
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> AllocateCommandList(bool begin, bool compute = false);
+			void FlushCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandBuffer);
+			void FlushCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandBuffer,
 				Microsoft::WRL::ComPtr<ID3D12CommandQueue> queue);
 
 			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetGraphicsCommandAllocator() { return m_GraphicsCommandAllocator; }
@@ -31,12 +31,22 @@ namespace Valhalla
 			virtual ~DirectX12Device();
 
 			Microsoft::WRL::ComPtr<ID3D12Device> GetDevice() { return m_Device; }
-			Microsoft::WRL::ComPtr<IDXGIDebug1> GetDebug() { return m_dxgiDebug; }
+			Microsoft::WRL::ComPtr<IDXGIDebug1> GetDebug() 
+			{ 
+				/*if (m_dxgiDebug)
+				{
+					m_dxgiDebug->AddRef();
+					ULONG refCount = m_dxgiDebug->Release();
+					refCount--;
+					VH_CORE_INFO("Number of refs of the Debug: {0}", refCount);
+				}*/
+				return m_dxgiDebug; 
+			}
 
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> GetGraphicsQueue() { return m_GraphicsQueue; }
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> GetComputeQueue() { return m_ComputeQueue; }
 
-			Microsoft::WRL::ComPtr<ID3D12CommandList> CreateSecondaryCommandBuffer(const char* debugName);
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CreateSecondaryCommandBuffer(const char* debugName);
 
 		private:
 			Ref<DirectX12CommandAllocator> GetThreadLocalCommandAllocator();
@@ -49,7 +59,7 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_GraphicsQueue;
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_ComputeQueue;
 			std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter1>> m_PhysicalDevices;
-			std::map<std::thread::id, Ref<DirectX12CommandAllocator>> m_CommandAllocator;
+			std::map<std::thread::id, Ref<DirectX12CommandAllocator>> m_CommandAllocators;
 		};
 	}
 }

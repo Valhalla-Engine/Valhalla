@@ -16,18 +16,23 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<ID3D12Device> device = DirectX12Context::GetCurrentDevice()->GetDevice();
 			//Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = DirectX12Renderer::GetCommandList();
 
+			auto heapDefault = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+			auto heapUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+
+			CD3DX12_RESOURCE_DESC dbuffer = CD3DX12_RESOURCE_DESC::Buffer(size);
+
 			DXCALL(device->CreateCommittedResource(
-				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+				&heapDefault,
 				D3D12_HEAP_FLAG_NONE,
-				&CD3DX12_RESOURCE_DESC::Buffer(size),
+				&dbuffer,
 				D3D12_RESOURCE_STATE_COMMON,
 				nullptr,
 				IID_PPV_ARGS(m_VertexBuffer.GetAddressOf())));
 
 			DXCALL(device->CreateCommittedResource(
-				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+				&heapUpload,
 				D3D12_HEAP_FLAG_NONE,
-				&CD3DX12_RESOURCE_DESC::Buffer(size),
+				&dbuffer,
 				D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr,
 				IID_PPV_ARGS(m_UploadVertexBuffer.GetAddressOf())));
@@ -59,10 +64,14 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<ID3D12Device> device = DirectX12Context::GetCurrentDevice()->GetDevice();
 			//Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = DirectX12Renderer::GetCommandList();
 
+			auto heapUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+
+			CD3DX12_RESOURCE_DESC dbuffer = CD3DX12_RESOURCE_DESC::Buffer(size);
+
 			DXCALL(device->CreateCommittedResource(
-				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+				&heapUpload,
 				D3D12_HEAP_FLAG_NONE,
-				&CD3DX12_RESOURCE_DESC::Buffer(size),
+				&dbuffer,
 				D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr,
 				IID_PPV_ARGS(m_UploadVertexBuffer.GetAddressOf())));

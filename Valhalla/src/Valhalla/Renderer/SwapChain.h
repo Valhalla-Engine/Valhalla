@@ -1,5 +1,6 @@
 #pragma once
 #include "Valhalla/Core/Ref.h"
+#include "Valhalla/Renderer/RendererContext.h"
 
 namespace Valhalla
 {
@@ -10,7 +11,10 @@ namespace Valhalla
 		public:
 			SwapChain() = default;
 			virtual ~SwapChain() = default;
-			virtual void Init() = 0;
+			virtual void Init(Ref<RendererContext>& context) = 0;
+			virtual void InitSurface() = 0;
+			virtual void CreateSwapchain(uint32_t* width, uint32_t* height, bool vsync) = 0;
+			virtual void Destroy() = 0;
 
 			virtual void Present() = 0;
 			virtual void BeginFrame() = 0;

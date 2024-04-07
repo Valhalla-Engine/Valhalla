@@ -1,15 +1,23 @@
 #pragma once
 
-#include "Base.h"
+#include "Valhalla/Core/Base.h"
+#include "Valhalla/Core/LogCustomFormatters.h"
 
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
-#include <DirectXMath.h>
 #include <map>
 
-namespace Valhalla
-{
+#define VH_ASSERT_MESSAGE_BOX (!VH_DIST && VH_PLATFORM_WINDOWS)
+
+#if VH_ASSERT_MESSAGE_BOX
+#ifdef VH_PLATFORM_WINDOWS
+#include <Windows.h>
+#endif
+#endif
+
+namespace Valhalla {
+
 	class Log
 	{
 	public:
@@ -17,12 +25,10 @@ namespace Valhalla
 		{
 			Core = 0, Client = 1
 		};
-
 		enum class Level : uint8_t
 		{
 			Trace = 0, Info, Warn, Error, Fatal
 		};
-
 		struct TagDetails
 		{
 			bool Enabled = true;
@@ -35,6 +41,7 @@ namespace Valhalla
 
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
+		inline static std::shared_ptr<spdlog::logger>& GetEditorConsoleLogger() { return s_EditorConsoleLogger; }
 
 		static bool HasTag(const std::string& tag) { return s_EnabledTags.find(tag) != s_EnabledTags.end(); }
 		static std::map<std::string, TagDetails>& EnabledTags() { return s_EnabledTags; }
@@ -46,20 +53,19 @@ namespace Valhalla
 		static void PrintAssertMessage(Log::Type type, std::string_view prefix, Args&&... args);
 
 	public:
+		// Enum utils
 		static const char* LevelToString(Level level)
 		{
 			switch (level)
 			{
-			case Level::Trace:	return "Trace";
-			case Level::Info:	return "Info";
-			case Level::Warn:	return "Warn";
-			case Level::Error:	return "Error";
-			case Level::Fatal:	return "Fatal";
+			case Level::Trace: return "Trace";
+			case Level::Info:  return "Info";
+			case Level::Warn:  return "Warn";
+			case Level::Error: return "Error";
+			case Level::Fatal: return "Fatal";
 			}
-
 			return "";
 		}
-
 		static Level LevelFromString(std::string_view string)
 		{
 			if (string == "Trace") return Level::Trace;
@@ -74,21 +80,16 @@ namespace Valhalla
 	private:
 		static std::shared_ptr<spdlog::logger> s_CoreLogger;
 		static std::shared_ptr<spdlog::logger> s_ClientLogger;
+		static std::shared_ptr<spdlog::logger> s_EditorConsoleLogger;
+
 		inline static std::map<std::string, TagDetails> s_EnabledTags;
 	};
+
 }
 
-template<typename OStream>
-OStream& operator<<(OStream& os, const DirectX::XMFLOAT3& vec)
-{
-	return os << "( " << vec.x << ", " << vec.y << ", " << vec.z << ")";
-}
-
-template<typename OStream>
-OStream& operator<<(OStream& os, const DirectX::XMFLOAT4& vec)
-{
-	return os << "( " << vec.x << ", " << vec.y << ", " << vec.z << ", " < vec.w << ")";
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Tagged logs (prefer these!)                                                                                      //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Core logging
 #define VH_CORE_TRACE_TAG(tag, ...) ::Valhalla::Log::PrintMessage(::Valhalla::Log::Type::Core, ::Valhalla::Log::Level::Trace, tag, __VA_ARGS__)
@@ -120,8 +121,15 @@ OStream& operator<<(OStream& os, const DirectX::XMFLOAT4& vec)
 #define VH_ERROR(...)   ::Valhalla::Log::PrintMessage(::Valhalla::Log::Type::Client, ::Valhalla::Log::Level::Error, "", __VA_ARGS__)
 #define VH_FATAL(...)   ::Valhalla::Log::PrintMessage(::Valhalla::Log::Type::Client, ::Valhalla::Log::Level::Fatal, "", __VA_ARGS__)
 
-namespace Valhalla
-{
+// Editor Console Logging Macros
+#define VH_CONSOLE_LOG_TRACE(...)   Valhalla::Log::GetEditorConsoleLogger()->trace(__VA_ARGS__)
+#define VH_CONSOLE_LOG_INFO(...)    Valhalla::Log::GetEditorConsoleLogger()->info(__VA_ARGS__)
+#define VH_CONSOLE_LOG_WARN(...)    Valhalla::Log::GetEditorConsoleLogger()->warn(__VA_ARGS__)
+#define VH_CONSOLE_LOG_ERROR(...)   Valhalla::Log::GetEditorConsoleLogger()->error(__VA_ARGS__)
+#define VH_CONSOLE_LOG_FATAL(...)   Valhalla::Log::GetEditorConsoleLogger()->critical(__VA_ARGS__)
+
+namespace Valhalla {
+
 	template<typename... Args>
 	void Log::PrintMessage(Log::Type type, Log::Level level, std::string_view tag, Args&&... args)
 	{
@@ -158,7 +166,7 @@ namespace Valhalla
 		auto logger = (type == Type::Core) ? GetCoreLogger() : GetClientLogger();
 		logger->error("{0}: {1}", prefix, fmt::format(std::forward<Args>(args)...));
 
-#if HZ_ASSERT_MESSAGE_BOX
+#if VH_ASSERT_MESSAGE_BOX
 		std::string message = fmt::format(std::forward<Args>(args)...);
 		MessageBoxA(nullptr, message.c_str(), "Hazel Assert", MB_OK | MB_ICONERROR);
 #endif
@@ -169,7 +177,7 @@ namespace Valhalla
 	{
 		auto logger = (type == Type::Core) ? GetCoreLogger() : GetClientLogger();
 		logger->error("{0}", prefix);
-#if HZ_ASSERT_MESSAGE_BOX
+#if VH_ASSERT_MESSAGE_BOX
 		MessageBoxA(nullptr, "No message :(", "Hazel Assert", MB_OK | MB_ICONERROR);
 #endif
 	}

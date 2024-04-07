@@ -16,6 +16,9 @@
 
 #include <Windowsx.h>
 
+#include <locale>
+#include <codecvt>
+
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace Valhalla
@@ -54,7 +57,7 @@ namespace Valhalla
 		wc.lpfnWndProc = WindowProc;
 		wc.style = CS_CLASSDC;
 		wc.hInstance = m_hInstance;
-		wc.lpszClassName = "Win32 Window";
+		wc.lpszClassName = L"Win32 Window";
 		wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 		wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);
@@ -69,7 +72,9 @@ namespace Valhalla
 			VH_CORE_ERROR("Could not initialize the window");
 		}
 
-		m_Window = CreateWindow(wc.lpszClassName, m_Data.Title.c_str(), WS_OVERLAPPEDWINDOW, 0, 0, m_Data.Width, m_Data.Height, NULL, NULL, wc.hInstance, NULL);
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+		std::wstring wideName = converter.from_bytes(m_Data.Title);
+		m_Window = CreateWindow(wc.lpszClassName,wideName.c_str(), WS_OVERLAPPEDWINDOW, 0, 0, m_Data.Width, m_Data.Height, NULL, NULL, wc.hInstance, NULL);
 
 		if (!m_Window)
 		{
@@ -84,13 +89,19 @@ namespace Valhalla
 		m_RendererContext = Heimdall::RendererContext::Create();
 		m_SwapChain = Heimdall::SwapChain::Create();
 		m_RendererContext->Init();
+
+		m_SwapChain->Init(m_RendererContext);
+		m_SwapChain->InitSurface();
+		m_SwapChain->CreateSwapchain(&m_Data.Width, &m_Data.Height, m_Data.VSync);
+
+		m_SwapChain->Present();
 	}
 
 	void WindowsWindow::Shutdown()
 	{
-		DestroyWindow(m_Window);
 		m_SwapChain->~SwapChain();
 		m_RendererContext->~RendererContext();
+		DestroyWindow(m_Window);
 	}
 
 	void WindowsWindow::ProcessEvents()
@@ -117,7 +128,9 @@ namespace Valhalla
 	void WindowsWindow::SetTitle(const std::string& title)
 	{
 		m_Data.Title = title;
-		SetWindowText(m_Window, m_Data.Title.c_str());
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+		std::wstring wideName = converter.from_bytes(m_Data.Title);
+		SetWindowText(m_Window, wideName.c_str());
 	}
 
 	std::pair<float_t, float_t> WindowsWindow::GetWindowPos() const

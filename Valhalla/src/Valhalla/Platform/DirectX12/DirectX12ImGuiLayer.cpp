@@ -87,8 +87,6 @@ namespace Valhalla
 			ImGui_ImplDX12_NewFrame();
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
-
-			
 		}
 
 		void DirectX12ImGuiLayer::End()
@@ -97,7 +95,14 @@ namespace Valhalla
 			auto drawdata = ImGui::GetDrawData();
 			drawdata->DisplaySize.x = Application::Get().GetWindow().GetWidth();
 			drawdata->DisplaySize.y = Application::Get().GetWindow().GetHeight();
-			//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), DirectX12Renderer::GetCommandList().Get());
+			
+			Ref<DirectX12SwapChain> swapchain = Application::Get().GetWindow().GetSwapChain();
+
+			uint32_t commandBufferindex = swapchain->GetCurrentBackBufferIndex();
+
+
+			
+			//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), DirectX12Context::GetCurrentDevice());
 
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();

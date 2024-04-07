@@ -34,7 +34,6 @@ namespace Valhalla
 
 			static Ref<DirectX12Context> Get() { return Ref<DirectX12Context>(Heimdall::Renderer::GetContext()); }
 			static Ref<DirectX12Device> GetCurrentDevice() { return Get()->GetDevice(); }
-			static Ref<DirectX12SwapChain> GetCurrentSwapChain() { return Get()->GetSwapChain(); }
 
 		private:
 			Ref<DirectX12Device> m_Device;

@@ -23,7 +23,7 @@ namespace Valhalla
 	namespace Yggdrasil
 	{
 #define DXCALL(x)																					\
-if (FAILED((HRESULT) x))																			\
+if ( FAILED((HRESULT) x))																			\
 {																									\
 	VH_CORE_INFO(std::system_category().message(x) + " \n File: {0}, Line: {1}",__FILE__, __LINE__ );	\
 }
