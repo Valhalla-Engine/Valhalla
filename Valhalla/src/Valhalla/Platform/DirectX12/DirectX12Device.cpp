@@ -24,11 +24,11 @@ namespace Valhalla
 
 		}
 
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> DirectX12CommandAllocator::AllocateCommandList(bool begin, bool compute /* = false */)
+		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12CommandAllocator::AllocateCommandList(bool begin, bool compute /* = false */)
 		{
 			auto device = DirectX12Context::GetCurrentDevice();
 			auto directXDevice = device->GetDevice();
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdlist;
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> cmdlist;
 			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> allocator;
 			D3D12_COMMAND_LIST_TYPE type;
 
@@ -51,19 +51,18 @@ namespace Valhalla
 			return cmdlist;
 		}
 
-		void DirectX12CommandAllocator::FlushCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandBuffer)
+		void DirectX12CommandAllocator::FlushCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer)
 		{
 			auto device = DirectX12Context::GetCurrentDevice();
 			FlushCommandList(commandBuffer, device->GetGraphicsQueue());
 		}
 
-		void DirectX12CommandAllocator::FlushCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandBuffer,
+		void DirectX12CommandAllocator::FlushCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer,
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> queue)
 		{
 			auto device = DirectX12Context::GetCurrentDevice();
 			auto directXDevice = device->GetDevice();
 			Microsoft::WRL::ComPtr<ID3D12Fence> fence;
-
 
 			DXCALL(commandBuffer->Close());
 
@@ -140,9 +139,9 @@ namespace Valhalla
 			m_dxgiDebug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_FLAGS(DXGI_DEBUG_RLO_DETAIL | DXGI_DEBUG_RLO_IGNORE_INTERNAL));
 		}
 
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> DirectX12Device::CreateSecondaryCommandBuffer(const char* debugName)
+		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12Device::CreateSecondaryCommandBuffer(const char* debugName)
 		{
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdBuffer;
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> cmdBuffer;
 			m_Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, 
 				GetOrCreateThreadLocalCommandAllocator()->GetGraphicsCommandAllocator().Get(), nullptr, IID_PPV_ARGS(&cmdBuffer));
 			

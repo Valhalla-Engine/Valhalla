@@ -23,8 +23,15 @@ namespace Valhalla
 			virtual void OnDetach() override;
 			virtual void OnImGuiRender() override;
 
+
+		private:
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetRTVHeap() { return m_RTVHeap; }
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetDSVHeap() { return m_DSVHeap; }
+
 		private:
 			Ref<Heimdall::RenderCommandBuffer> m_RenderCommandBuffer;
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RTVHeap;
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_DSVHeap;
 			float_t m_Time = 0.0f;
 		};
 	}

@@ -36,8 +36,9 @@ namespace Valhalla
 			DXGI_FORMAT GetColorFormat() const { return m_ColorFormat; }
 
 			uint32_t GetCurrentBackIndex() const { return m_CurrentBufferIndex; }
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCurrentDrawCommandBuffer() { return GetDrawCommandBuffer(m_CurrentBufferIndex); }
 
-			Microsoft::WRL::ComPtr<ID3D12CommandList> GetDrawCommandBuffer(uint32_t index)
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetDrawCommandBuffer(uint32_t index)
 			{
 				VH_CORE_ASSERT(index < m_CommandBuffers.size());
 				return m_CommandBuffers[index].CommandBuffer;
@@ -47,13 +48,6 @@ namespace Valhalla
 
 			Microsoft::WRL::ComPtr<IDXGISwapChain3> GetSwapChain()
 			{
-				if (m_SwapChain)
-				{
-					m_SwapChain->AddRef();
-					ULONG refCount = m_SwapChain->Release();
-					refCount--;
-					VH_CORE_INFO("Number of refs of the swapchain: {0}", refCount);
-				}
 				return m_SwapChain; 
 			}
 		private:
@@ -72,11 +66,13 @@ namespace Valhalla
 			struct SwapChainCommandBuffer
 			{
 				Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocator = nullptr;
-				Microsoft::WRL::ComPtr<ID3D12CommandList> CommandBuffer = nullptr;
+				Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> CommandBuffer = nullptr;
 			};
 			std::vector<SwapChainCommandBuffer> m_CommandBuffers;
 
-			std::vector<ID3D12Fence1> m_WaitFences;
+			std::vector<Microsoft::WRL::ComPtr<ID3D12Fence1>> m_WaitFences;
+			std::vector<uint64_t> m_fenceValues;
+			std::vector<HANDLE> m_FenceEvents;
 
 			uint32_t m_CurrentBufferIndex = 0;
 

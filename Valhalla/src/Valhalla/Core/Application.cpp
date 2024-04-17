@@ -20,7 +20,6 @@ namespace Valhalla
 			m_Specification.WindowWidth, m_Specification.WindowHeight)));
 		m_Window->Init();
 		m_Window->SetEventCallback([this](Event& e) {OnEvent(e); });
-		//m_Window->Maximize();
 		m_Window->SetVSync(true);
 
 		m_Profiler = new PerformanceProfiler();
@@ -28,8 +27,8 @@ namespace Valhalla
 		Heimdall::Renderer::Init();
 		Heimdall::Renderer::WaitAndRender();
 
-		//m_ImGuiLayer = ImGuiLayer::Create();
-		//PushOverlay(m_ImGuiLayer);
+		m_ImGuiLayer = ImGuiLayer::Create();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -80,20 +79,35 @@ namespace Valhalla
 		OnInit();
 		while (m_Running)
 		{
-			if (!m_Minimized)
-			{
-				Heimdall::Renderer::BeginFrame();
-
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(m_TimeStep);
-
-				//RenderImGui();
-				//m_ImGuiLayer->End();
-				Heimdall::Renderer::WaitAndRender();
-				Heimdall::Renderer::EndFrame();
-			}
 
 			ProcessEvents();
+			Heimdall::Renderer::WaitAndRender();
+			if (!m_Minimized)
+			{
+				Heimdall::Renderer::Submit([&]() 
+				{
+						m_Window->GetSwapChain()->BeginFrame();
+				});
+
+				Heimdall::Renderer::BeginFrame();
+				{
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(m_TimeStep);
+				}
+
+				Application* app = this;
+				if (m_Specification.EnableImGui)
+				{
+					Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
+					Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
+				}
+
+				Heimdall::Renderer::Submit([app]() 
+				{
+						app->m_Window->SwapBuffers();
+				});
+			}
+
 		}
 		OnShutdown();
 	}

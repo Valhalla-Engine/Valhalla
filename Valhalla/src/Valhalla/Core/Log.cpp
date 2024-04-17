@@ -56,10 +56,10 @@ namespace Valhalla {
 			sink->set_pattern("%^%v%$");
 #endif
 
-		s_CoreLogger = std::make_shared<spdlog::logger>("HAZEL", hazelSinks.begin(), hazelSinks.end());
+		s_CoreLogger = std::make_shared<spdlog::logger>("Valhalla", hazelSinks.begin(), hazelSinks.end());
 		s_CoreLogger->set_level(spdlog::level::trace);
 
-		s_ClientLogger = std::make_shared<spdlog::logger>("APP", appSinks.begin(), appSinks.end());
+		s_ClientLogger = std::make_shared<spdlog::logger>("App", appSinks.begin(), appSinks.end());
 		s_ClientLogger->set_level(spdlog::level::trace);
 
 		s_EditorConsoleLogger = std::make_shared<spdlog::logger>("Console", editorConsoleSinks.begin(), editorConsoleSinks.end());

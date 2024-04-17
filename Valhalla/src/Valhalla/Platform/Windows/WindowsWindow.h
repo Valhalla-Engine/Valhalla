@@ -33,6 +33,8 @@ namespace Valhalla
 		virtual Ref<Heimdall::RendererContext> GetRendererContext() override { return m_RendererContext; }
 		virtual Ref<Heimdall::SwapChain> GetSwapChain() override { return m_SwapChain; }
 
+		virtual void SwapBuffers() override;
+
 		static LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 		virtual void Init() override;
 	private:

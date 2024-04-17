@@ -168,7 +168,7 @@ namespace Valhalla {
 
 #if VH_ASSERT_MESSAGE_BOX
 		std::string message = fmt::format(std::forward<Args>(args)...);
-		MessageBoxA(nullptr, message.c_str(), "Hazel Assert", MB_OK | MB_ICONERROR);
+		MessageBoxA(nullptr, message.c_str(), "Valhalla Assert", MB_OK | MB_ICONERROR);
 #endif
 	}
 
@@ -178,7 +178,7 @@ namespace Valhalla {
 		auto logger = (type == Type::Core) ? GetCoreLogger() : GetClientLogger();
 		logger->error("{0}", prefix);
 #if VH_ASSERT_MESSAGE_BOX
-		MessageBoxA(nullptr, "No message :(", "Hazel Assert", MB_OK | MB_ICONERROR);
+		MessageBoxA(nullptr, "No message :(", "Valhalla Assert", MB_OK | MB_ICONERROR);
 #endif
 	}
 }

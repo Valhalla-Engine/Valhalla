@@ -49,6 +49,8 @@ namespace Valhalla
 
 		virtual void* GetNativeWindow() const = 0;
 
+		virtual void SwapBuffers() = 0;
+
 		virtual void Init() = 0;
 
 		virtual Ref<Heimdall::RendererContext> GetRendererContext() = 0;

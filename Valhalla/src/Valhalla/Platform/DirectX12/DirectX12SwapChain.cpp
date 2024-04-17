@@ -12,6 +12,7 @@ namespace Valhalla
 	{
 
 		DirectX12SwapChain::DirectX12SwapChain()
+			: m_Height(0), m_Width(0)
 		{
 
 		}
@@ -43,7 +44,7 @@ namespace Valhalla
 			m_Height = *height;
 			m_VSync = vsync;
 
-			D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevel;
+			D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevel{};
 			QualityLevel.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 			QualityLevel.SampleCount = 4;
 			QualityLevel.Flags = D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE;
@@ -73,16 +74,49 @@ namespace Valhalla
 			IDXGISwapChain1* swap;
 			DXCALL(factory->CreateSwapChainForHwnd(DirectX12Context::GetCurrentDevice()->GetGraphicsQueue().Get(), window, &swapChainDesc, nullptr, nullptr, &swap));
 			DXCALL(swap->QueryInterface(IID_PPV_ARGS(&m_SwapChain)));
+
+			// Create Command buffers
+			{
+
+				m_CommandBuffers.resize(m_ImageCount);
+				for (auto& commandBuffer : m_CommandBuffers)
+				{
+					VH_CORE_INFO("Creating draw command buffers");
+					DXCALL(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandBuffer.CommandAllocator)));
+					DXCALL(device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandBuffer.CommandAllocator.Get(), nullptr, IID_PPV_ARGS(&commandBuffer.CommandBuffer)));
+				}
+			}
+
+			{
+				m_WaitFences.resize(m_ImageCount);
+				for (auto& fence : m_WaitFences)
+				{
+					DXCALL(device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence)));
+				}
+			}
 		}
 
 		void DirectX12SwapChain::Present()
 		{
+			if (m_WaitFences[m_CurrentBufferIndex]->GetCompletedValue() < m_fenceValues[m_CurrentBufferIndex])
+			{
+				m_WaitFences[m_CurrentBufferIndex]->SetEventOnCompletion(m_fenceValues[m_CurrentBufferIndex], m_FenceEvents[m_CurrentBufferIndex]);
+				WaitForSingleObject(m_FenceEvents[m_CurrentBufferIndex], INFINITE);
+			}
+
+			ID3D12CommandList* commandlist[] = {GetCurrentDrawCommandBuffer().Get()};
+			m_Device->GetGraphicsQueue()->ExecuteCommandLists(1, commandlist);
+
+			m_Device->GetGraphicsQueue()->Signal(m_WaitFences[m_CurrentBufferIndex].Get(), m_fenceValues[m_CurrentBufferIndex]);
+
+			m_fenceValues[m_CurrentBufferIndex]++;
+
 			m_SwapChain->Present(0, 0);
 		}
 
 		void DirectX12SwapChain::BeginFrame()
 		{
-
+			
 		}
 
 		void DirectX12SwapChain::OnResize(uint32_t width, uint32_t height)

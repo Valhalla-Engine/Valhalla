@@ -36,7 +36,7 @@ namespace Valhalla
 			Heimdall::Renderer::Submit([]() mutable
 			{
 				auto device = DirectX12Context::GetCurrentDevice();
-				auto data = DirectX12Renderer::GetHeaps();
+				std::vector<DirectX12DescriptorHeaps>& data = DirectX12Renderer::GetHeaps();
 
 				D3D12_DESCRIPTOR_HEAP_DESC RTVHeapDesc = {};
 				RTVHeapDesc.NumDescriptors = 1000;
@@ -76,8 +76,7 @@ namespace Valhalla
 					DXCALL(device->GetDevice()->CreateDescriptorHeap(&SRVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].SRVHeap.GetAddressOf())));
 					DXCALL(device->GetDevice()->CreateDescriptorHeap(&CBVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].CBVHeap.GetAddressOf())));
 					DXCALL(device->GetDevice()->CreateDescriptorHeap(&UAVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].UAVHeap.GetAddressOf())));
-					DXCALL(device->GetDevice()->CreateDescriptorHeap(&SamplerHeapDesc, 
-						IID_PPV_ARGS(s_Data->DescriptorHeaps[i].SamplerHeap.GetAddressOf())));
+					DXCALL(device->GetDevice()->CreateDescriptorHeap(&SamplerHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].SamplerHeap.GetAddressOf())));
 					DXCALL(device->GetDevice()->CreateDescriptorHeap(&DSVHeapDesc, IID_PPV_ARGS(s_Data->DescriptorHeaps[i].DSVHeap.GetAddressOf())));
 				}
 			});
