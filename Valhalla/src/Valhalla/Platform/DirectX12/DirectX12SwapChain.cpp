@@ -84,6 +84,7 @@ namespace Valhalla
 					VH_CORE_INFO("Creating draw command buffers");
 					DXCALL(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandBuffer.CommandAllocator)));
 					DXCALL(device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandBuffer.CommandAllocator.Get(), nullptr, IID_PPV_ARGS(&commandBuffer.CommandBuffer)));
+					DXCALL(commandBuffer.CommandBuffer->Close());
 				}
 			}
 
@@ -93,30 +94,46 @@ namespace Valhalla
 				{
 					DXCALL(device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence)));
 				}
+
+				m_FenceValues.resize(m_ImageCount);
+				for (auto& value : m_FenceValues)
+				{
+					value = 0;
+				}
+
+				m_FenceEvents.resize(m_ImageCount);
 			}
 		}
 
 		void DirectX12SwapChain::Present()
 		{
-			if (m_WaitFences[m_CurrentBufferIndex]->GetCompletedValue() < m_fenceValues[m_CurrentBufferIndex])
+			/*if (m_WaitFences[m_CurrentBufferIndex]->GetCompletedValue() < m_FenceValues[m_CurrentBufferIndex])
 			{
-				m_WaitFences[m_CurrentBufferIndex]->SetEventOnCompletion(m_fenceValues[m_CurrentBufferIndex], m_FenceEvents[m_CurrentBufferIndex]);
-				WaitForSingleObject(m_FenceEvents[m_CurrentBufferIndex], INFINITE);
-			}
+				m_FenceEvents[m_CurrentBufferIndex] = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+
+				if (m_FenceEvents[m_CurrentBufferIndex] != nullptr)
+				{
+					m_WaitFences[m_CurrentBufferIndex]->SetEventOnCompletion(m_FenceValues[m_CurrentBufferIndex], m_FenceEvents[m_CurrentBufferIndex]);
+					WaitForSingleObject(m_FenceEvents[m_CurrentBufferIndex], INFINITE);
+				}
+			}*/
+
+			GetCurrentDrawCommandBuffer()->Close();
 
 			ID3D12CommandList* commandlist[] = {GetCurrentDrawCommandBuffer().Get()};
 			m_Device->GetGraphicsQueue()->ExecuteCommandLists(1, commandlist);
 
-			m_Device->GetGraphicsQueue()->Signal(m_WaitFences[m_CurrentBufferIndex].Get(), m_fenceValues[m_CurrentBufferIndex]);
+			//m_Device->GetGraphicsQueue()->Signal(m_WaitFences[m_CurrentBufferIndex].Get(), m_FenceValues[m_CurrentBufferIndex]);
 
-			m_fenceValues[m_CurrentBufferIndex]++;
+			m_FenceValues[m_CurrentBufferIndex]++;
 
 			m_SwapChain->Present(0, 0);
 		}
 
 		void DirectX12SwapChain::BeginFrame()
 		{
-			
+			m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator->Reset();
+			m_CommandBuffers[m_CurrentBufferIndex].CommandBuffer->Reset(m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator.Get(), nullptr);
 		}
 
 		void DirectX12SwapChain::OnResize(uint32_t width, uint32_t height)

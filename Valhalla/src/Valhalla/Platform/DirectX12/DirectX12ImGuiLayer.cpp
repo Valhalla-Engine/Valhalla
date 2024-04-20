@@ -52,14 +52,11 @@ namespace Valhalla
 			}
 			style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15f, 0.15f, 0.15f, style.Colors[ImGuiCol_WindowBg].w);
 
-			Application& app = Application::Get();
-			HWND window = static_cast<HWND>(app.GetWindow().GetNativeWindow());
-			ImGui_ImplWin32_Init(window);
-
 			DirectX12ImGuiLayer* instance = this;
 			Heimdall::Renderer::Submit([instance]()
 			{
 				Application& app = Application::Get();
+				HWND window = static_cast<HWND>(app.GetWindow().GetNativeWindow());
 
 				auto context = DirectX12Context::Get();
 				auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
@@ -72,31 +69,40 @@ namespace Valhalla
 				RTVHeapDesc.NumDescriptors = 1;
 				RTVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 				RTVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+				RTVHeapDesc.NodeMask = 0;
 
 				D3D12_DESCRIPTOR_HEAP_DESC DSVHeapDesc;
 				DSVHeapDesc.NumDescriptors = 1;
 				DSVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-				DSVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+				DSVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+				DSVHeapDesc.NodeMask = 0;
+
+				D3D12_DESCRIPTOR_HEAP_DESC SRVHeapDesc;
+				SRVHeapDesc.NumDescriptors = 1;
+				SRVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+				SRVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+				SRVHeapDesc.NodeMask = 0;
 
 				DXCALL(device->CreateDescriptorHeap(&RTVHeapDesc, IID_PPV_ARGS(instance->m_RTVHeap.GetAddressOf())));
 				DXCALL(device->CreateDescriptorHeap(&DSVHeapDesc, IID_PPV_ARGS(instance->m_DSVHeap.GetAddressOf())));
+				DXCALL(device->CreateDescriptorHeap(&SRVHeapDesc, IID_PPV_ARGS(instance->m_SRVHeap.GetAddressOf())));
+				
 
+				ImGui_ImplWin32_Init(window);
 				ImGui_ImplDX12_Init(device.Get(), framesInFlight,
-					DXGI_FORMAT_R8G8B8A8_UNORM, instance->m_RTVHeap.Get(), instance->m_RTVHeap.Get()->GetCPUDescriptorHandleForHeapStart(),
-					instance->m_RTVHeap.Get()->GetGPUDescriptorHandleForHeapStart());
-
-
-				s_ImGuiCommandBuffers.resize(framesInFlight);
-				for (size_t i = 0; i < framesInFlight; i++)
-					s_ImGuiCommandBuffers[i] = DirectX12Context::GetCurrentDevice()->CreateSecondaryCommandBuffer("ImGuiSecondaryCommandBuffer");
+					DXGI_FORMAT_R8G8B8A8_UNORM, instance->m_SRVHeap.Get(), instance->m_SRVHeap.Get()->GetCPUDescriptorHandleForHeapStart(),
+					instance->m_SRVHeap.Get()->GetGPUDescriptorHandleForHeapStart());
 			});
 		}
 
 		void DirectX12ImGuiLayer::OnDetach()
 		{
-			ImGui_ImplDX12_Shutdown();
-			ImGui_ImplWin32_Shutdown();
-			ImGui::DestroyContext();
+			Heimdall::Renderer::Submit([]() 
+			{
+				ImGui_ImplDX12_Shutdown();
+				ImGui_ImplWin32_Shutdown();
+				ImGui::DestroyContext();
+			});
 		}
 
 		void DirectX12ImGuiLayer::Begin()
@@ -108,8 +114,13 @@ namespace Valhalla
 
 		void DirectX12ImGuiLayer::End()
 		{
+			//ImGui::Render();
+			/*Ref<DirectX12SwapChain> swapchain = Application::Get().GetWindow().GetSwapChain();
+
+			uint32_t width = swapchain->GetWidth();
+			uint32_t height = swapchain->GetHeight();
+
 			ImGui::Render();
-			Ref<DirectX12SwapChain> swapchain = Application::Get().GetWindow().GetSwapChain();
 
 			D3D12_CLEAR_VALUE clearValues[2];
 			clearValues[0].Format = DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -121,33 +132,13 @@ namespace Valhalla
 			clearValues[1].Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 			clearValues[1].DepthStencil = { 1.0f, 0 };
 
-			uint32_t width = swapchain->GetWidth();
-			uint32_t height = swapchain->GetHeight();
 
 			uint32_t commandBufferindex = swapchain->GetCurrentBackBufferIndex();
 
 			auto drawCommandBuffer = swapchain->GetCurrentDrawCommandBuffer();
 
-
-			D3D12_RENDER_PASS_RENDER_TARGET_DESC renderTargetDesc;
-			renderTargetDesc.cpuDescriptor = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_RTVHeap->GetCPUDescriptorHandleForHeapStart());
-			renderTargetDesc.BeginningAccess.Type = D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR;
-			renderTargetDesc.BeginningAccess.Clear.ClearValue = clearValues[0];
-			renderTargetDesc.EndingAccess.Type = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE;
-
-			D3D12_RENDER_PASS_DEPTH_STENCIL_DESC depthStencilDesc;
-			depthStencilDesc.cpuDescriptor = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_DSVHeap->GetCPUDescriptorHandleForHeapStart());
-			depthStencilDesc.DepthBeginningAccess.Type = D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR;
-			depthStencilDesc.DepthBeginningAccess.Clear.ClearValue = clearValues[1];
-			depthStencilDesc.StencilBeginningAccess.Type = D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR;
-			depthStencilDesc.StencilBeginningAccess.Clear.ClearValue = clearValues[1];
-			depthStencilDesc.DepthEndingAccess.Type = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE;
-			depthStencilDesc.StencilEndingAccess.Type = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE;
-
-			drawCommandBuffer->BeginRenderPass(1, &renderTargetDesc, &depthStencilDesc, D3D12_RENDER_PASS_FLAG_NONE);
-
-			D3D12_VIEWPORT viewport;
-			viewport.TopLeftX = 0.0f;
+			D3D12_VIEWPORT viewport = {};
+			viewport.TopLeftX = (float)0.0f;
 			viewport.TopLeftY = (float)height;
 			viewport.Height = -(float)height;
 			viewport.Width = (float)width;
@@ -161,23 +152,39 @@ namespace Valhalla
 			rect.right = width;
 			rect.bottom = height;
 			drawCommandBuffer->RSSetScissorRects(1, &rect);
+			drawCommandBuffer->SetName(L"ImGui");
+
+			ID3D12DescriptorHeap* descriptorHeaps[] = { m_SRVHeap.Get()};
+			drawCommandBuffer->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
 			ImDrawData* main_draw_data = ImGui::GetDrawData();
 			ImGui_ImplDX12_RenderDrawData(main_draw_data, drawCommandBuffer.Get());
 
-			drawCommandBuffer->EndRenderPass();
+
 			
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
 			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 			{
 				ImGui::UpdatePlatformWindows();
 				ImGui::RenderPlatformWindowsDefault();
-			}
+			}*/
 		}
 
 		void DirectX12ImGuiLayer::OnImGuiRender()
 		{
+			if (ImGui::BeginMainMenuBar())
+			{
+				if (ImGui::BeginMenu("File"))
+				{
+					if (ImGui::MenuItem("Open")) {}
+					if (ImGui::MenuItem("Save")) {}
+					ImGui::Separator();
+					if (ImGui::MenuItem("Exit")) {}
 
+					ImGui::EndMenu();
+				}
+				ImGui::EndMainMenuBar();
+			}
 		}
 	}
 }

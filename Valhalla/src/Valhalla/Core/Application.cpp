@@ -25,10 +25,11 @@ namespace Valhalla
 		m_Profiler = new PerformanceProfiler();
 
 		Heimdall::Renderer::Init();
-		Heimdall::Renderer::WaitAndRender();
+		/*Heimdall::Renderer::WaitAndRender();*/
 
 		m_ImGuiLayer = ImGuiLayer::Create();
 		PushOverlay(m_ImGuiLayer);
+		Heimdall::Renderer::WaitAndRender();
 	}
 
 	Application::~Application()
@@ -98,8 +99,8 @@ namespace Valhalla
 				Application* app = this;
 				if (m_Specification.EnableImGui)
 				{
-					Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
-					Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
+					//Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
+					//Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
 				}
 
 				Heimdall::Renderer::Submit([app]() 

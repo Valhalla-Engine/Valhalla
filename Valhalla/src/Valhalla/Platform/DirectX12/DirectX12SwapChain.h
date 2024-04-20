@@ -71,7 +71,7 @@ namespace Valhalla
 			std::vector<SwapChainCommandBuffer> m_CommandBuffers;
 
 			std::vector<Microsoft::WRL::ComPtr<ID3D12Fence1>> m_WaitFences;
-			std::vector<uint64_t> m_fenceValues;
+			std::vector<uint64_t> m_FenceValues;
 			std::vector<HANDLE> m_FenceEvents;
 
 			uint32_t m_CurrentBufferIndex = 0;

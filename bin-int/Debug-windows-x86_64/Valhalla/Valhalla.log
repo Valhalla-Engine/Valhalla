@@ -1,26 +1,26 @@
-﻿  Application.cpp
+﻿  DirectX12SwapChain.cpp
 C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\ApplicationEvent.h(25,3): warning C5103: pasting '::' and 'WindowResize' does not result in a valid preprocessing token
-  (compiling source file '/src/Valhalla/Core/Application.cpp')
+  (compiling source file '/src/Valhalla/Platform/DirectX12/DirectX12SwapChain.cpp')
   C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\Event.h(33,1):
   in expansion of macro 'EVENT_CLASS_TYPE'
   
 C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\ApplicationEvent.h(37,3): warning C5103: pasting '::' and 'WindowClose' does not result in a valid preprocessing token
-  (compiling source file '/src/Valhalla/Core/Application.cpp')
+  (compiling source file '/src/Valhalla/Platform/DirectX12/DirectX12SwapChain.cpp')
   C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\Event.h(33,1):
   in expansion of macro 'EVENT_CLASS_TYPE'
   
 C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\ApplicationEvent.h(45,3): warning C5103: pasting '::' and 'AppTick' does not result in a valid preprocessing token
-  (compiling source file '/src/Valhalla/Core/Application.cpp')
+  (compiling source file '/src/Valhalla/Platform/DirectX12/DirectX12SwapChain.cpp')
   C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\Event.h(33,1):
   in expansion of macro 'EVENT_CLASS_TYPE'
   
 C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\ApplicationEvent.h(53,3): warning C5103: pasting '::' and 'AppUpdate' does not result in a valid preprocessing token
-  (compiling source file '/src/Valhalla/Core/Application.cpp')
+  (compiling source file '/src/Valhalla/Platform/DirectX12/DirectX12SwapChain.cpp')
   C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\Event.h(33,1):
   in expansion of macro 'EVENT_CLASS_TYPE'
   
 C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\ApplicationEvent.h(61,3): warning C5103: pasting '::' and 'AppRender' does not result in a valid preprocessing token
-  (compiling source file '/src/Valhalla/Core/Application.cpp')
+  (compiling source file '/src/Valhalla/Platform/DirectX12/DirectX12SwapChain.cpp')
   C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\Event.h(33,1):
   in expansion of macro 'EVENT_CLASS_TYPE'
   

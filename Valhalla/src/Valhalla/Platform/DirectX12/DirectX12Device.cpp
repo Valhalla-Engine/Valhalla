@@ -147,7 +147,7 @@ namespace Valhalla
 			
 			std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 			std::wstring wideDebug = converter.from_bytes(debugName);
-			cmdBuffer->SetName(wideDebug.c_str());
+			//cmdBuffer->SetName(wideDebug.c_str());
 
 			return cmdBuffer;
 		}

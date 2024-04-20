@@ -152,8 +152,8 @@ namespace Valhalla
 	{
 		LRESULT result = NULL;
 
-		if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
-			return true;
+		/*if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
+			return true;*/
 
 		switch (msg)
 		{
