@@ -28,6 +28,8 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RTVHeap;
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_DSVHeap;
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_SRVHeap;
+			std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> m_RenderTargets;
+			std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> m_DepthStencilBuffer;
 			float_t m_Time = 0.0f;
 		};
 	}

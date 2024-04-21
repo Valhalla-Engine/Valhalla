@@ -99,8 +99,8 @@ namespace Valhalla
 				Application* app = this;
 				if (m_Specification.EnableImGui)
 				{
-					//Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
-					//Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
+					Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
+					Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
 				}
 
 				Heimdall::Renderer::Submit([app]() 
