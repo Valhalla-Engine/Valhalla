@@ -24,7 +24,7 @@ namespace Valhalla {
 
 		std::vector<spdlog::sink_ptr> hazelSinks =
 		{
-			std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/HAZEL.log", true),
+			std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/Valhalla.log", true),
 #if VH_HAS_CONSOLE
 			std::make_shared<spdlog::sinks::stdout_color_sink_mt>()
 #endif

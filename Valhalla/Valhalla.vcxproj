@@ -195,6 +195,7 @@
     <ClInclude Include="src\Valhalla\Editor\EditorConsoleSink.h" />
     <ClInclude Include="src\Valhalla\Editor\PanelManager.h" />
     <ClInclude Include="src\Valhalla\EntryPoint.h" />
+    <ClInclude Include="src\Valhalla\ImGui\Colors.h" />
     <ClInclude Include="src\Valhalla\ImGui\ImGui.h" />
     <ClInclude Include="src\Valhalla\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Valhalla\Platform\DirectX12\DirectX12Context.h" />
@@ -319,6 +320,7 @@
     <ClCompile Include="src\Valhalla\Core\UUID.cpp" />
     <ClCompile Include="src\Valhalla\Core\Window.cpp" />
     <ClCompile Include="src\Valhalla\Editor\PanelManager.cpp" />
+    <ClCompile Include="src\Valhalla\ImGui\Colors.cpp" />
     <ClCompile Include="src\Valhalla\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Valhalla\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Valhalla\Platform\DirectX12\DirectX12Context.cpp" />

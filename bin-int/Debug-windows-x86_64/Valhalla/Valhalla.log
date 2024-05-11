@@ -24,6 +24,9 @@ C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\ApplicationEvent.h(61,3): warn
   C:\dev\valhalla\Valhalla\src\Valhalla\Core\Events\Event.h(33,1):
   in expansion of macro 'EVENT_CLASS_TYPE'
   
+C:\dev\valhalla\Valhalla\src\Valhalla\Platform\DirectX12\DirectX12ImGuiLayer.cpp(102,44): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+  (compiling source file '/src/Valhalla/Platform/DirectX12/DirectX12ImGuiLayer.cpp')
+  
 Mesh.obj : warning LNK4006: "struct DirectX::XMFLOAT4X4 __vectorcall DirectX::XMFLOAT4X4Identity(void)" (?XMFLOAT4X4Identity@DirectX@@YQ?AUXMFLOAT4X4@1@XZ) already defined in MeshFactory.obj; second definition ignored
 AssimpMeshImporter.obj : warning LNK4006: "struct DirectX::XMFLOAT4X4 __vectorcall DirectX::XMFLOAT4X4Identity(void)" (?XMFLOAT4X4Identity@DirectX@@YQ?AUXMFLOAT4X4@1@XZ) already defined in MeshFactory.obj; second definition ignored
   Valhalla.vcxproj -> C:\dev\valhalla\bin\Debug-windows-x86_64\Valhalla\Valhalla.lib

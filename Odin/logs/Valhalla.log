@@ -1,0 +1,15 @@
+[00:38:32] [trace] Valhalla: Valhalla Engine v0.1a
+[00:38:32] [trace] Valhalla: Initializing...
+[00:38:32] [info] Valhalla: Creating Window Odin 1280x800
+[00:38:32] [info] Valhalla: Start of RendererContext Create
+[00:38:32] [info] Valhalla: SwapChain Size: (1280, 800)
+[00:38:32] [info] Valhalla: backBuffer size: (1280, 800)
+[00:38:32] [info] Valhalla: Creating draw command buffers
+[00:38:32] [info] Valhalla: Creating draw command buffers
+[00:38:32] [error] Valhalla: warning: DXIL signing library (dxil.dll,libdxil.so) not found.  Resulting DXIL will not be signed for use in release environments.
+
+
+[00:38:32] [error] Valhalla: warning: DXIL signing library (dxil.dll,libdxil.so) not found.  Resulting DXIL will not be signed for use in release environments.
+
+
+[00:39:20] [trace] Valhalla: Shutting down...

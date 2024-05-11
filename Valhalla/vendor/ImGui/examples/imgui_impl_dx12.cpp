@@ -735,6 +735,8 @@ void ImGui_ImplDX12_NewFrame()
 // If you are new to dear imgui or creating a new binding for dear imgui, it is recommended that you completely ignore this section first..
 //--------------------------------------------------------------------------------------------------------
 
+#include <iostream>
+
 static void ImGui_ImplDX12_CreateWindow(ImGuiViewport* viewport)
 {
     ImGuiViewportDataDx12* data = IM_NEW(ImGuiViewportDataDx12)();
@@ -754,6 +756,7 @@ static void ImGui_ImplDX12_CreateWindow(ImGuiViewport* viewport)
 
     HRESULT res = S_OK;
     res = g_pd3dDevice->CreateCommandQueue(&queue_desc, IID_PPV_ARGS(&data->CommandQueue));
+    std::cout << std::system_category().message(res);
     IM_ASSERT(res == S_OK);
 
     // Create command allocator.

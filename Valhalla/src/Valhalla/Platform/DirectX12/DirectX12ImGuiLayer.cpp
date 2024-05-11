@@ -42,7 +42,7 @@ namespace Valhalla
 
 
 			ImGui::StyleColorsDark();
-			SetDarkTheme2VColors();
+			//SetDarkTheme2VColors();
 
 			ImGuiStyle& style = ImGui::GetStyle();
 			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -66,81 +66,49 @@ namespace Valhalla
 
 				uint32_t framesInFlight = Heimdall::Renderer::GetConfig().FramesInFlight;
 
-				D3D12_DESCRIPTOR_HEAP_DESC RTVHeapDesc;
-				RTVHeapDesc.NumDescriptors = framesInFlight;
-				RTVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-				RTVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-				RTVHeapDesc.NodeMask = 0;
-
-				D3D12_DESCRIPTOR_HEAP_DESC DSVHeapDesc;
-				DSVHeapDesc.NumDescriptors = framesInFlight;
-				DSVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-				DSVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-				DSVHeapDesc.NodeMask = 0;
-
-				D3D12_DESCRIPTOR_HEAP_DESC SRVHeapDesc;
-				SRVHeapDesc.NumDescriptors = framesInFlight;
-				SRVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-				SRVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-				SRVHeapDesc.NodeMask = 0;
-
-				DXCALL(device->CreateDescriptorHeap(&RTVHeapDesc, IID_PPV_ARGS(instance->m_RTVHeap.GetAddressOf())));
-				DXCALL(device->CreateDescriptorHeap(&DSVHeapDesc, IID_PPV_ARGS(instance->m_DSVHeap.GetAddressOf())));
-				DXCALL(device->CreateDescriptorHeap(&SRVHeapDesc, IID_PPV_ARGS(instance->m_SRVHeap.GetAddressOf())));
-
-				uint32_t rtvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-
-				CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(instance->m_RTVHeap->GetCPUDescriptorHandleForHeapStart());
-
-				D3D12_RENDER_TARGET_VIEW_DESC RTVDesc;
-				RTVDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-				RTVDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
-				RTVDesc.Texture2D.MipSlice = 0;
-				RTVDesc.Texture2D.PlaneSlice = 0;
-
-
-				instance->m_RenderTargets.resize(framesInFlight);
-				for (uint32_t i = 0; i < instance->m_RenderTargets.size(); i++)
 				{
-					DXCALL(swapchain->GetSwapChain()->GetBuffer(i, IID_PPV_ARGS(&instance->m_RenderTargets[i])));
-					device->CreateRenderTargetView(instance->m_RenderTargets[i].Get(), &RTVDesc, rtvHandle);
-					rtvHandle.Offset(1, rtvDescriptorSize);
+					D3D12_DESCRIPTOR_HEAP_DESC desc = {};
+					desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+					desc.NumDescriptors = framesInFlight;
+					desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+					desc.NodeMask = 1;
+
+					DXCALL(device->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&instance->m_RTVHeap)));
+
+					SIZE_T rtvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+					D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = instance->m_RTVHeap->GetCPUDescriptorHandleForHeapStart();
+					instance->m_RenderTargetDescriptors.resize(framesInFlight);
+					for (UINT i = 0; i < framesInFlight; i++)
+					{
+						instance->m_RenderTargetDescriptors[i] = rtvHandle;
+						rtvHandle.ptr += rtvDescriptorSize;
+					}
 				}
 
-				uint32_t dsvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
-				CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(instance->m_DSVHeap->GetCPUDescriptorHandleForHeapStart());
-
-				D3D12_RESOURCE_DESC depthStencilDesc;
-				depthStencilDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-				depthStencilDesc.Alignment = 0;
-				depthStencilDesc.Width = swapchain->GetWidth();
-				depthStencilDesc.Height = swapchain->GetHeight();
-				depthStencilDesc.DepthOrArraySize = 1;
-				depthStencilDesc.MipLevels = 1;
-				depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-				depthStencilDesc.SampleDesc.Count = 1;
-				depthStencilDesc.SampleDesc.Quality = 0;
-				depthStencilDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-				depthStencilDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
-
-				D3D12_CLEAR_VALUE optClear;
-				optClear.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-				optClear.DepthStencil.Depth = 1.0f;
-				optClear.DepthStencil.Stencil = 0;
-
-				instance->m_DepthStencilBuffer.resize(framesInFlight);
-				for (uint32_t i = 0; i < instance->m_DepthStencilBuffer.size(); i++)
 				{
-					CD3DX12_HEAP_PROPERTIES heapProperties(D3D12_HEAP_TYPE_DEFAULT);
-					DXCALL(device->CreateCommittedResource(&heapProperties, D3D12_HEAP_FLAG_NONE, &depthStencilDesc, D3D12_RESOURCE_STATE_COMMON, 
-						&optClear, IID_PPV_ARGS(&instance->m_DepthStencilBuffer[i])));
-					device->CreateDepthStencilView(instance->m_DepthStencilBuffer[i].Get(), nullptr, dsvHandle);
-					dsvHandle.Offset(1, dsvDescriptorSize);
+					D3D12_DESCRIPTOR_HEAP_DESC desc = {};
+					desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+					desc.NumDescriptors = 1;
+					desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+					DXCALL(device->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&instance->m_SRVHeap)))
+				}
+
+				{
+					CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(instance->m_RTVHeap->GetCPUDescriptorHandleForHeapStart());
+					instance->m_RenderTargets.resize(framesInFlight);
+					for (size_t i = 0; i < instance->m_RenderTargets.size(); i++)
+					{
+						ID3D12Resource* pBackBuffer = NULL;
+						swapchain->GetSwapChain()->GetBuffer(i, IID_PPV_ARGS(&pBackBuffer));
+						device->CreateRenderTargetView(pBackBuffer, NULL, instance->m_RenderTargetDescriptors[i]);
+						instance->m_RenderTargets[i] = pBackBuffer;
+					}
 				}
 				
 				ImGui_ImplWin32_Init(window);
 				ImGui_ImplDX12_Init(device.Get(), framesInFlight,
-					DXGI_FORMAT_R8G8B8A8_UNORM, instance->m_SRVHeap.Get(), instance->m_SRVHeap.Get()->GetCPUDescriptorHandleForHeapStart(),
+					DXGI_FORMAT_R8G8B8A8_UNORM, instance->m_SRVHeap.Get(), 
+					instance->m_SRVHeap.Get()->GetCPUDescriptorHandleForHeapStart(),
 					instance->m_SRVHeap.Get()->GetGPUDescriptorHandleForHeapStart());
 
 			});
@@ -161,10 +129,15 @@ namespace Valhalla
 			ImGui_ImplDX12_NewFrame();
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
+
+
 		}
 
 		void DirectX12ImGuiLayer::End()
 		{
+			static bool show = true;
+			ImGui::ShowDemoWindow(&show);
+
 			ImGui::Render();
 			Ref<DirectX12SwapChain> swapchain = Application::Get().GetWindow().GetSwapChain();
 			auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
@@ -172,90 +145,55 @@ namespace Valhalla
 			uint32_t width = swapchain->GetWidth();
 			uint32_t height = swapchain->GetHeight();
 
-			ImGui::Render();
+			uint32_t frameIndex = swapchain->GetCurrentBackBufferIndex();
 
-			D3D12_CLEAR_VALUE clearValues[2];
-			clearValues[0].Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-			clearValues[0].Color[0] = 0.1f;
-			clearValues[0].Color[1] = 0.1f;
-			clearValues[0].Color[2] = 0.1f;
-			clearValues[0].Color[3] = 1.0f;
-
-			clearValues[1].Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-			clearValues[1].DepthStencil = { 1.0f, 0 };
-
-
-			uint32_t commandBufferindex = swapchain->GetCurrentBackBufferIndex();
-
-			auto drawCommandBuffer = swapchain->GetCurrentDrawCommandBuffer();
-
-			uint32_t rtvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-			uint32_t dsvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+			auto drawBuffer = swapchain->GetCurrentDrawCommandBuffer();
 
 			CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_RTVHeap->GetCPUDescriptorHandleForHeapStart());
-			rtvHandle.Offset(commandBufferindex, rtvDescriptorSize);
+			rtvHandle.Offset(frameIndex, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 
-			CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(m_DSVHeap->GetCPUDescriptorHandleForHeapStart());
-			dsvHandle.Offset(commandBufferindex, dsvDescriptorSize);
 
+			D3D12_RESOURCE_BARRIER barrier = {};
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+			barrier.Transition.pResource = m_RenderTargets[frameIndex].Get();
+			barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+			drawBuffer->ResourceBarrier(1, &barrier);
+
+			// Render Dear ImGui graphics
+			const float clear_color_with_alpha[4] = { 0.2f, 0.2f, 0.2f, 1.0f };	
+			drawBuffer->ClearRenderTargetView(m_RenderTargetDescriptors[frameIndex], clear_color_with_alpha, 0, NULL);
+			drawBuffer->OMSetRenderTargets(1, &m_RenderTargetDescriptors[frameIndex], FALSE, NULL);
 			ID3D12DescriptorHeap* descriptorHeaps[] = { m_SRVHeap.Get() };
-			drawCommandBuffer->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+			drawBuffer->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-
-			CD3DX12_RESOURCE_BARRIER resourceBarrierDepth;
-			resourceBarrierDepth = resourceBarrierDepth.Transition(m_DepthStencilBuffer[commandBufferindex].Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
-			drawCommandBuffer->ResourceBarrier(1, &resourceBarrierDepth);
-
-			CD3DX12_RESOURCE_BARRIER resourceBarrierRT;
-			resourceBarrierRT = resourceBarrierRT.Transition(m_RenderTargets[commandBufferindex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-
-			// Define the clear color (RGBA)
-			float clearColor[] = { 0.0f, 0.0f, 1.0f, 1.0f }; // Blue color with full alpha
-
-			// Transition the render target from its current state to the render target state
-			drawCommandBuffer->ResourceBarrier(1, &resourceBarrierRT);
-
-			// Clear the render target view to the specified clear color
-			drawCommandBuffer->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-
-			// Transition the render target back to the present state
-			drawCommandBuffer->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
-
-			/*D3D12_VIEWPORT viewport = {};
-			viewport.TopLeftX = (float)0.0f;
-			viewport.TopLeftY = (float)height;
-			viewport.Height = -(float)height;
-			viewport.Width = (float)width;
-			viewport.MinDepth = 0;
-			viewport.MaxDepth = 1;
-			drawCommandBuffer->RSSetViewports(1, &viewport);
-
-			D3D12_RECT rect;
-			rect.left = 0;
-			rect.top = 0;
-			rect.right = width;
-			rect.bottom = height;
-			drawCommandBuffer->RSSetScissorRects(1, &rect);*/
-
-			ImDrawData* main_draw_data = ImGui::GetDrawData();
-			ImGui_ImplDX12_RenderDrawData(main_draw_data, drawCommandBuffer.Get());
-
-			/*resourceBarrierDepth = resourceBarrierDepth.Transition(m_DepthStencilBuffer[commandBufferindex].Get(), D3D12_RESOURCE_STATE_DEPTH_WRITE, D3D12_RESOURCE_STATE_COMMON);
-			drawCommandBuffer->ResourceBarrier(1, &resourceBarrierDepth);
-			resourceBarrierRT.Transition(m_RenderTargets[commandBufferindex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
-			drawCommandBuffer->ResourceBarrier(1, &resourceBarrierRT);*/
+			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), drawBuffer.Get());
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+			drawBuffer->ResourceBarrier(1, &barrier);
 			
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
 			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 			{
 				ImGui::UpdatePlatformWindows();
-				ImGui::RenderPlatformWindowsDefault();
+				ImGui::RenderPlatformWindowsDefault(nullptr, drawBuffer.Get());
 			}
 		}
 
 		void DirectX12ImGuiLayer::OnImGuiRender()
 		{
-			ImGui::ShowDemoWindow(nullptr);
+			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+
+			ImVec2 mousePos = ImGui::GetMousePos();
+
+			ImGui::Text("Mouse Position: (%.1f, %.1f)", mousePos.x, mousePos.y);
+
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::End();                
 		}
 	}
 }

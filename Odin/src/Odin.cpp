@@ -12,8 +12,8 @@ Valhalla::Application* Valhalla::CreateApplication(int argc, char** argv)
 {
 	Valhalla::ApplicationSpecification specification;
 	specification.Name = "Odin";
-	specification.WindowWidth = 1600;
-	specification.WindowHeight = 900;
+	specification.WindowWidth = 1280;
+	specification.WindowHeight = 800;
 	specification.StartMaximized = true;
 	specification.VSync = true;
 

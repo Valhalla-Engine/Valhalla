@@ -520,6 +520,7 @@
       <Filter>vendor\yaml-cpp\src</Filter>
     </ClInclude>
     <ClInclude Include="src\Valhalla\Editor\EditorConsoleSink.h" />
+    <ClInclude Include="src\Valhalla\ImGui\Colors.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Valhalla\Asset\AssimpMeshImporter.cpp">
@@ -762,5 +763,6 @@
     <ClCompile Include="vendor\yaml-cpp\src\yamlmemory.cpp">
       <Filter>vendor\yaml-cpp\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Valhalla\ImGui\Colors.cpp" />
   </ItemGroup>
 </Project>

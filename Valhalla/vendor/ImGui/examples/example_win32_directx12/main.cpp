@@ -12,6 +12,7 @@
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <tchar.h>
+#include <iostream>
 
 #ifdef _DEBUG
 #define DX12_ENABLE_DEBUG_LAYER
@@ -176,6 +177,11 @@ int main(int, char**)
             ImGui::Text("counter = %d", counter);
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+            ImVec2 mousePos = ImGui::GetMousePos();
+
+            ImGui::Text("Mouse Position: (%.1f, %.1f)", mousePos.x, mousePos.y);
+
             ImGui::End();
         }
 
@@ -254,7 +260,7 @@ int main(int, char**)
 bool CreateDeviceD3D(HWND hWnd)
 {
     // Setup swap chain
-    DXGI_SWAP_CHAIN_DESC1 sd;
+    DXGI_SWAP_CHAIN_DESC1 sd;                                        
     {
         ZeroMemory(&sd, sizeof(sd));
         sd.BufferCount = NUM_BACK_BUFFERS;

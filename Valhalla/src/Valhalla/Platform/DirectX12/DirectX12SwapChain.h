@@ -36,7 +36,11 @@ namespace Valhalla
 			DXGI_FORMAT GetColorFormat() const { return m_ColorFormat; }
 
 			uint32_t GetCurrentBackIndex() const { return m_CurrentBufferIndex; }
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCurrentDrawCommandBuffer() { return GetDrawCommandBuffer(m_CurrentBufferIndex); }
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCurrentDrawCommandBuffer() 
+			{ 
+				//VH_CORE_INFO("Current back buffer index:{0}", m_CurrentBufferIndex);
+				return GetDrawCommandBuffer(0); 
+			}
 
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetDrawCommandBuffer(uint32_t index)
 			{
@@ -70,9 +74,9 @@ namespace Valhalla
 			};
 			std::vector<SwapChainCommandBuffer> m_CommandBuffers;
 
-			std::vector<Microsoft::WRL::ComPtr<ID3D12Fence1>> m_WaitFences;
-			std::vector<uint64_t> m_FenceValues;
-			std::vector<HANDLE> m_FenceEvents;
+			std::vector<Microsoft::WRL::ComPtr<ID3D12Fence>> m_WaitFences;
+			Microsoft::WRL::ComPtr<ID3D12Fence> m_GlobalFence;
+			size_t m_CurrentFence;
 
 			uint32_t m_CurrentBufferIndex = 0;
 
