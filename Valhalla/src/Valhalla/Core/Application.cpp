@@ -18,14 +18,14 @@ namespace Valhalla
 
 		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(m_Specification.Name, 
 			m_Specification.WindowWidth, m_Specification.WindowHeight)));
-		m_Window->Init();
 		m_Window->SetEventCallback([this](Event& e) {OnEvent(e); });
+		m_Window->Init();
 		m_Window->SetVSync(true);
 
 		m_Profiler = new PerformanceProfiler();
 
 		Heimdall::Renderer::Init();
-		/*Heimdall::Renderer::WaitAndRender();*/
+		Heimdall::Renderer::WaitAndRender();
 
 		m_ImGuiLayer = ImGuiLayer::Create();
 		PushOverlay(m_ImGuiLayer);
@@ -161,7 +161,7 @@ namespace Valhalla
 		}
 
 		auto& window = m_Window;
-
+		window->GetSwapChain()->OnResize(width, height);
 
 		return false;
 	}

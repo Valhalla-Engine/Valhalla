@@ -80,12 +80,6 @@ namespace Valhalla
 		{
 			VH_CORE_ASSERT(m_Window, "Could not initialize Win32");
 		}
-
-		SetWindowLongPtr(m_Window, 0, (LONG_PTR)&m_Data);
-		ShowWindow(m_Window, SW_SHOW);
-		UpdateWindow(m_Window);
-		SetFocus(m_Window);
-
 		m_RendererContext = Heimdall::RendererContext::Create();
 		m_SwapChain = Heimdall::SwapChain::Create();
 		m_RendererContext->Init();
@@ -93,6 +87,11 @@ namespace Valhalla
 		m_SwapChain->Init(m_RendererContext);
 		m_SwapChain->InitSurface();
 		m_SwapChain->CreateSwapchain(&m_Data.Width, &m_Data.Height, m_Data.VSync);
+
+		SetWindowLongPtr(m_Window, 0, (LONG_PTR)&m_Data);
+		ShowWindow(m_Window, SW_SHOW);
+		UpdateWindow(m_Window);
+		SetFocus(m_Window);
 	}
 
 	void WindowsWindow::Shutdown()
@@ -150,8 +149,6 @@ namespace Valhalla
 
 	LRESULT CALLBACK WindowsWindow::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		LRESULT result = NULL;
-
 		if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
 			return true;
 
@@ -159,19 +156,13 @@ namespace Valhalla
 		{
 			case WM_SIZE:
 			{
-				if (WindowCreatingBlocking > 0)
-				{
-					WindowData* data = (WindowData*)GetWindowLongPtr(hwnd, 0);
-					data->Width = (UINT)LOWORD(lparam);
-					data->Height = (UINT)HIWORD(lparam);
+				WindowData* data = reinterpret_cast<WindowData*>(GetWindowLongPtr(hwnd, 0));
+				data->Width = (UINT)LOWORD(lparam);
+				data->Height = (UINT)HIWORD(lparam);
 
-					WindowResizeEvent event((UINT)LOWORD(lparam), (UINT)HIWORD(lparam));
-					data->EventCallback(event);
-				}
-
-				WindowCreatingBlocking++;
-
-				break;
+				WindowResizeEvent event((UINT)LOWORD(lparam), (UINT)HIWORD(lparam));
+				data->EventCallback(event);
+				return true;
 			}
 
 			case WM_CLOSE:
@@ -181,7 +172,7 @@ namespace Valhalla
 
 				WindowCloseEvent event;
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_KEYUP:
@@ -190,7 +181,7 @@ namespace Valhalla
 
 				KeyReleasedEvent event(static_cast<KeyCode>(wparam));
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_CHAR:
@@ -199,7 +190,7 @@ namespace Valhalla
 
 				KeyTypedEvent event(static_cast<KeyCode>(wparam));
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_KEYDOWN:
@@ -209,7 +200,7 @@ namespace Valhalla
 
 				KeyPressedEvent event(static_cast<KeyCode>(lparam), repeatCount);
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_MOUSEMOVE:
@@ -218,7 +209,7 @@ namespace Valhalla
 				
 				MouseMovedEvent event((float_t)GET_X_LPARAM(lparam), (float_t)GET_Y_LPARAM(lparam));
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_MOUSEWHEEL:
@@ -227,7 +218,7 @@ namespace Valhalla
 
 				MouseScrolledEvent event((float_t)GET_WHEEL_DELTA_WPARAM(wparam) / (float_t)WHEEL_DELTA, 0.0f);
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_LBUTTONDOWN:
@@ -236,7 +227,7 @@ namespace Valhalla
 
 				MouseButtonPressedEvent event(MouseButton::ButtonLeft);
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_LBUTTONUP:
@@ -245,7 +236,7 @@ namespace Valhalla
 
 				MouseButtonReleasedEvent event(MouseButton::ButtonLeft);
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_MBUTTONDOWN:
@@ -254,7 +245,7 @@ namespace Valhalla
 
 				MouseButtonPressedEvent event(MouseButton::ButtonMiddle);
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_MBUTTONUP:
@@ -263,7 +254,7 @@ namespace Valhalla
 
 				MouseButtonReleasedEvent event(MouseButton::ButtonMiddle);
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_RBUTTONDOWN:
@@ -272,7 +263,7 @@ namespace Valhalla
 
 				MouseButtonPressedEvent event(MouseButton::ButtonRight);
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			case WM_RBUTTONUP:
@@ -281,13 +272,11 @@ namespace Valhalla
 
 				MouseButtonReleasedEvent event(MouseButton::ButtonRight);
 				data->EventCallback(event);
-				break;
+				return true;
 			}
 
 			default:
-				result = DefWindowProc(hwnd, msg, wparam, lparam);
+				return DefWindowProc(hwnd, msg, wparam, lparam);
 		}
-
-		return result;
 	}
 }

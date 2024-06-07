@@ -62,12 +62,14 @@ namespace Valhalla
 
 			HWND window = static_cast<HWND>(Application::Get().GetWindow().GetNativeWindow());
 
+			m_ColorFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+
 			DXGI_SWAP_CHAIN_DESC1 sd;
 			ZeroMemory(&sd, sizeof(sd));
 			sd.BufferCount = 2;
-			sd.Width = Application::Get().GetWindow().GetWidth();
-			sd.Height = Application::Get().GetWindow().GetHeight();
-			sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			sd.Width = m_Width;
+			sd.Height = m_Height;
+			sd.Format = m_ColorFormat;
 			sd.Flags = DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT;
 			sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 			sd.SampleDesc.Count = 1;
@@ -77,7 +79,6 @@ namespace Valhalla
 			sd.Scaling = DXGI_SCALING_STRETCH;
 			sd.Stereo = FALSE;
 
-			m_ImageCount = 2;
 
 			{
 				IDXGIFactory4* dxgiFactory = NULL;
@@ -89,13 +90,51 @@ namespace Valhalla
 				swapChain1->Release();
 				dxgiFactory->Release();
 				m_SwapChain->SetMaximumFrameLatency(2);
-				//g_hSwapChainWaitableObject = g_pSwapChain->GetFrameLatencyWaitableObject();
+			}
+			DXGI_SWAP_CHAIN_DESC1 temp;
+			m_SwapChain->GetDesc1(&temp);
+			m_ImageCount = temp.BufferCount;
+
+
+			{
+				D3D12_DESCRIPTOR_HEAP_DESC desc;
+				desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+				desc.NumDescriptors = m_ImageCount;
+				desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+				desc.NodeMask = 1;
+
+				DXCALL(device->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&m_RTVHeap)));
+
+				size_t rtvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+				D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = m_RTVHeap->GetCPUDescriptorHandleForHeapStart();
+				m_RenderTargetViews.resize(m_ImageCount);
+				for (uint32_t i = 0; i < m_ImageCount; i++)
+				{
+					m_RenderTargetViews[i] = rtvHandle;
+					rtvHandle.ptr += rtvDescriptorSize;
+				}
 			}
 
-			ID3D12Resource* backBuffer = nullptr;
-			m_SwapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer));
-			auto desc = backBuffer->GetDesc();
-			VH_CORE_INFO("backBuffer size: ({0}, {1})", desc.Width, desc.Height);
+			{
+				D3D12_DESCRIPTOR_HEAP_DESC desc;
+				desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+				desc.NumDescriptors = 1;
+				desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+				desc.NodeMask = 0;
+
+				DXCALL(device->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&m_SRVHeap)));
+			}
+
+			m_RenderTargets.resize(m_ImageCount);
+			for (size_t i = 0; i < m_ImageCount; i++)
+			{
+				m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_RenderTargets[i]));
+				device->CreateRenderTargetView(m_RenderTargets[i].Get(), nullptr, m_RenderTargetViews[i]);
+				uint32_t refCount = 0;
+				refCount = m_RenderTargets[i]->AddRef();
+				refCount = m_RenderTargets[i]->Release();
+				VH_CORE_INFO("Render Target refCount: {0}", refCount);
+			}
 
 			// Create Command buffers
 			{
@@ -145,7 +184,7 @@ namespace Valhalla
 				for (size_t i = 0; i < m_FenceEvents.size(); i++)
 				{
 					m_FenceEvents[i] = CreateEvent(nullptr, false, false, nullptr);
-				}*/
+				}*/				
 			}
 		}
 
@@ -158,6 +197,37 @@ namespace Valhalla
 
 			m_SwapChain->Present(0, 0);
 
+			WaitForLastSubmittedFrame();
+		}
+
+		void DirectX12SwapChain::BeginFrame()
+		{
+			auto device = DirectX12Context::GetCurrentDevice();
+			m_CurrentBufferIndex = m_SwapChain->GetCurrentBackBufferIndex();
+			DXCALL(m_CommandBuffers[0].CommandAllocator->Reset());
+			DXCALL(m_CommandBuffers[0].CommandBuffer->Reset(m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator.Get(), nullptr));
+
+			D3D12_RESOURCE_BARRIER barrier = {};
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+			barrier.Transition.pResource = GetCurrentRenderTaget().Get();
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+
+			GetCurrentDrawCommandBuffer()->ResourceBarrier(1, &barrier);
+
+			const float color[4] = {1.0f, 0.2f, 0.2f, 1.0f};
+			GetCurrentDrawCommandBuffer()->ClearRenderTargetView(m_RenderTargetViews[m_CurrentBufferIndex], color, 0, nullptr);
+			GetCurrentDrawCommandBuffer()->OMSetRenderTargets(1, &m_RenderTargetViews[m_CurrentBufferIndex], false, nullptr);
+
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+			GetCurrentDrawCommandBuffer()->ResourceBarrier(1, &barrier);
+		}
+
+
+		void DirectX12SwapChain::WaitForLastSubmittedFrame()
+		{
 			m_CurrentFence++;
 
 			m_Device->GetGraphicsQueue()->Signal(m_GlobalFence.Get(), m_CurrentFence);
@@ -173,17 +243,23 @@ namespace Valhalla
 			}
 		}
 
-		void DirectX12SwapChain::BeginFrame()
-		{
-			auto device = DirectX12Context::GetCurrentDevice();
-			m_CurrentBufferIndex = m_SwapChain->GetCurrentBackBufferIndex();
-			DXCALL(m_CommandBuffers[0].CommandAllocator->Reset());
-			DXCALL(m_CommandBuffers[0].CommandBuffer->Reset(m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator.Get(), nullptr));
-		}
-
 		void DirectX12SwapChain::OnResize(uint32_t width, uint32_t height)
 		{
+			WaitForLastSubmittedFrame();
 
+			for (uint32_t i = 0; i < m_RenderTargets.size(); i++)
+			{
+				m_RenderTargets[i].Reset();
+			}
+
+
+			DXCALL(m_SwapChain->ResizeBuffers(2, width, height, m_ColorFormat, DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT));
+
+			for (size_t i = 0; i < m_ImageCount; i++)
+			{
+				m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_RenderTargets[i]));
+ 				m_Device->GetDevice()->CreateRenderTargetView(m_RenderTargets[i].Get(), nullptr, m_RenderTargetViews[i]);
+			}
 		}
 
 	}

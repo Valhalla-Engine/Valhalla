@@ -1,9 +1,27 @@
 # Binaries
 **/bin/
 !vendor/bin/premake/
+!Valhalla/vendor/assimp/bin
 !Valhalla/vendor/mono/bin
 bin-int/
 obj/
+**/cache/**
+**/Cache/**
+
+
+Odin/Odin
+Intermediates/
+Binaries
+Odin/Resources/Scripts/
+
+Odin/SandboxProject/Assets/Scripts/Binaries/Sandbox.dll
+
+# Odin ApplicationSettings
+Odin/Config/ApplicationSettings.yaml
+
+# Odin Folders
+Odin/Captures/
+Odin/Tools/JoltViewer
 
 # Visual Studio files and folder
 .vs/
@@ -12,13 +30,35 @@ obj/
 **.vcxproj.filters
 **.vcxproj.user
 **.csproj
+**.nsight-gfxproj
+**.DotSettings
+**.user
+
+.idea/
+Makefile
+*.make
+*.a
+
+Odin/EditorLayout.yaml
+Odin/Config/EditorApplicationSettings.yaml
+
+# LFS Folders
+lfs/
+hooks/
 
 # Meta Files
 **.meta
 
+# Log files
+**.log
 
+# Auto saves
+*.auto
 
-
-
-
-
+# Dumps
+*.nvdbg
+*.nv-gpudmp
+*gpudmp.json
+bin-int/Debug-windows-x86_64/Odin/Odin.obj
+Valhalla/vendor/assimp/bin/linux/libassimp.so.5
+Valhalla/vendor/assimp/bin/linux/libassimp.so

@@ -48,12 +48,20 @@ namespace Valhalla
 				return m_CommandBuffers[index].CommandBuffer;
 			}
 
+			Microsoft::WRL::ComPtr<ID3D12Resource> GetCurrentRenderTaget()
+			{
+				return m_RenderTargets[m_CurrentBufferIndex];
+			}
+
 			void SetVSync(const bool enabled) { m_VSync = enabled; }
 
 			Microsoft::WRL::ComPtr<IDXGISwapChain3> GetSwapChain()
 			{
 				return m_SwapChain; 
 			}
+		private:
+			void WaitForLastSubmittedFrame();
+
 		private:
 
 			bool m_VSync = false;
@@ -66,6 +74,12 @@ namespace Valhalla
 			DXGI_FORMAT m_ColorFormat = DXGI_FORMAT_UNKNOWN;
 
 			Ref<DirectX12Device> m_Device = nullptr;
+
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_SRVHeap;
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RTVHeap;
+
+			std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> m_RenderTargets;
+			std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> m_RenderTargetViews;
 
 			struct SwapChainCommandBuffer
 			{

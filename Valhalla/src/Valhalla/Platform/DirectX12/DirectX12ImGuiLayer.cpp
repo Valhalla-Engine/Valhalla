@@ -93,17 +93,7 @@ namespace Valhalla
 					DXCALL(device->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&instance->m_SRVHeap)))
 				}
 
-				{
-					CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(instance->m_RTVHeap->GetCPUDescriptorHandleForHeapStart());
-					instance->m_RenderTargets.resize(framesInFlight);
-					for (size_t i = 0; i < instance->m_RenderTargets.size(); i++)
-					{
-						ID3D12Resource* pBackBuffer = NULL;
-						swapchain->GetSwapChain()->GetBuffer(i, IID_PPV_ARGS(&pBackBuffer));
-						device->CreateRenderTargetView(pBackBuffer, NULL, instance->m_RenderTargetDescriptors[i]);
-						instance->m_RenderTargets[i] = pBackBuffer;
-					}
-				}
+				
 				
 				ImGui_ImplWin32_Init(window);
 				ImGui_ImplDX12_Init(device.Get(), framesInFlight,
@@ -149,27 +139,38 @@ namespace Valhalla
 
 			auto drawBuffer = swapchain->GetCurrentDrawCommandBuffer();
 
-			CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_RTVHeap->GetCPUDescriptorHandleForHeapStart());
-			rtvHandle.Offset(frameIndex, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-
+			auto renderTarget = swapchain->GetCurrentRenderTaget().Get();
 
 			D3D12_RESOURCE_BARRIER barrier = {};
 			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-			barrier.Transition.pResource = m_RenderTargets[frameIndex].Get();
-			barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+			barrier.Transition.pResource = renderTarget;
 			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
 			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
 			drawBuffer->ResourceBarrier(1, &barrier);
 
-			// Render Dear ImGui graphics
-			const float clear_color_with_alpha[4] = { 0.2f, 0.2f, 0.2f, 1.0f };	
-			drawBuffer->ClearRenderTargetView(m_RenderTargetDescriptors[frameIndex], clear_color_with_alpha, 0, NULL);
-			drawBuffer->OMSetRenderTargets(1, &m_RenderTargetDescriptors[frameIndex], FALSE, NULL);
 			ID3D12DescriptorHeap* descriptorHeaps[] = { m_SRVHeap.Get() };
 			drawBuffer->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
+			D3D12_VIEWPORT viewport = {};
+			viewport.TopLeftX = 0.0f;
+			viewport.TopLeftY = (float)height;
+			viewport.Height = -(float)height;
+			viewport.Width = (float)width;
+			viewport.MinDepth = 0.0f;
+			viewport.MaxDepth = 1.0f;
+			drawBuffer->RSSetViewports(1, &viewport);
+
+			D3D12_RECT scissor = {};
+			scissor.left = 0;
+			scissor.top = 0;
+			scissor.right = (float)width;
+			scissor.bottom = (float)height;
+			drawBuffer->RSSetScissorRects(1, &scissor);
+
+
 			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), drawBuffer.Get());
+
 			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
 			drawBuffer->ResourceBarrier(1, &barrier);
