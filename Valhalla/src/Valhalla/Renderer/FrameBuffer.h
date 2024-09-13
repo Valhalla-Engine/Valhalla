@@ -19,6 +19,11 @@ namespace Valhalla
 			Zero_SrcColor
 		};
 
+		enum class AttachmentLoadOp
+		{
+			Inherit = 0, Clear, Load
+		};
+
 		struct FrameBufferTextureSpecification
 		{
 			FrameBufferTextureSpecification() = default;
@@ -28,6 +33,7 @@ namespace Valhalla
 			ImageFormat Format;
 			bool Blend = true;
 			FrameBufferBlendMode BlendMode = FrameBufferBlendMode::SrcAlphaOneMinusSrcAlpha;
+			AttachmentLoadOp loadOp = AttachmentLoadOp::Inherit;
 		};
 
 		struct FrameBufferAttachmentsSpecification

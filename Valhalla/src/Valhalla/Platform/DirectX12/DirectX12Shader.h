@@ -3,10 +3,9 @@
 #include "VD3D12.h"
 #include <dxcapi.h>
 #include <d3d12shader.h>
+#include <d3dcompiler.h>
 
 #include "Valhalla/Renderer/Shader.h"
-
-#pragma comment(lib, "dxcompiler.lib")
 
 namespace Valhalla
 {
@@ -32,11 +31,13 @@ namespace Valhalla
 			virtual size_t GetHash() const override;
 			void SetMacro(const std::string& name, const std::string& value) override {}
 
-			D3D12_INPUT_LAYOUT_DESC GetInputLayout();
-			std::vector<D3D12_ROOT_PARAMETER1> GetRootParameters();
+			D3D12_INPUT_LAYOUT_DESC GetInputLayout() { return m_InputLayout;}
+			void CreateRootSignature();
 
 			D3D12_SHADER_BYTECODE GetVertexShader() { return { m_VertexShader->GetBufferPointer(), m_VertexShader->GetBufferSize() }; }
 			D3D12_SHADER_BYTECODE GetPixelShader() { return {m_PixelShader->GetBufferPointer(), m_PixelShader->GetBufferSize()}; }
+
+			Microsoft::WRL::ComPtr<ID3D12RootSignature> GetRootSignature() { return m_RootSignature; }
 
 			virtual const std::string& GetName() const override { return m_Name; }
 			virtual const std::unordered_map<std::string, Heimdall::ShaderBuffer>& GetShaderBuffers() const override { return  m_ReflectionData.ConstantBuffers; }
@@ -44,21 +45,22 @@ namespace Valhalla
 			virtual void AddShaderReloadedCallback(const ShaderReloadedCallback& callback) override;
 
 		private:
-
-			Microsoft::WRL::ComPtr<IDxcResult> CompileShader(const std::string& path, LPCWSTR entrypoint, LPCWSTR target, bool disableOptimization);
+			void CreateInputLayout();
+			Microsoft::WRL::ComPtr<ID3D10Blob> CompileShader(const std::string& path, LPCSTR entrypoint, LPCSTR target, bool disableOptimization);
 
 		private:
 			std::string m_Name;
-			Microsoft::WRL::ComPtr<IDxcBlob> m_VertexShader;
-			Microsoft::WRL::ComPtr<IDxcBlob> m_PixelShader;
+			
+			Microsoft::WRL::ComPtr<ID3D10Blob> m_VertexShader;
+			Microsoft::WRL::ComPtr<ID3D10Blob> m_PixelShader;
+			Microsoft::WRL::ComPtr<ID3D12ShaderReflection> m_VertexReflection;
+			Microsoft::WRL::ComPtr<ID3D12ShaderReflection> m_PixelReflection;
+			Microsoft::WRL::ComPtr<ID3D12RootSignature> m_RootSignature;
+
+			D3D12_INPUT_LAYOUT_DESC m_InputLayout;
 
 			ReflectionData m_ReflectionData;
 
-			/*Compiler stuff*/
-			Microsoft::WRL::ComPtr<IDxcCompiler3> m_Compiler;
-			Microsoft::WRL::ComPtr<IDxcUtils> m_Utils;
-			Microsoft::WRL::ComPtr<ID3D12ShaderReflection> m_Reflection;
-			Microsoft::WRL::ComPtr<IDxcIncludeHandler> m_IncludeHandler;
 		};
 	}
 }

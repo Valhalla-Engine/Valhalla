@@ -1,6 +1,10 @@
 #include "vhpch.h"
 
+#include <cwchar>
+
 #include "DirectX12Shader.h"
+#include "DirectX12Context.h"
+
 
 namespace Valhalla
 {
@@ -8,81 +12,54 @@ namespace Valhalla
 	{
 		DirectX12Shader::DirectX12Shader(const std::string& path, bool forceCompile, bool disableOptimization)
 		{
-			m_Name = "Test";
+			m_VertexShader = CompileShader(path, "VSMain", "vs_5_0", disableOptimization);
+			m_PixelShader = CompileShader(path, "PSMain", "ps_5_0", disableOptimization);
 
-			DXCALL(DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(m_Utils.GetAddressOf())));
-			DXCALL(DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(m_Compiler.GetAddressOf())));
-			DXCALL(m_Utils->CreateDefaultIncludeHandler(m_IncludeHandler.GetAddressOf()));
+			DXCALL(D3DReflect(m_VertexShader->GetBufferPointer(), m_VertexShader->GetBufferSize(), IID_PPV_ARGS(&m_VertexReflection)));
+			DXCALL(D3DReflect(m_PixelShader->GetBufferPointer(), m_PixelShader->GetBufferSize(), IID_PPV_ARGS(&m_PixelReflection)));
 
-			auto vertexCompiled = CompileShader(path, L"VSMain", L"vs_6_0", disableOptimization);
-			auto pixelCompiled = CompileShader(path, L"PSMain", L"ps_6_0", disableOptimization);
+			CD3DX12_ROOT_SIGNATURE_DESC rootDesc;
+			rootDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-			DXCALL(vertexCompiled->GetResult(m_VertexShader.GetAddressOf()));
-			DXCALL(pixelCompiled->GetResult(m_PixelShader.GetAddressOf()));
+			Microsoft::WRL::ComPtr<ID3D10Blob> signature;
+			Microsoft::WRL::ComPtr<ID3D10Blob> error;
+			auto device = DirectX12Context::GetCurrentDevice();
+			DXCALL(D3D12SerializeRootSignature(&rootDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error));
+			DXCALL(device->GetDevice()->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(m_RootSignature.GetAddressOf())));
 
-			Microsoft::WRL::ComPtr<IDxcBlob> reflectionblob;
-			DXCALL(vertexCompiled->GetOutput(DXC_OUT_REFLECTION, IID_PPV_ARGS(reflectionblob.GetAddressOf()), nullptr));
-
-			DxcBuffer reflectionBuffer;
-			reflectionBuffer.Ptr = reflectionblob->GetBufferPointer();
-			reflectionBuffer.Size = reflectionblob->GetBufferSize();
-			reflectionBuffer.Encoding = 0;
-
-			DXCALL(m_Utils->CreateReflection(&reflectionBuffer, IID_PPV_ARGS(m_Reflection.GetAddressOf())));
+			CreateInputLayout();
+			//CreateRootSignature();
 		}
 
 		DirectX12Shader::~DirectX12Shader()
 		{
 		}
 
-		Microsoft::WRL::ComPtr<IDxcResult> DirectX12Shader::CompileShader(const std::string& path, LPCWSTR entrypoint, 
-			LPCWSTR target, bool disableOptimization)
+		Microsoft::WRL::ComPtr<ID3D10Blob> DirectX12Shader::CompileShader(const std::string& path, LPCSTR entrypoint, 
+			LPCSTR target, bool disableOptimization)
 		{
-			std::vector<LPCWSTR> compilationArgs
-			{
-				L"-E",
-				entrypoint,
-				L"-T",
-				target,
-				DXC_ARG_PACK_MATRIX_ROW_MAJOR,
-				DXC_ARG_WARNINGS_ARE_ERRORS,
-				DXC_ARG_ALL_RESOURCES_BOUND
-			};
+			Microsoft::WRL::ComPtr<ID3D10Blob> bytecode;
+			Microsoft::WRL::ComPtr<ID3D10Blob> error;
 
-			if constexpr (VH_DEBUG)
-			{
-				compilationArgs.push_back(DXC_ARG_DEBUG);
-			}
-			else if (disableOptimization)
-			{
-				compilationArgs.push_back(DXC_ARG_OPTIMIZATION_LEVEL0);
-			}
-			else
-			{
-				compilationArgs.push_back(DXC_ARG_OPTIMIZATION_LEVEL3);
-			}
+			uint32_t compileFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 
-			Microsoft::WRL::ComPtr<IDxcBlobEncoding> source;
-			std::wstring temp = std::wstring(path.begin(), path.end());
-			DXCALL(m_Utils->LoadFile(temp.c_str(), nullptr, source.GetAddressOf()));
+#ifdef VH_DEBUG
+			compileFlags |= D3DCOMPILE_DEBUG;
+#endif
+			if (disableOptimization)
+				compileFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
 
-			DxcBuffer sourceBuffer;
-			sourceBuffer.Ptr = source->GetBufferPointer();
-			sourceBuffer.Size = source->GetBufferSize();
-			sourceBuffer.Encoding = 0;
+			std::size_t len = std::mbstowcs(nullptr, path.c_str(), 0);
+			std::vector<wchar_t> buffer(len + 1);
+			std::mbstowcs(buffer.data(), path.c_str(), len + 1);
+			std::wstring wpath(buffer.data());
 
-			Microsoft::WRL::ComPtr<IDxcResult> result;
-			DXCALL(m_Compiler->Compile(&sourceBuffer, compilationArgs.data(), static_cast<uint32_t>(compilationArgs.size()), m_IncludeHandler.Get(),
-				IID_PPV_ARGS(&result)));
+			DXCALL(D3DCompileFromFile(wpath.c_str(), nullptr, nullptr, entrypoint, target, compileFlags, 0, bytecode.GetAddressOf(), error.GetAddressOf()));
 
-			Microsoft::WRL::ComPtr<IDxcBlobUtf8> errors;
-			DXCALL(result->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&errors), nullptr));
-			if (errors && errors->GetStringPointer() && errors->GetStringPointer()[0] != '\0')
-			{
-				VH_CORE_ERROR(errors->GetStringPointer());
-			}
+			if (error != nullptr)
+				VH_CORE_INFO(((char*)error->GetBufferPointer()));
 
-			return result;
+			return bytecode;
 		}
 
 
@@ -108,102 +85,122 @@ namespace Valhalla
 
 		}
 
-		D3D12_INPUT_LAYOUT_DESC DirectX12Shader::GetInputLayout()
+		void DirectX12Shader::CreateInputLayout()
 		{
 			D3D12_SHADER_DESC shaderDesc{};
-			DXCALL(m_Reflection->GetDesc(&shaderDesc));
+			DXCALL(m_VertexReflection->GetDesc(&shaderDesc));
 
 			std::vector<D3D12_INPUT_ELEMENT_DESC> InputElements;
+			uint32_t offset = 0;
 			for (size_t i = 0; i < shaderDesc.InputParameters; i++)
 			{
 				D3D12_SIGNATURE_PARAMETER_DESC signatureDesc;
-				m_Reflection->GetInputParameterDesc(i, &signatureDesc);
+				m_VertexReflection->GetInputParameterDesc(i, &signatureDesc);
 
 				D3D12_INPUT_ELEMENT_DESC desc;
 				desc.SemanticName = signatureDesc.SemanticName;
 				desc.SemanticIndex = signatureDesc.SemanticIndex;
 				desc.InputSlot = 0;
-				desc.AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+				desc.AlignedByteOffset = offset;
 				desc.InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 				desc.InstanceDataStepRate = 0;
 
-				if (signatureDesc.Mask == 1)
+				std::string temp(desc.SemanticName);
+				
+				if (temp == "POSITION")
+				{
+					desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+					offset += 12;
+				}
+				else if (signatureDesc.Mask == 1)
 				{
 					switch (signatureDesc.ComponentType)
 					{
-						case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32_UINT; break;
-						case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32_SINT; break;
-						case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32_FLOAT; break;
+					case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32_UINT; offset+= 4; break;
+					case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32_SINT; offset += 4; break;
+					case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32_FLOAT; offset += 4; break;
 					}
 				}
 				else if (signatureDesc.Mask <= 3)
 				{
 					switch (signatureDesc.ComponentType)
 					{
-						case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32G32_UINT; break;
-						case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32G32_SINT; break;
-						case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32G32_FLOAT; break;
+					case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32G32_UINT; offset += 8; break;
+					case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32G32_SINT; offset += 8; break;
+					case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32G32_FLOAT; offset += 8; break;
 					}
 				}
 				else if (signatureDesc.Mask <= 7)
 				{
 					switch (signatureDesc.ComponentType)
 					{
-						case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32G32B32_UINT; break;
-						case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32G32B32_SINT; break;
-						case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32G32B32_FLOAT; break;
+					case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32G32B32_UINT; offset += 12; break;
+					case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32G32B32_SINT; offset += 12; break;
+					case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32G32B32_FLOAT; offset += 12; break;
 					}
 				}
 				else if (signatureDesc.Mask <= 15)
 				{
 					switch (signatureDesc.ComponentType)
 					{
-						case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32G32B32A32_UINT; break;
-						case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32G32B32A32_SINT; break;
-						case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; break;
+					case D3D_REGISTER_COMPONENT_UINT32:		desc.Format = DXGI_FORMAT_R32G32B32A32_UINT; offset += 16; break;
+					case D3D_REGISTER_COMPONENT_SINT32:		desc.Format = DXGI_FORMAT_R32G32B32A32_SINT; offset += 16; break;
+					case D3D_REGISTER_COMPONENT_FLOAT32:	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; offset += 16; break;
 					}
 				}
 
 				InputElements.push_back(desc);
 			}
+			D3D12_INPUT_ELEMENT_DESC* inputElementDescs = new D3D12_INPUT_ELEMENT_DESC[InputElements.size()];
+			memcpy(inputElementDescs, InputElements.data(), InputElements.size() * sizeof(D3D12_INPUT_ELEMENT_DESC));
 
-			return { InputElements.data(), static_cast<uint32_t>(InputElements.size()) };
+			D3D12_INPUT_LAYOUT_DESC inputLayoutDesc = {};
+			m_InputLayout.pInputElementDescs = inputElementDescs;
+			m_InputLayout.NumElements = static_cast<UINT>(InputElements.size());
 		}
 
-		std::vector<D3D12_ROOT_PARAMETER1> DirectX12Shader::GetRootParameters()
+		void DirectX12Shader::CreateRootSignature()
 		{
-			std::vector<D3D12_ROOT_PARAMETER1> rootParameters;
+			D3D12_SHADER_DESC vertexShaderDesc;
+			D3D12_SHADER_DESC pixelShaderDesc;
+			DXCALL(m_VertexReflection->GetDesc(&vertexShaderDesc));
+			DXCALL(m_PixelReflection->GetDesc(&pixelShaderDesc));
 
-			D3D12_SHADER_DESC shaderDesc{};
-			DXCALL(m_Reflection->GetDesc(&shaderDesc));
+			uint32_t number = vertexShaderDesc.BoundResources;
+			uint32_t constant = vertexShaderDesc.ConstantBuffers;
 
-			for (size_t i = 0; i < shaderDesc.BoundResources; i++)
+			uint32_t pixelnumber = pixelShaderDesc.BoundResources;
+			uint32_t pixelConstant = pixelShaderDesc.ConstantBuffers;
+
+			if (!(number && constant && pixelnumber && pixelConstant))
 			{
-				D3D12_SHADER_INPUT_BIND_DESC shaderBindDesc;
-				DXCALL(m_Reflection->GetResourceBindingDesc(i, &shaderBindDesc));
-
-				if (shaderBindDesc.Type = D3D_SIT_CBUFFER)
-				{
-					ID3D12ShaderReflectionConstantBuffer* shaderBuffer = m_Reflection->GetConstantBufferByIndex(i);
-
-					D3D12_SHADER_BUFFER_DESC bufferDesc;
-					shaderBuffer->GetDesc(&bufferDesc);
-
-					D3D12_ROOT_PARAMETER1 root;
-					root.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-					root.Descriptor = { shaderBindDesc.BindPoint, shaderBindDesc.Space, D3D12_ROOT_DESCRIPTOR_FLAG_NONE };
-
-					rootParameters.push_back(root);
-					shaderBuffer = nullptr;
-				}
-
-				else if (shaderBindDesc.Type == D3D_SIT_TEXTURE)
-				{
-
-				}
+				CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
+				rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+				Microsoft::WRL::ComPtr<ID3D10Blob> signature;
+				DXCALL(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, nullptr));
+				DXCALL(DirectX12Context::Get()->GetCurrentDevice()->GetDevice()->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&m_RootSignature)));
+				return;
 			}
 
-			return rootParameters;
+			for (uint32_t i = 0; i < vertexShaderDesc.ConstantBuffers; i++)
+			{
+				D3D12_SHADER_BUFFER_DESC desc;
+				auto buffer = m_VertexReflection->GetConstantBufferByIndex(i);
+				buffer->GetDesc(&desc);
+				std::string name(desc.Name);
+			}
+
+			for (uint32_t i = 0; i < vertexShaderDesc.BoundResources; i++)
+			{
+				D3D12_SHADER_INPUT_BIND_DESC desc;
+				m_VertexReflection->GetResourceBindingDesc(i, &desc);
+				std::string name(desc.Name);
+			}
+
+			VH_CORE_INFO("Bound Resources: {0}", number);
+			VH_CORE_INFO("Constant buffers: {0}", constant);
+
+			return ;
 		}
 	}
 }

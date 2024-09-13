@@ -123,7 +123,7 @@ namespace Valhalla
 		}
 
 		template<typename T2>
-		Ref<T2> As()
+		Ref<T2> As() const
 		{
 			return Ref<T2>(*this);
 		}

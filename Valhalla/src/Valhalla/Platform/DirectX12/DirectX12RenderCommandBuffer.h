@@ -19,13 +19,12 @@ namespace Valhalla
 			virtual void Submit() override;
 
 
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> GetActiveCommandBuffer() const { return m_ActiveCommandBuffer; }
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> GetCommandBuffer(uint32_t frameIndex) const
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetActiveCommandBuffer() const { return m_ActiveCommandBuffer; }
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCommandBuffer(uint32_t frameIndex) const
 			{
 				VH_CORE_ASSERT(frameIndex < m_CommandBuffers.size());
 				return m_CommandBuffers[frameIndex];
 			}
-		private:
 
 			void WaitForFence(uint32_t frameIndex);
 			void CreateFenceSignal(uint32_t frameIndex);
@@ -40,8 +39,8 @@ namespace Valhalla
 
 			std::string m_DebugName;
 			std::vector<Microsoft::WRL::ComPtr<ID3D12CommandAllocator>> m_CommandAllocators;
-			std::vector<Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>> m_CommandBuffers;
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_ActiveCommandBuffer;
+			std::vector<Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7>> m_CommandBuffers;
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> m_ActiveCommandBuffer;
 			std::vector<WaitFence> m_Fences;
 		};
 	}

@@ -7,17 +7,16 @@ namespace Valhalla
 {
 	namespace Yggdrasil
 	{
-		DirectX12IndexBuffer::DirectX12IndexBuffer(uint32_t size)
+		DirectX12IndexBuffer::DirectX12IndexBuffer(uint16_t size)
 			: m_Size(size)
 		{
 
 		}
 
-		DirectX12IndexBuffer::DirectX12IndexBuffer(void* buffer, uint32_t size)
+		DirectX12IndexBuffer::DirectX12IndexBuffer(void* buffer, uint16_t size)
 			: m_Size(size)
 		{
 			Microsoft::WRL::ComPtr<ID3D12Device> device = DirectX12Context::GetCurrentDevice()->GetDevice();
-			//Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = DirectX12Renderer::GetCommandList();
 
 			auto heapDefault = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 			auto heapUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -46,22 +45,25 @@ namespace Valhalla
 			srd.RowPitch = size;
 			srd.SlicePitch = size;
 
-			/*cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_IndexBuffer.Get(), D3D12_RESOURCE_STATE_COMMON,
-				D3D12_RESOURCE_STATE_COPY_DEST));
-			UpdateSubresources<1>(cmdList.Get(), m_IndexBuffer.Get(), m_UploadBuffer.Get(), 0, 0, 1, &srd);
-			cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_IndexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST,
-				D3D12_RESOURCE_STATE_COMMON));*/
+			auto cmdList = DirectX12Context::GetCurrentDevice()->GetCommandBuffer(true);
 
-			D3D12_INDEX_BUFFER_VIEW ibv;
-			ibv.BufferLocation = m_IndexBuffer->GetGPUVirtualAddress();
-			ibv.SizeInBytes = m_Size;
-			ibv.Format = DXGI_FORMAT_R32_UINT;
+			D3D12_RESOURCE_BARRIER barrier = {};
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Transition.pResource = m_IndexBuffer.Get();
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COMMON;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_COPY_DEST;
 
-			//cmdList->IASetIndexBuffer(&ibv);
-			//cmdList->DrawIndexedInstanced(GetCount(), 1, 0, 0, 0);
+			cmdList->ResourceBarrier(1, &barrier);
+			cmdList->CopyResource(m_IndexBuffer.Get(), m_UploadBuffer.Get());
+
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_INDEX_BUFFER;
+			cmdList->ResourceBarrier(1, &barrier);
+
+			DirectX12Context::GetCurrentDevice()->FlushCommandBuffer(cmdList);
 		}
 
-		void DirectX12IndexBuffer::SetData(void* buffer, uint32_t size, uint32_t offset)
+		void DirectX12IndexBuffer::SetData(void* buffer, uint16_t size, uint16_t offset)
 		{
 
 		}

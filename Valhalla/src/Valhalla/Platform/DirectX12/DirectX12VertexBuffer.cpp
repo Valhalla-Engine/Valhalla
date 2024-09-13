@@ -9,53 +9,51 @@ namespace Valhalla
 {
 	namespace Yggdrasil
 	{
-		DirectX12VertexBuffer::DirectX12VertexBuffer(void* data, uint32_t size, uint32_t stride, Heimdall::VertexBufferUsage usage)
+		DirectX12VertexBuffer::DirectX12VertexBuffer(void* data, uint32_t size, Heimdall::VertexBufferUsage usage)
 		{
 			m_Usage = usage;
+			m_Size = size;
 
 			Microsoft::WRL::ComPtr<ID3D12Device> device = DirectX12Context::GetCurrentDevice()->GetDevice();
-			//Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = DirectX12Renderer::GetCommandList();
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> command = DirectX12Context::GetCurrentDevice()->GetCommandBuffer(true);
 
-			auto heapDefault = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-			auto heapUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+			CD3DX12_HEAP_PROPERTIES heap(D3D12_HEAP_TYPE_DEFAULT);
+			CD3DX12_RESOURCE_DESC buffer = CD3DX12_RESOURCE_DESC::Buffer(m_Size);
+			DXCALL(device->CreateCommittedResource(&heap, D3D12_HEAP_FLAG_NONE, &buffer, D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&m_VertexBuffer)));
 
-			CD3DX12_RESOURCE_DESC dbuffer = CD3DX12_RESOURCE_DESC::Buffer(size);
+			m_VertexBuffer->SetName(L"Vertex Buffer Resource Heap");
 
-			DXCALL(device->CreateCommittedResource(
-				&heapDefault,
-				D3D12_HEAP_FLAG_NONE,
-				&dbuffer,
-				D3D12_RESOURCE_STATE_COMMON,
-				nullptr,
-				IID_PPV_ARGS(m_VertexBuffer.GetAddressOf())));
+			CD3DX12_HEAP_PROPERTIES uploadheap(D3D12_HEAP_TYPE_UPLOAD);
+			CD3DX12_RESOURCE_DESC uploadbuffer = CD3DX12_RESOURCE_DESC::Buffer(m_Size);
+			ID3D12Resource* vBufferUploadHeap;
+			DXCALL(device->CreateCommittedResource(&uploadheap, D3D12_HEAP_FLAG_NONE, &uploadbuffer, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vBufferUploadHeap)));
+			vBufferUploadHeap->SetName(L"Vertex Buffer Upload Resource Heap");
 
-			DXCALL(device->CreateCommittedResource(
-				&heapUpload,
-				D3D12_HEAP_FLAG_NONE,
-				&dbuffer,
-				D3D12_RESOURCE_STATE_GENERIC_READ,
-				nullptr,
-				IID_PPV_ARGS(m_UploadVertexBuffer.GetAddressOf())));
+			D3D12_SUBRESOURCE_DATA vertexData = {};
+			vertexData.pData = reinterpret_cast<BYTE*>(data);
+			vertexData.RowPitch = m_Size;
+			vertexData.SlicePitch = m_Size;
 
-			D3D12_SUBRESOURCE_DATA srd;
-			memset(&srd, 0, sizeof(D3D12_SUBRESOURCE_DATA));
-			srd.pData = data;
-			srd.RowPitch = size;
-			srd.SlicePitch = size;
+			D3D12_RESOURCE_BARRIER barrier;
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Transition.pResource = m_VertexBuffer.Get();
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COMMON;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_COPY_DEST;
+			barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 
-			/*cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_VertexBuffer.Get(), D3D12_RESOURCE_STATE_COMMON,
-				D3D12_RESOURCE_STATE_COPY_DEST));
-			UpdateSubresources<1>(cmdList.Get(), m_VertexBuffer.Get(), m_UploadVertexBuffer.Get(), 
-				0, 0, 1, &srd);
-			cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_VertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST,
-				D3D12_RESOURCE_STATE_GENERIC_READ));*/
+			command->ResourceBarrier(1, &barrier);
 
-			D3D12_VERTEX_BUFFER_VIEW vbv;
-			vbv.BufferLocation = m_VertexBuffer->GetGPUVirtualAddress();
-			vbv.StrideInBytes = stride;
-			vbv.SizeInBytes = size;
+			UpdateSubresources(command.Get(), m_VertexBuffer.Get(), vBufferUploadHeap, 0, 0, 1, &vertexData);
 
-			//cmdList->IASetVertexBuffers(0, 1, &vbv);
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER;
+			command->ResourceBarrier(1, &barrier);
+
+			DirectX12Context::GetCurrentDevice()->FlushCommandBuffer(command);
+
+			D3D12_RESOURCE_DESC vDesc;
+			vDesc = m_VertexBuffer->GetDesc();
 		}
 
 		DirectX12VertexBuffer::DirectX12VertexBuffer(uint32_t size, uint32_t stride, Heimdall::VertexBufferUsage usage)
@@ -75,6 +73,26 @@ namespace Valhalla
 				D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr,
 				IID_PPV_ARGS(m_UploadVertexBuffer.GetAddressOf())));
+		}
+
+		void DirectX12VertexBuffer::SetData(void* buffer, uint32_t size, uint32_t offset /* = 0 */)
+		{
+
+		}
+
+		void DirectX12VertexBuffer::RT_SetData(void* buffer, uint32_t size, uint32_t offset /* = 0 */)
+		{
+
+		}
+
+		void DirectX12VertexBuffer::Bind() const
+		{
+
+		}
+
+		uint32_t DirectX12VertexBuffer::GetSize() const 
+		{
+			return m_Size;
 		}
 	}
 }

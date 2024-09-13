@@ -16,7 +16,7 @@ namespace Valhalla
 			{
 				case RendererAPIType::None:			return nullptr;
 				case RendererAPIType::DirectX11:	return nullptr;
-				case RendererAPIType::DirectX12:	return nullptr;
+				case RendererAPIType::DirectX12:	return Ref<Yggdrasil::DirectX12VertexBuffer>::Create(data, size, usage);
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
 			VH_CORE_ASSERT(false, "Unknown RendererAPI");

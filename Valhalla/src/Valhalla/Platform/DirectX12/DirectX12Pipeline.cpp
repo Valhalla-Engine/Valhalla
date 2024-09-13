@@ -67,9 +67,14 @@ namespace Valhalla
 		DirectX12Pipeline::DirectX12Pipeline(const Heimdall::PipelineSpecification& specs)
 			: m_Specification(specs)
 		{
-			VH_CORE_ASSERT(specs.shader);
+			VH_CORE_ASSERT(specs.Shader);
 			Invalidate();
-			Heimdall::Renderer::RegisterShaderDependency(specs.shader, this);
+			Heimdall::Renderer::RegisterShaderDependency(specs.Shader, this);
+		}
+
+		DirectX12Pipeline::~DirectX12Pipeline()
+		{
+
 		}
 
 		void DirectX12Pipeline::Invalidate()
@@ -78,13 +83,18 @@ namespace Valhalla
 			Heimdall::Renderer::Submit([instance]() mutable
 			{
 				auto device = DirectX12Context::GetCurrentDevice();
-				Ref<DirectX12Shader> directX12Shader = Ref<DirectX12Shader>(instance->m_Specification.shader);
+				Ref<DirectX12Shader> directX12Shader = instance->m_Specification.Shader.As<DirectX12Shader>();
 
+				directX12Shader->GetVertexShader();
+				auto inputLayout = directX12Shader->GetInputLayout();
+
+				D3D12_INPUT_ELEMENT_DESC elementDesc = {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0};
 				D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc;
-				pipelineDesc.pRootSignature = instance->m_PipelineLayout.Get();
+				ZeroMemory(&pipelineDesc, sizeof(pipelineDesc));
+				pipelineDesc.pRootSignature = directX12Shader->GetRootSignature().Get();
 				pipelineDesc.VS = directX12Shader->GetVertexShader();
 				pipelineDesc.PS = directX12Shader->GetPixelShader();
-				pipelineDesc.InputLayout = directX12Shader->GetInputLayout();
+				pipelineDesc.InputLayout = { &elementDesc, 1};
 				pipelineDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 				pipelineDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 				pipelineDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
@@ -92,13 +102,24 @@ namespace Valhalla
 				pipelineDesc.PrimitiveTopologyType = Utils::GetDirectXTopology(instance->m_Specification.Topology);
 				pipelineDesc.NumRenderTargets = 1;
 				pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-				pipelineDesc.SampleDesc.Count = 0;
-				pipelineDesc.SampleDesc.Quality = 1;
-				pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+				pipelineDesc.SampleDesc.Count = 1;
+				pipelineDesc.SampleDesc.Quality = 0;
+				pipelineDesc.DSVFormat = DXGI_FORMAT_UNKNOWN;
 
-				DXCALL(device->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, 
-					IID_PPV_ARGS(instance->m_Pipeline.GetAddressOf())));
+
+
+				DXCALL(device->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&instance->m_Pipeline)));
 			});
+		}
+
+		void DirectX12Pipeline::SetUniformBuffer(Ref<Heimdall::UniformBuffer> uniformBuffer, uint32_t binding, uint32_t set /* = 0 */)
+		{
+
+		}
+
+		void DirectX12Pipeline::RT_SetUniformBuffer(Ref<Heimdall::UniformBuffer> uniformBuffer, uint32_t binding, uint32_t set /* = 0 */)
+		{
+
 		}
 	}
 }

@@ -16,7 +16,6 @@ namespace Valhalla
 
 			DXCALL(directXDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_GraphicsCommandAllocator)));
 			DXCALL(directXDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_COMPUTE, IID_PPV_ARGS(&m_ComputeCommandAllocator)));
-
 		}
 
 		DirectX12CommandAllocator::~DirectX12CommandAllocator()
@@ -24,7 +23,7 @@ namespace Valhalla
 
 		}
 
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12CommandAllocator::AllocateCommandList(bool begin, bool compute /* = false */)
+		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12CommandAllocator::AllocateCommandBuffer(bool begin, bool compute /* = false */)
 		{
 			auto device = DirectX12Context::GetCurrentDevice();
 			auto directXDevice = device->GetDevice();
@@ -45,50 +44,53 @@ namespace Valhalla
 
 			DXCALL(directXDevice->CreateCommandList(0, type, allocator.Get(), nullptr, IID_PPV_ARGS(&cmdlist)));
 
-			if (begin)
-				DXCALL(cmdlist->Reset(allocator.Get(), nullptr));
+			if (!begin)
+				DXCALL(cmdlist->Close());
 
 			return cmdlist;
 		}
 
-		void DirectX12CommandAllocator::FlushCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer)
+		void DirectX12CommandAllocator::FlushCommandBuffer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer)
 		{
 			auto device = DirectX12Context::GetCurrentDevice();
-			FlushCommandList(commandBuffer, device->GetGraphicsQueue());
+			FlushCommandBuffer(commandBuffer, device->GetGraphicsQueue());
 		}
 
-		void DirectX12CommandAllocator::FlushCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer,
+		void DirectX12CommandAllocator::FlushCommandBuffer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer,
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> queue)
 		{
 			auto device = DirectX12Context::GetCurrentDevice();
 			auto directXDevice = device->GetDevice();
-			Microsoft::WRL::ComPtr<ID3D12Fence> fence;
 
 			DXCALL(commandBuffer->Close());
 
-			uint64_t fenceValue = 0;
+			Microsoft::WRL::ComPtr<ID3D12Fence> fence;
+			DXCALL(directXDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence)));
 
-			DXCALL(directXDevice->CreateFence(fenceValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence)));
+			uint64_t fenceValue = 1;
 
-			ID3D12CommandList* commandlists[] = {commandBuffer.Get()};
-			queue->ExecuteCommandLists(1, commandlists);
+			HANDLE fenceHandle = CreateEvent(nullptr, false, false, nullptr);
 
-			queue->Signal(fence.Get(), ++fenceValue);
+			{
+				static std::mutex submissionLock;
+				std::scoped_lock<std::mutex> lock(submissionLock);
+
+				ID3D12CommandList* commandlists[] = { commandBuffer.Get() };
+				queue->ExecuteCommandLists(1, commandlists);
+
+				queue->Signal(fence.Get(), fenceValue);
+			}
 
 			if (fence->GetCompletedValue() < fenceValue)
 			{
-				HANDLE fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+				DXCALL(fence->SetEventOnCompletion(fenceValue, fenceHandle));
 
-				VH_CORE_ASSERT(fenceEvent == nullptr);
-
-				fence->SetEventOnCompletion(fenceValue, fenceEvent);
-				WaitForSingleObject(fenceEvent, INFINITE);
-
-				CloseHandle(fenceEvent);
+				WaitForSingleObject(fenceHandle, INFINITE);
 			}
 
-			fence.Reset();
+			VH_CORE_INFO("executing command buffer!");
 
+			m_GraphicsCommandAllocator->Reset();
 			commandBuffer->Reset(m_GraphicsCommandAllocator.Get(), nullptr);
 		}
 
@@ -96,12 +98,14 @@ namespace Valhalla
 		DirectX12Device::DirectX12Device()
 		{
 			uint32_t factoryFlags = 0;
+#if defined(VH_DEBUG)
 			DXCALL(D3D12GetDebugInterface(IID_PPV_ARGS(&m_Debug)));
 			m_Debug->EnableDebugLayer();
 			DXGIGetDebugInterface1(0, IID_PPV_ARGS(m_dxgiDebug.GetAddressOf()));
 			m_dxgiDebug->EnableLeakTrackingForThread();
 			
 			factoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
+#endif
 
 			uint32_t i = 0;
 			IDXGIAdapter1* adapter = nullptr;
@@ -136,7 +140,24 @@ namespace Valhalla
 
 		DirectX12Device::~DirectX12Device()
 		{
+#if defined(VH_DEBUG)
 			m_dxgiDebug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_FLAGS(DXGI_DEBUG_RLO_DETAIL | DXGI_DEBUG_RLO_IGNORE_INTERNAL));
+#endif
+		}
+
+		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12Device::GetCommandBuffer(bool begin, bool compute)
+		{
+			return GetOrCreateThreadLocalCommandAllocator()->AllocateCommandBuffer(begin, compute);
+		}
+
+		void DirectX12Device::FlushCommandBuffer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer)
+		{
+			return GetThreadLocalCommandAllocator()->FlushCommandBuffer(commandBuffer);
+		}
+
+		void DirectX12Device::FlushCommandBuffer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer, Microsoft::WRL::ComPtr<ID3D12CommandQueue> queue)
+		{
+			return GetThreadLocalCommandAllocator()->FlushCommandBuffer(commandBuffer, queue);
 		}
 
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12Device::CreateSecondaryCommandBuffer(const char* debugName)
@@ -159,6 +180,7 @@ namespace Valhalla
 			
 			return m_CommandAllocators.at(threadID);
 		}
+
 
 		Ref<DirectX12CommandAllocator> DirectX12Device::GetOrCreateThreadLocalCommandAllocator()
 		{

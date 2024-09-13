@@ -11,18 +11,21 @@ namespace Valhalla
 		class DirectX12IndexBuffer : public Heimdall::IndexBuffer
 		{
 		public:
-			DirectX12IndexBuffer(uint32_t size);
-			DirectX12IndexBuffer(void* buffer, uint32_t size);
+			DirectX12IndexBuffer(uint16_t size);
+			DirectX12IndexBuffer(void* buffer, uint16_t size);
+			virtual ~DirectX12IndexBuffer() {}
 
-			virtual void SetData(void* data, uint32_t size, uint32_t offset) override;
+			virtual void SetData(void* data, uint16_t size, uint16_t offset) override;
 
-			virtual uint32_t GetCount() const override { return m_Size / sizeof(uint32_t); }
-			virtual uint32_t GetSize() const override { return m_Size; }
+			virtual uint16_t GetCount() const override { return m_Size / sizeof(uint16_t); }
+			virtual uint16_t GetSize() const override { return m_Size; }
+
+			Microsoft::WRL::ComPtr<ID3D12Resource> GetIndexBuffer() { return m_IndexBuffer; }
 
 		private:
 			Microsoft::WRL::ComPtr<ID3D12Resource> m_IndexBuffer;
 			Microsoft::WRL::ComPtr<ID3D12Resource> m_UploadBuffer;
-			uint32_t m_Size;
+			uint16_t m_Size;
 		};
 	}
 }

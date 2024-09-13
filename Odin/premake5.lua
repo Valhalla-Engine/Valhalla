@@ -50,6 +50,7 @@ project "Odin"
 			'{COPY} "../Valhalla/vendor/mono/bin/Release/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
 		}
 
+
 	filter "configurations:Debug"
 		symbols "On"
 		defines { "VH_DEBUG", }

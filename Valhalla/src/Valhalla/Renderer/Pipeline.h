@@ -36,7 +36,7 @@ namespace Valhalla
 
 		struct PipelineSpecification
 		{
-			Ref<Shader> shader;
+			Ref<Shader> Shader;
 			VertexBufferLayout Layout;
 			PrimitiveTopology Topology = PrimitiveTopology::Triangles;
 			DepthCompareOperator DepthOperator = DepthCompareOperator::GreaterOrEqual;

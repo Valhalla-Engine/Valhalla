@@ -3,6 +3,8 @@
 
 #include "RendererAPI.h"
 
+#include "Valhalla/Platform/DirectX12/DirectX12RenderCommandBuffer.h"
+
 namespace Valhalla
 {
 	namespace Heimdall
@@ -13,7 +15,7 @@ namespace Valhalla
 			{
 				case RendererAPIType::None:				return nullptr;
 				case RendererAPIType::DirectX11:		return nullptr;
-				case RendererAPIType::DirectX12:		return nullptr;
+				case RendererAPIType::DirectX12:		return Ref<Yggdrasil::DirectX12RenderCommandBuffer>::Create(count, debugName);
 				case RendererAPIType::Vulkan:			return nullptr;
 			}
 			VH_CORE_ASSERT(false, "Unknown RendererAPI");

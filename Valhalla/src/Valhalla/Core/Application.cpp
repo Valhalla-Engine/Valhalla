@@ -3,6 +3,7 @@
 
 #include "Valhalla/Renderer/Renderer.h"
 
+#include <filesystem>
 
 //extern ImGuiContext* GImGui;
 namespace Valhalla
@@ -22,13 +23,16 @@ namespace Valhalla
 		m_Window->Init();
 		m_Window->SetVSync(true);
 
+		std::filesystem::path path = std::filesystem::current_path();
+		VH_CORE_INFO("the current path is: {0}", path.string());
+
 		m_Profiler = new PerformanceProfiler();
 
 		Heimdall::Renderer::Init();
 		Heimdall::Renderer::WaitAndRender();
 
-		m_ImGuiLayer = ImGuiLayer::Create();
-		PushOverlay(m_ImGuiLayer);
+		/*m_ImGuiLayer = ImGuiLayer::Create();
+		PushOverlay(m_ImGuiLayer);*/
 		Heimdall::Renderer::WaitAndRender();
 	}
 
@@ -85,10 +89,7 @@ namespace Valhalla
 			Heimdall::Renderer::WaitAndRender();
 			if (!m_Minimized)
 			{
-				Heimdall::Renderer::Submit([&]() 
-				{
-						m_Window->GetSwapChain()->BeginFrame();
-				});
+				m_Window->GetSwapChain()->BeginFrame();
 
 				Heimdall::Renderer::BeginFrame();
 				{
@@ -99,13 +100,14 @@ namespace Valhalla
 				Application* app = this;
 				if (m_Specification.EnableImGui)
 				{
-					Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
-					Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
+					/*Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
+					Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });*/
 				}
+				Heimdall::Renderer::EndFrame();
 
 				Heimdall::Renderer::Submit([app]() 
 				{
-						app->m_Window->SwapBuffers();
+					app->m_Window->SwapBuffers();
 				});
 			}
 
@@ -161,7 +163,8 @@ namespace Valhalla
 		}
 
 		auto& window = m_Window;
-		window->GetSwapChain()->OnResize(width, height);
+		//window->GetSwapChain()->OnResize(width, height);
+
 
 		return false;
 	}

@@ -31,8 +31,15 @@ namespace Valhalla
 			m_CommandBuffers.resize(count);
 			for (size_t i = 0; i < m_CommandBuffers.size(); i++)
 			{
-				DXCALL(device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, 
+				DXCALL(device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
 					m_CommandAllocators[i].Get(), nullptr, IID_PPV_ARGS(m_CommandBuffers[i].GetAddressOf())));
+				std::wstringstream ss;
+				ss << i;
+				std::wstring numStr = ss.str();
+				std::wstring commandName = L"command allocator: " + numStr;
+				std::wstring listName = L"Command buffer: " + numStr;
+				m_CommandBuffers[i]->SetName(listName.c_str());
+				DXCALL(m_CommandBuffers[i]->Close());
 			}
 
 			m_Fences.resize(count);
@@ -56,7 +63,7 @@ namespace Valhalla
 				m_CommandAllocators[i]->Reset();
 #if VH_DEBUG
 				std::wstring temp = std::wstring(debugName.begin(), debugName.end());
-				m_CommandAllocators[i]->SetName(temp.c_str());
+				DXCALL(m_CommandAllocators[i]->SetName(temp.c_str()));
 #endif
 			}
 
@@ -65,59 +72,54 @@ namespace Valhalla
 			{
 				DXCALL(device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
 					m_CommandAllocators[i].Get(), nullptr, IID_PPV_ARGS(m_CommandBuffers[i].GetAddressOf())));
-				m_CommandBuffers[i]->Close();
+				DXCALL(m_CommandBuffers[i]->Close());
 			}
 
 			m_Fences.resize(framesInFlight);
 			for (size_t i = 0; i < m_Fences.size(); i++)
 			{
 				DXCALL(device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_Fences[i].Fence.GetAddressOf())));
-				m_Fences[i].FenceValue++;
+				m_Fences[i].FenceValue;
 			}
+		}
+
+		DirectX12RenderCommandBuffer::~DirectX12RenderCommandBuffer()
+		{
+
 		}
 
 		void DirectX12RenderCommandBuffer::Begin()
 		{
-			Ref<DirectX12RenderCommandBuffer> instance = this;
 
-			Heimdall::Renderer::Submit([instance]() mutable 
-			{
-				uint32_t frameIndex = Heimdall::Renderer::RT_GetCurrentFrameIndex();
+			uint32_t frameIndex = Heimdall::Renderer::RT_GetCurrentFrameIndex();
 
-				Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandBuffer = instance->m_CommandBuffers[frameIndex];
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer = m_CommandBuffers[frameIndex];
 
-				instance->m_ActiveCommandBuffer = commandBuffer;
+			m_ActiveCommandBuffer = commandBuffer;
 
-				instance->m_CommandAllocators[frameIndex]->Reset();
-				instance->m_ActiveCommandBuffer->Reset(instance->m_CommandAllocators[frameIndex].Get(), nullptr);
-			});
+			DXCALL(m_CommandAllocators[frameIndex]->Reset());
+			DXCALL(m_ActiveCommandBuffer->Reset(m_CommandAllocators[frameIndex].Get(), nullptr));
 		}
 
 		void DirectX12RenderCommandBuffer::End()
 		{
-			Ref<DirectX12RenderCommandBuffer> instance = this;
-			Heimdall::Renderer::Submit([instance]() mutable 
-			{
-					instance->m_ActiveCommandBuffer->Close();
-					instance->m_ActiveCommandBuffer = nullptr;
-			});
+			
+					DXCALL(m_ActiveCommandBuffer->Close());
+					m_ActiveCommandBuffer = nullptr;
 		}
 
 		void DirectX12RenderCommandBuffer::Submit()
 		{
-			Ref<DirectX12RenderCommandBuffer> instance = this;
-			Heimdall::Renderer::Submit([instance]() mutable 
-			{
+			
 				auto device = DirectX12Context::GetCurrentDevice();
 				uint32_t frameIndex = Heimdall::Renderer::RT_GetCurrentFrameIndex();
 
-				instance->WaitForFence(frameIndex);
+				WaitForFence(frameIndex);
 
-				ID3D12CommandList* ppCommandList[] = { instance->m_CommandBuffers[frameIndex].Get()};
+				ID3D12CommandList* ppCommandList[] = { m_CommandBuffers[frameIndex].Get()};
 				device->GetGraphicsQueue()->ExecuteCommandLists(1, ppCommandList);
 
-				instance->CreateFenceSignal(frameIndex);
-			});
+				CreateFenceSignal(frameIndex);
 		}
 
 		void DirectX12RenderCommandBuffer::CreateFenceSignal(uint32_t frameIndex)
@@ -137,9 +139,10 @@ namespace Valhalla
 
 		void DirectX12RenderCommandBuffer::WaitForFence(uint32_t frameIndex)
 		{
-		
 			auto& fence = m_Fences[frameIndex];
-			if (fence.Fence->GetCompletedValue() < fence.FenceValue)
+			uint32_t completedValue = fence.Fence->GetCompletedValue();
+			uint32_t value = fence.FenceValue;
+			if (fence.Fence->GetCompletedValue() >= fence.FenceValue)
 			{
 				DXCALL(fence.Fence->SetEventOnCompletion(fence.FenceValue, fence.FenceEvent));
 				WaitForSingleObject(fence.FenceEvent, INFINITE);

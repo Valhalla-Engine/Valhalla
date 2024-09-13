@@ -28,7 +28,7 @@ namespace Valhalla
 		private:
 			Heimdall::PipelineSpecification m_Specification;
 
-			Microsoft::WRL::ComPtr<ID3D12PipelineState> m_Pipeline = nullptr;
+			Microsoft::WRL::ComPtr<ID3D12PipelineState> m_Pipeline;
 			Microsoft::WRL::ComPtr<ID3D12RootSignature> m_PipelineLayout = nullptr;
 			D3D12_CACHED_PIPELINE_STATE m_PipelineCache;
 		};

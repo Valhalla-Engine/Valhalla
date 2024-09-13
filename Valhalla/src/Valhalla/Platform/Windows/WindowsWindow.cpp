@@ -72,14 +72,18 @@ namespace Valhalla
 			VH_CORE_ERROR("Could not initialize the window");
 		}
 
+		int32_t posX = (GetSystemMetrics(SM_CXSCREEN) - m_Data.Width) / 2;
+		int32_t posY = (GetSystemMetrics(SM_CYSCREEN) - m_Data.Height) / 2;
+
 		std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 		std::wstring wideName = converter.from_bytes(m_Data.Title);
-		m_Window = CreateWindow(wc.lpszClassName,wideName.c_str(), WS_OVERLAPPEDWINDOW, 0, 0, m_Data.Width, m_Data.Height, NULL, NULL, wc.hInstance, NULL);
+		m_Window = CreateWindow(wc.lpszClassName,wideName.c_str(), WS_OVERLAPPEDWINDOW, posX, posY, m_Data.Width, m_Data.Height, NULL, NULL, wc.hInstance, NULL);
 
 		if (!m_Window)
 		{
 			VH_CORE_ASSERT(m_Window, "Could not initialize Win32");
 		}
+
 		m_RendererContext = Heimdall::RendererContext::Create();
 		m_SwapChain = Heimdall::SwapChain::Create();
 		m_RendererContext->Init();

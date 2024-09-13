@@ -41,7 +41,6 @@ project "Valhalla"
 		systemversion "latest"
 		defines { "VH_PLATFORM_WINDOWS", }
 
-
 	filter "configurations:Debug"
 		symbols "On"
 		defines { "VH_DEBUG", "_DEBUG", }

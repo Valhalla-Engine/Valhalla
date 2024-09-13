@@ -58,14 +58,13 @@ namespace Valhalla
 
 			s_CommandQueue = new RenderCommandQueue();
 
-			s_Config.FramesInFlight = std::min<uint32_t>(s_Config.FramesInFlight,
-				Application::Get().GetWindow().GetSwapChain()->GetImageCount());
+			//s_Config.FramesInFlight = std::min<uint32_t>(s_Config.FramesInFlight, Application::Get().GetWindow().GetSwapChain()->GetImageCount());
 
 			s_RendererAPI = InitRendererAPI();
 
 			s_Data->m_ShaderLibrary = Ref<ShaderLibrary>::Create();
 
-			Renderer::GetShaderLibrary()->Load("Resources/Shaders/Shader.hlsl");
+			//Renderer::GetShaderLibrary()->Load("Resources/Shaders/Shader.hlsl");
 
 			s_RendererAPI->Init();
 		}

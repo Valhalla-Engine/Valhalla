@@ -14,8 +14,6 @@ workspace "Valhalla"
 
 	solution_items { ".editorconfig" }
 
-	configurations { "Debug", "Release", "Dist" }
-
 	flags { "MultiProcessorCompile" }
 
 	defines {

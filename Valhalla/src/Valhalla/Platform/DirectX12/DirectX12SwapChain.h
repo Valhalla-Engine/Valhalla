@@ -39,7 +39,7 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCurrentDrawCommandBuffer() 
 			{ 
 				//VH_CORE_INFO("Current back buffer index:{0}", m_CurrentBufferIndex);
-				return GetDrawCommandBuffer(0); 
+				return GetDrawCommandBuffer(m_CurrentBufferIndex); 
 			}
 
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetDrawCommandBuffer(uint32_t index)
@@ -50,7 +50,13 @@ namespace Valhalla
 
 			Microsoft::WRL::ComPtr<ID3D12Resource> GetCurrentRenderTaget()
 			{
+				VH_CORE_INFO("Current back buffer index is: {}", m_SwapChain->GetCurrentBackBufferIndex());
 				return m_RenderTargets[m_CurrentBufferIndex];
+			}
+
+			D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentRenderTagetView()
+			{
+				return m_RenderTargetViews[m_CurrentBufferIndex];
 			}
 
 			void SetVSync(const bool enabled) { m_VSync = enabled; }
@@ -58,6 +64,11 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<IDXGISwapChain3> GetSwapChain()
 			{
 				return m_SwapChain; 
+			}
+
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetRTVHeap()
+			{
+				return m_RTVHeap;
 			}
 		private:
 			void WaitForLastSubmittedFrame();
@@ -89,8 +100,8 @@ namespace Valhalla
 			std::vector<SwapChainCommandBuffer> m_CommandBuffers;
 
 			std::vector<Microsoft::WRL::ComPtr<ID3D12Fence>> m_WaitFences;
-			Microsoft::WRL::ComPtr<ID3D12Fence> m_GlobalFence;
-			size_t m_CurrentFence;
+			std::vector<int64_t> m_FenceValues;
+			HANDLE m_FenceEvent;
 
 			uint32_t m_CurrentBufferIndex = 0;
 
