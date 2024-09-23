@@ -1,0 +1,12 @@
+[02:12:54] [trace] Valhalla: Valhalla Engine v0.1a
+[02:12:54] [trace] Valhalla: Initializing...
+[02:12:54] [error] Valhalla: Current file path: 
+[02:12:54] [info] Valhalla: Creating Window Odin 1280x800
+[02:12:54] [info] Valhalla: Start of RendererContext Create
+[02:12:54] [info] Valhalla: SwapChain Size: (1280, 800)
+[02:12:54] [info] Valhalla: Creating draw command buffers
+[02:12:54] [info] Valhalla: Creating draw command buffers
+[02:12:55] [info] Valhalla: the current path is: C:\dev\Valhalla\Odin
+[02:12:55] [info] Valhalla: executing command buffer!
+[02:12:55] [info] Valhalla: executing command buffer!
+[02:12:56] [trace] Valhalla: Shutting down...

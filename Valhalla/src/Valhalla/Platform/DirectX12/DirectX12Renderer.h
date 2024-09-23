@@ -64,8 +64,9 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<ID3D12PipelineState> m_Pipeline;
 			D3D12_VIEWPORT m_viewport;
 			D3D12_RECT m_scissorRect;
-			Microsoft::WRL::ComPtr<ID3D12Resource> m_vertexBuffer;
+			Microsoft::WRL::ComPtr<ID3D12Resource> m_IndexBuffer;
 			D3D12_VERTEX_BUFFER_VIEW m_VertexBufferView;
+			D3D12_INDEX_BUFFER_VIEW m_IndexBufferView;
 
 			void LoadPipeline();
 			void LoadAssets();

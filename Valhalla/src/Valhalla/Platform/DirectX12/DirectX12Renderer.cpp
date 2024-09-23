@@ -183,9 +183,7 @@ namespace Valhalla
 				{{-0.5f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
 				{{ 0.5f,-0.5f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
 				{{-0.5f,-0.5f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
-				{{-0.5f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
 				{{ 0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
-				{{ 0.5f,-0.5f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}}
 			};
 
 			int vBufferSize = sizeof(vList);
@@ -195,6 +193,45 @@ namespace Valhalla
 			m_VertexBufferView.BufferLocation = m_vBuffer->GetVertexBuffer()->GetGPUVirtualAddress();
 			m_VertexBufferView.SizeInBytes = vBufferSize;
 			m_VertexBufferView.StrideInBytes = sizeof(Vertex);
+
+			uint32_t indices[] = {0, 1, 2, 0, 3, 1};
+			uint16_t iBufferSize = sizeof(indices);
+
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> command = DirectX12Context::GetCurrentDevice()->GetCommandBuffer(true);
+
+			CD3DX12_HEAP_PROPERTIES heap(D3D12_HEAP_TYPE_DEFAULT);
+			CD3DX12_RESOURCE_DESC buffer = CD3DX12_RESOURCE_DESC::Buffer(iBufferSize);
+			DXCALL(m_device->CreateCommittedResource(&heap, D3D12_HEAP_FLAG_NONE, &buffer, D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&m_IndexBuffer)));
+
+			CD3DX12_HEAP_PROPERTIES uploadHeap(D3D12_HEAP_TYPE_UPLOAD);
+			CD3DX12_RESOURCE_DESC uploadBuffer = CD3DX12_RESOURCE_DESC::Buffer(iBufferSize);
+			ID3D12Resource* uploadIndexBuffer;
+			DXCALL(m_device->CreateCommittedResource(&uploadHeap, D3D12_HEAP_FLAG_NONE, &uploadBuffer, D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&uploadIndexBuffer)));
+
+			D3D12_SUBRESOURCE_DATA indexData = {};
+			indexData.pData = reinterpret_cast<BYTE*>(indices);
+			indexData.RowPitch = iBufferSize;
+			indexData.SlicePitch = iBufferSize;
+
+			D3D12_RESOURCE_BARRIER barrier;
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Transition.pResource = m_IndexBuffer.Get();
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COMMON;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_COPY_DEST;
+			barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+
+			command->ResourceBarrier(1, &barrier);
+			UpdateSubresources(command.Get(), m_IndexBuffer.Get(), uploadIndexBuffer, 0, 0, 1, &indexData);
+
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_INDEX_BUFFER;
+
+			DirectX12Context::GetCurrentDevice()->FlushCommandBuffer(command);
+
+			m_IndexBufferView.BufferLocation = m_IndexBuffer->GetGPUVirtualAddress();
+			m_IndexBufferView.SizeInBytes = iBufferSize;
+			m_IndexBufferView.Format = DXGI_FORMAT_R32_UINT;
 
 			m_viewport.TopLeftX = 0.0f;
 			m_viewport.TopLeftY = 0.0f;
@@ -247,7 +284,8 @@ namespace Valhalla
 			m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 			m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			m_commandList->IASetVertexBuffers(0, 1, &m_VertexBufferView);
-			m_commandList->DrawInstanced(6, 1, 0, 0);
+			m_commandList->IASetIndexBuffer(&m_IndexBufferView);
+			m_commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
 			// Indicate that the back buffer will now be used to present.
 			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;

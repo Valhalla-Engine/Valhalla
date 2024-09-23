@@ -50,7 +50,6 @@ namespace Valhalla
 
 			Microsoft::WRL::ComPtr<ID3D12Resource> GetCurrentRenderTaget()
 			{
-				VH_CORE_INFO("Current back buffer index is: {}", m_SwapChain->GetCurrentBackBufferIndex());
 				return m_RenderTargets[m_CurrentBufferIndex];
 			}
 

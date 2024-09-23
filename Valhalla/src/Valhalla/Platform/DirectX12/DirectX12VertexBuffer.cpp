@@ -51,9 +51,6 @@ namespace Valhalla
 			command->ResourceBarrier(1, &barrier);
 
 			DirectX12Context::GetCurrentDevice()->FlushCommandBuffer(command);
-
-			D3D12_RESOURCE_DESC vDesc;
-			vDesc = m_VertexBuffer->GetDesc();
 		}
 
 		DirectX12VertexBuffer::DirectX12VertexBuffer(uint32_t size, uint32_t stride, Heimdall::VertexBufferUsage usage)
