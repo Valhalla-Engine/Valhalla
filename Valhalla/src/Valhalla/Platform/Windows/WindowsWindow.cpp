@@ -100,8 +100,6 @@ namespace Valhalla
 
 	void WindowsWindow::Shutdown()
 	{
-		m_SwapChain->~SwapChain();
-		m_RendererContext->~RendererContext();
 		DestroyWindow(m_Window);
 	}
 
@@ -163,6 +161,9 @@ namespace Valhalla
 				WindowData* data = reinterpret_cast<WindowData*>(GetWindowLongPtr(hwnd, 0));
 				data->Width = (UINT)LOWORD(lparam);
 				data->Height = (UINT)HIWORD(lparam);
+
+				
+				Application::Get().GetWindow().GetSwapChain()->OnResize(data->Width, data->Height);
 
 				WindowResizeEvent event((UINT)LOWORD(lparam), (UINT)HIWORD(lparam));
 				data->EventCallback(event);

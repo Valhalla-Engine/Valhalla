@@ -24,9 +24,9 @@ namespace Valhalla
 
 			virtual void BeginFrame() override;
 			virtual void Present() override;
-			
 
-			virtual uint32_t GetImageCount() const override{ return m_ImageCount; }
+
+			virtual uint32_t GetImageCount() const override { return m_ImageCount; }
 
 			uint32_t GetWidth() const { return m_Width; }
 			uint32_t GetHeight() const { return m_Height; }
@@ -36,10 +36,10 @@ namespace Valhalla
 			DXGI_FORMAT GetColorFormat() const { return m_ColorFormat; }
 
 			uint32_t GetCurrentBackIndex() const { return m_CurrentBufferIndex; }
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCurrentDrawCommandBuffer() 
-			{ 
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCurrentDrawCommandBuffer()
+			{
 				//VH_CORE_INFO("Current back buffer index:{0}", m_CurrentBufferIndex);
-				return GetDrawCommandBuffer(m_CurrentBufferIndex); 
+				return GetDrawCommandBuffer(m_CurrentBufferIndex);
 			}
 
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetDrawCommandBuffer(uint32_t index)
@@ -62,13 +62,19 @@ namespace Valhalla
 
 			Microsoft::WRL::ComPtr<IDXGISwapChain3> GetSwapChain()
 			{
-				return m_SwapChain; 
+				return m_SwapChain;
+			}
+
+			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetSRVHeap()
+			{
+				return m_SRVHeap;
 			}
 
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetRTVHeap()
 			{
 				return m_RTVHeap;
 			}
+
 		private:
 			void WaitForLastSubmittedFrame();
 
@@ -78,7 +84,7 @@ namespace Valhalla
 			uint32_t m_Width, m_Height;
 
 			Microsoft::WRL::ComPtr<IDXGISwapChain3> m_SwapChain = nullptr;
-			uint32_t m_4xMSAAQuality= 0;
+			uint32_t m_4xMSAAQuality = 0;
 			uint32_t m_ImageCount = 1;
 
 			DXGI_FORMAT m_ColorFormat = DXGI_FORMAT_UNKNOWN;
@@ -87,6 +93,8 @@ namespace Valhalla
 
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_SRVHeap;
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RTVHeap;
+
+			float m_ClearColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
 
 			std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> m_RenderTargets;
 			std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> m_RenderTargetViews;
@@ -98,8 +106,8 @@ namespace Valhalla
 			};
 			std::vector<SwapChainCommandBuffer> m_CommandBuffers;
 
-			std::vector<Microsoft::WRL::ComPtr<ID3D12Fence>> m_WaitFences;
-			std::vector<int64_t> m_FenceValues;
+			Microsoft::WRL::ComPtr<ID3D12Fence> m_Fence;
+			int64_t m_FenceValue;
 			HANDLE m_FenceEvent;
 
 			uint32_t m_CurrentBufferIndex = 0;

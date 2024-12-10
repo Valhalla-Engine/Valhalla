@@ -2,8 +2,6 @@
 #include "Shader.h"
 
 
-#include "Valhalla/Platform/DirectX12/DirectX12Shader.h"
-
 #include "Valhalla/Renderer/RendererAPI.h"
 
 namespace Valhalla
@@ -23,7 +21,7 @@ namespace Valhalla
 
 				case RendererAPIType::DirectX12:
 				{
-					result = Ref<Yggdrasil::DirectX12Shader>::Create(filepath, forceCompile, disableOptimization);
+					result = nullptr;
 					break;
 				}
 

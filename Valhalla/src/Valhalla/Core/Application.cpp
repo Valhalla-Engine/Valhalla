@@ -29,7 +29,6 @@ namespace Valhalla
 		m_Profiler = new PerformanceProfiler();
 
 		Heimdall::Renderer::Init();
-		Heimdall::Renderer::WaitAndRender();
 
 		/*m_ImGuiLayer = ImGuiLayer::Create();
 		PushOverlay(m_ImGuiLayer);*/
@@ -91,11 +90,6 @@ namespace Valhalla
 			{
 				m_Window->GetSwapChain()->BeginFrame();
 
-				Heimdall::Renderer::BeginFrame();
-				{
-					for (Layer* layer : m_LayerStack)
-						layer->OnUpdate(m_TimeStep);
-				}
 
 				Application* app = this;
 				if (m_Specification.EnableImGui)
@@ -103,7 +97,6 @@ namespace Valhalla
 					/*Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
 					Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });*/
 				}
-				Heimdall::Renderer::EndFrame();
 
 				Heimdall::Renderer::Submit([app]() 
 				{
@@ -163,7 +156,7 @@ namespace Valhalla
 		}
 
 		auto& window = m_Window;
-		//window->GetSwapChain()->OnResize(width, height);
+		window->GetSwapChain()->OnResize(width, height);
 
 
 		return false;

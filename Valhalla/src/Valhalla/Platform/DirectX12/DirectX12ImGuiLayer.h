@@ -28,8 +28,6 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RTVHeap;
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_DSVHeap;
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_SRVHeap;
-			std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> m_RenderTargets;
-			std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> m_RenderTargetDescriptors;
 			float_t m_Time = 0.0f;
 		};
 	}

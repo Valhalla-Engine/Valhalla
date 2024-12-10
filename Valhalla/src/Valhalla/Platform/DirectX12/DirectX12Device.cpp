@@ -103,6 +103,8 @@ namespace Valhalla
 			m_Debug->EnableDebugLayer();
 			DXGIGetDebugInterface1(0, IID_PPV_ARGS(m_dxgiDebug.GetAddressOf()));
 			m_dxgiDebug->EnableLeakTrackingForThread();
+
+			DXCALL(D3D12GetDebugInterface(IID_PPV_ARGS(&m_Debug)));
 			
 			factoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
 #endif
@@ -124,6 +126,15 @@ namespace Valhalla
 				factory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter));
 
 				D3D12CreateDevice(warpAdapter.Get(), D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&m_Device));
+			}
+
+			if (m_Debug.Get() != nullptr)
+			{
+				Microsoft::WRL::ComPtr<ID3D12InfoQueue> infoQueue;
+				m_Device->QueryInterface(IID_PPV_ARGS(infoQueue.GetAddressOf()));
+				infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
+				infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
+				infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
 			}
 
 			factory->Release();
