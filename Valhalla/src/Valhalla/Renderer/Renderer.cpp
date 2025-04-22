@@ -58,7 +58,7 @@ namespace Valhalla
 
 			s_CommandQueue = new RenderCommandQueue();
 
-			//s_Config.FramesInFlight = std::min<uint32_t>(s_Config.FramesInFlight, Application::Get().GetWindow().GetSwapChain()->GetImageCount());
+			s_Config.FramesInFlight = std::min<uint32_t>(s_Config.FramesInFlight, Application::Get().GetWindow().GetSwapChain()->GetImageCount());
 
 			s_RendererAPI = InitRendererAPI();
 

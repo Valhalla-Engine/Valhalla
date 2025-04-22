@@ -75,8 +75,11 @@ namespace Valhalla
 				return m_RTVHeap;
 			}
 
+			void SetBackgroundColor(float r, float g, float b, float a);
+
 		private:
-			void WaitForLastSubmittedFrame();
+			void WaitForFrame();
+			void FlushGPU();
 
 		private:
 
@@ -86,6 +89,7 @@ namespace Valhalla
 			Microsoft::WRL::ComPtr<IDXGISwapChain3> m_SwapChain = nullptr;
 			uint32_t m_4xMSAAQuality = 0;
 			uint32_t m_ImageCount = 1;
+			uint32_t m_CurrentFrameIndex = 0;
 
 			DXGI_FORMAT m_ColorFormat = DXGI_FORMAT_UNKNOWN;
 
@@ -106,8 +110,14 @@ namespace Valhalla
 			};
 			std::vector<SwapChainCommandBuffer> m_CommandBuffers;
 
-			Microsoft::WRL::ComPtr<ID3D12Fence> m_Fence;
-			int64_t m_FenceValue;
+			struct SyncFence 
+			{
+				Microsoft::WRL::ComPtr<ID3D12Fence> Fence;
+				uint64_t FenceValue;
+			};
+
+			std::vector<SyncFence> m_Fences;
+
 			HANDLE m_FenceEvent;
 
 			uint32_t m_CurrentBufferIndex = 0;

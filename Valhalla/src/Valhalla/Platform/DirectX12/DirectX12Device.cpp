@@ -103,8 +103,6 @@ namespace Valhalla
 			m_Debug->EnableDebugLayer();
 			DXGIGetDebugInterface1(0, IID_PPV_ARGS(m_dxgiDebug.GetAddressOf()));
 			m_dxgiDebug->EnableLeakTrackingForThread();
-
-			DXCALL(D3D12GetDebugInterface(IID_PPV_ARGS(&m_Debug)));
 			
 			factoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
 #endif
@@ -179,7 +177,7 @@ namespace Valhalla
 			
 			std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 			std::wstring wideDebug = converter.from_bytes(debugName);
-			//cmdBuffer->SetName(wideDebug.c_str());
+			cmdBuffer->SetName(wideDebug.c_str());
 
 			return cmdBuffer;
 		}

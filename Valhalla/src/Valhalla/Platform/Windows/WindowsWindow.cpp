@@ -100,6 +100,8 @@ namespace Valhalla
 
 	void WindowsWindow::Shutdown()
 	{
+		m_SwapChain->Destroy();
+		m_RendererContext->~RendererContext();
 		DestroyWindow(m_Window);
 	}
 

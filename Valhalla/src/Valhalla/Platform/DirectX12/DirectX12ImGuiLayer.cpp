@@ -33,122 +33,164 @@ namespace Valhalla
 
 		void DirectX12ImGuiLayer::OnAttach()
 		{
-			/*IMGUI_CHECKVERSION();
+			Application& app = Application::Get();
+			HWND window = static_cast<HWND>(app.GetWindow().GetNativeWindow());
+			Ref<DirectX12SwapChain> swapchain = Application::Get().GetWindow().GetSwapChain();
+
+			auto context = DirectX12Context::Get();
+			auto device = DirectX12Context::GetCurrentDevice();
+
+			uint32_t frameIndex = Heimdall::Renderer::RT_GetCurrentFrameIndex();
+
+			uint32_t framesInFlight = Heimdall::Renderer::GetConfig().FramesInFlight;
+
+			IMGUI_CHECKVERSION();
 			ImGui::CreateContext();
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
 			io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-
 			ImGui::StyleColorsDark();
-			//SetDarkTheme2VColors();
-
 			ImGuiStyle& style = ImGui::GetStyle();
 			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 			{
 				style.WindowRounding = 0.0f;
 				style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 			}
-			style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15f, 0.15f, 0.15f, style.Colors[ImGuiCol_WindowBg].w);
 
-			Application& app = Application::Get();
-			HWND window = static_cast<HWND>(app.GetWindow().GetNativeWindow());
-			Ref<DirectX12SwapChain> swapchain = Application::Get().GetWindow().GetSwapChain();
+			m_SRVHeap = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>()->GetSRVHeap();
+			
 
-			auto context = DirectX12Context::Get();
-			auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
+			ImGui_ImplDX12_InitInfo init_info = {};
+			init_info.Device = device->GetDevice().Get();
+			init_info.CommandQueue = device->GetGraphicsQueue().Get();
+			init_info.NumFramesInFlight = framesInFlight;
+			init_info.RTVFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+			init_info.SrvDescriptorHeap = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>()->GetSRVHeap().Get();
+			init_info.UserData = (void*)this;
 
-			uint32_t frameIndex = Heimdall::Renderer::RT_GetCurrentFrameIndex();
 
-			uint32_t framesInFlight = Heimdall::Renderer::GetConfig().FramesInFlight;
+			auto layer = this;
+			init_info.SrvDescriptorAllocFn = [](ImGui_ImplDX12_InitInfo* info, D3D12_CPU_DESCRIPTOR_HANDLE* out_cpu_handle, D3D12_GPU_DESCRIPTOR_HANDLE* out_gpu_handle)
+			{
+				 auto layer = static_cast<Yggdrasil::DirectX12ImGuiLayer*>(info->UserData);
+				 return layer->AllocSRVHeap(out_cpu_handle, out_gpu_handle);
+			};
+
+			init_info.SrvDescriptorFreeFn = [](ImGui_ImplDX12_InitInfo* info, D3D12_CPU_DESCRIPTOR_HANDLE cpu_handle, D3D12_GPU_DESCRIPTOR_HANDLE gpu_handle)
+			{
+				auto layer = static_cast<Yggdrasil::DirectX12ImGuiLayer*>(info->UserData);
+				return layer->FreeSRVHeap(cpu_handle, gpu_handle);
+			};
 			
 			ImGui_ImplWin32_Init(window);
-			ImGui_ImplDX12_Init(device.Get(), framesInFlight,
-					DXGI_FORMAT_R8G8B8A8_UNORM, swapchain->GetSRVHeap().Get(),
-					swapchain->GetSRVHeap().Get()->GetCPUDescriptorHandleForHeapStart(),
-					swapchain->GetSRVHeap().Get()->GetGPUDescriptorHandleForHeapStart());
-*/
-
+			ImGui_ImplDX12_Init(&init_info);
 		}
 
 		void DirectX12ImGuiLayer::OnDetach()
 		{
-			/*Heimdall::Renderer::Submit([]() 
+			Heimdall::Renderer::Submit([]() 
 			{
 				ImGui_ImplDX12_Shutdown();
 				ImGui_ImplWin32_Shutdown();
 				ImGui::DestroyContext();
-			});*/
+			});
 		}
 
 		void DirectX12ImGuiLayer::Begin()
 		{
-			/*ImGui_ImplDX12_NewFrame();
+			ImGui_ImplDX12_NewFrame();
 			ImGui_ImplWin32_NewFrame();
-			ImGui::NewFrame();*/
+			ImGui::NewFrame();
 		}
 
 		void DirectX12ImGuiLayer::End()
 		{
-			/*static bool show = true;
-			ImGui::ShowDemoWindow(&show);
-
 			ImGui::Render();
-			/ *Ref<DirectX12SwapChain> swapchain = Application::Get().GetWindow().GetSwapChain();
-			auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
 
-			uint32_t width = swapchain->GetWidth();
-			uint32_t height = swapchain->GetHeight();
+			auto swapchain = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>();
+			VH_CORE_INFO("Imgui ClearColor: ({0}, {1}, {2}, {3})", m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
+			swapchain->SetBackgroundColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
 
-			uint32_t frameIndex = swapchain->GetCurrentBackBufferIndex();
+			UINT backbufferindex = swapchain->GetCurrentBackBufferIndex();
 
-			auto drawBuffer = swapchain->GetCurrentDrawCommandBuffer();
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> list = swapchain->GetCurrentDrawCommandBuffer();
 
-			auto renderTarget = swapchain->GetCurrentRenderTaget().Get();
+			auto renderTarget = swapchain->GetCurrentRenderTaget();
 
 			D3D12_RESOURCE_BARRIER barrier = {};
 			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-			barrier.Transition.pResource = renderTarget;
+			barrier.Transition.pResource = renderTarget.Get();
 			barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
 			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-			drawBuffer->ResourceBarrier(1, &barrier);
+			list->ResourceBarrier(1, &barrier);
 
-			VH_CORE_INFO("Trying to set color");
-			const float color[4] = {0.2f, 0.2f, 0.2f, 1.0f};
-			D3D12_CPU_DESCRIPTOR_HANDLE rtv = swapchain->GetCurrentRenderTagetView();
-			drawBuffer->ClearRenderTargetView(rtv, color, 0, nullptr);
-			drawBuffer->OMSetRenderTargets(1, &rtv, false, nullptr);
-
-
-			//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), drawBuffer.Get());
+			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), list.Get());
 
 			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
-			drawBuffer->ResourceBarrier(1, &barrier);* /
-			
-			ImGuiIO& io = ImGui::GetIO(); (void)io;
+			list->ResourceBarrier(1, &barrier);
+
+			ImGuiIO io = ImGui::GetIO(); (void)io;
 			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 			{
 				ImGui::UpdatePlatformWindows();
 				ImGui::RenderPlatformWindowsDefault();
-			}*/
+			}
 		}
 
 		void DirectX12ImGuiLayer::OnImGuiRender()
 		{
-			/*ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+			{
+				static float f = 0.0f;
+				static int counter = 0;
+				static float color = 0;
+				bool test = false;
 
-			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+				ImGui::Begin("Hello World!");
 
-			ImVec2 mousePos = ImGui::GetMousePos();
+				ImGui::Text("this is some useful text");
+				ImGui::Checkbox("Demo Window", &test);
 
-			ImGui::Text("Mouse Position: (%.1f, %.1f)", mousePos.x, mousePos.y);
+				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+				ImGui::ColorEdit3("Clear color", (float*)&m_ClearColor);
 
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::End(); */               
+
+				if (ImGui::Button("Button"))
+					counter++;
+				ImGui::SameLine();
+				ImGui::Text("counter = %d", counter);
+
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+				ImVec2 mousePos = ImGui::GetMousePos();
+
+				ImGui::Text("Moise position: (%.1f, %.1f)", mousePos.x, mousePos.y);
+
+				ImGui::End();
+			}
+		}
+
+		void DirectX12ImGuiLayer::AllocSRVHeap(D3D12_CPU_DESCRIPTOR_HANDLE* out_cpu_desc_handle, D3D12_GPU_DESCRIPTOR_HANDLE* out_gpu_desc_handle)
+		{
+			uint32_t frameIndex = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>()->GetCurrentBackBufferIndex();
+			auto srvheap = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>()->GetSRVHeap();
+			auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
+
+			out_cpu_desc_handle->ptr = srvheap->GetCPUDescriptorHandleForHeapStart().ptr + (frameIndex * device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+			out_gpu_desc_handle->ptr = srvheap->GetGPUDescriptorHandleForHeapStart().ptr + (frameIndex * device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+		}
+
+		void DirectX12ImGuiLayer::FreeSRVHeap(D3D12_CPU_DESCRIPTOR_HANDLE cpu_handle, D3D12_GPU_DESCRIPTOR_HANDLE gpu_handle)
+		{
+			auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
+			auto srvheap = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>()->GetSRVHeap();
+			uint32_t handleIncrement = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+			int cpu_idx = (int)((cpu_handle.ptr - srvheap->GetCPUDescriptorHandleForHeapStart().ptr) / handleIncrement);
+			int gpu_idx = (int)((gpu_handle.ptr - srvheap->GetGPUDescriptorHandleForHeapStart().ptr) / handleIncrement);
+			VH_CORE_ASSERT(cpu_idx == gpu_idx);
 		}
 	}
 }

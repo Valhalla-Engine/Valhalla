@@ -23,12 +23,18 @@ namespace Valhalla
 			virtual void OnDetach() override;
 			virtual void OnImGuiRender() override;
 
+
+			private:
+			void AllocSRVHeap(D3D12_CPU_DESCRIPTOR_HANDLE* out_cpu_desc_handle, D3D12_GPU_DESCRIPTOR_HANDLE* out_gpu_desc_handle);
+			void FreeSRVHeap(D3D12_CPU_DESCRIPTOR_HANDLE out_cpu_desc_handle, D3D12_GPU_DESCRIPTOR_HANDLE out_gpu_desc_handle);
+		
+		private:
+
 		private:
 			Ref<Heimdall::RenderCommandBuffer> m_RenderCommandBuffer;
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RTVHeap;
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_DSVHeap;
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_SRVHeap;
 			float_t m_Time = 0.0f;
+			float m_ClearColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
 		};
 	}
 }

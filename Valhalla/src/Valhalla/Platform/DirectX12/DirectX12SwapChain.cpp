@@ -18,18 +18,19 @@ namespace Valhalla
 	{
 
 		DirectX12SwapChain::DirectX12SwapChain()
-			: m_Height(0), m_Width(0)
+			: m_Height(0), m_Width(0), m_FenceEvent(nullptr-)
 		{
 
 		}
 
 		DirectX12SwapChain::~DirectX12SwapChain()
 		{
+			Destroy();
 		}
 
 		void DirectX12SwapChain::Destroy()
 		{
-
+			
 		}
 
 		void DirectX12SwapChain::Init(Ref<Heimdall::RendererContext>& context)
@@ -121,7 +122,7 @@ namespace Valhalla
 			{
 				D3D12_DESCRIPTOR_HEAP_DESC desc;
 				desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-				desc.NumDescriptors = 1;
+				desc.NumDescriptors = m_ImageCount;
 				desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 				desc.NodeMask = 0;
 
@@ -164,172 +165,105 @@ namespace Valhalla
 				}
 			}
 
+			m_Fences.resize(m_ImageCount);
+			for (uint32_t i = 0; i < 2; i++)
 			{
-				DXCALL(device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence)));
-				m_FenceValue = 1;
-
-				// Create an event handle to use for frame synchronization.
-				m_FenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-				if (m_FenceEvent == nullptr)
-				{
-					DXCALL(HRESULT_FROM_WIN32(GetLastError()));
-				}
+				DXCALL(device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fences[i].Fence)));
+				m_Fences[i].FenceValue = 0;
 			}
 
-			IMGUI_CHECKVERSION();
-			ImGui::CreateContext();
-			ImGuiIO& io = ImGui::GetIO();(void)io;
-			io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-
-			ImGui::StyleColorsDark();
-			ImGuiStyle& style = ImGui::GetStyle();
-			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-			{
-				style.WindowRounding = 0.0f;
-				style.Colors[ImGuiCol_WindowBg].w = 1.0f; 
-			}
-
-			ImGui_ImplDX12_InitInfo init_info = {};
-			init_info.Device = m_Device->GetDevice().Get();
-			init_info.CommandQueue = m_Device->GetGraphicsQueue().Get();
-			init_info.NumFramesInFlight = 2;
-			init_info.RTVFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
-			init_info.SrvDescriptorHeap = m_SRVHeap.Get();
-
-			auto srvheap = m_SRVHeap;
-			init_info.SrvDescriptorAllocFn = [](ImGui_ImplDX12_InitInfo*, D3D12_CPU_DESCRIPTOR_HANDLE* out_cpu_handle, D3D12_GPU_DESCRIPTOR_HANDLE* out_gpu_handle)
-			{
-				auto swapchain = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>();
-				auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
-				uint32_t frameindex = swapchain->GetCurrentBackBufferIndex();
-				out_cpu_handle->ptr = swapchain->GetSRVHeap()->GetCPUDescriptorHandleForHeapStart().ptr + (frameindex * device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-				out_gpu_handle->ptr = swapchain->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart().ptr + (frameindex * device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-			};
-
-			init_info.SrvDescriptorFreeFn = [](ImGui_ImplDX12_InitInfo*, D3D12_CPU_DESCRIPTOR_HANDLE cpu_handle, D3D12_GPU_DESCRIPTOR_HANDLE gpu_handle)
-			{
-				auto swapchain = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>();
-				auto device = DirectX12Context::GetCurrentDevice()->GetDevice();
-				uint32_t handleIncrement = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-				int cpu_idx = (int)((cpu_handle.ptr - swapchain->GetSRVHeap()->GetCPUDescriptorHandleForHeapStart().ptr) / handleIncrement);
-				int gpu_idx = (int)((gpu_handle.ptr - swapchain->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart().ptr) / handleIncrement);
-				VH_CORE_ASSERT(cpu_idx == gpu_idx);
-			};
-
-			ImGui_ImplWin32_Init(window);
-			ImGui_ImplDX12_Init(&init_info);
+			m_FenceEvent = CreateEvent(nullptr, false, false, nullptr);
+			VH_CORE_ASSERT(m_FenceEvent, "Failed to create fence event");
 		}
 
 		void DirectX12SwapChain::BeginFrame()
 		{
-			//auto device = DirectX12Context::GetCurrentDevice();
-			m_CurrentBufferIndex = m_SwapChain->GetCurrentBackBufferIndex();
+			m_CurrentBufferIndex = GetCurrentBackBufferIndex();
+			m_CurrentFrameIndex = (m_CurrentFrameIndex + 1) % m_ImageCount;
+			WaitForFrame();
 			DXCALL(m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator->Reset());
 			DXCALL(m_CommandBuffers[m_CurrentBufferIndex].CommandBuffer->Reset(m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator.Get(), nullptr));
-			D3D12_CPU_DESCRIPTOR_HANDLE rtv = m_RenderTargetViews[m_CurrentBufferIndex];
 
-			ImGui_ImplDX12_NewFrame();
-			ImGui_ImplWin32_NewFrame();
-			ImGui::NewFrame();
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> list = GetCurrentDrawCommandBuffer();
 
-			{
-				static float f = 0.0f;
-				static int counter = 0;
-				static float color = 0;
-				bool test = false;
+			D3D12_RESOURCE_BARRIER barrier = {};
+			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+			barrier.Transition.pResource = GetCurrentRenderTaget().Get();
+			barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+			list->ResourceBarrier(1, &barrier);
 
-				ImGui::Begin("Hello World!");
+			auto renderTargetView = GetCurrentRenderTagetView();
 
-				ImGui::Text("this is some useful text");
-				ImGui::Checkbox("Demo Window", &test);
-				
-				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-				ImGui::ColorEdit3("Clear color", (float*) &m_ClearColor);
+			const float clear_color_with_alpha[4] = { m_ClearColor[0] * m_ClearColor[3], m_ClearColor[1] * m_ClearColor[3], m_ClearColor[2] * m_ClearColor[3], m_ClearColor[3] };
+			list->ClearRenderTargetView(renderTargetView, clear_color_with_alpha, 0, nullptr);
+			list->OMSetRenderTargets(1, &renderTargetView, false, nullptr);
+			list->SetDescriptorHeaps(1, m_SRVHeap.GetAddressOf());
 
-				if (ImGui::Button("Button"))
-					counter++;
-				ImGui::SameLine();
-				ImGui::Text("counter = %d", counter);
 
-				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
-				ImVec2 mousePos = ImGui::GetMousePos();
-
-				ImGui::Text("Moise position: (%.1f, %.1f)", mousePos.x, mousePos.y);
-
-				ImGui::End();
-			}
+			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+			GetCurrentDrawCommandBuffer()->ResourceBarrier(1, &barrier);
 		}
 
 		void DirectX12SwapChain::Present()
 		{
-			ImGui::Render();
-
 			UINT backbufferindex = m_SwapChain->GetCurrentBackBufferIndex();
 
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> list = GetCurrentDrawCommandBuffer();
-
-			D3D12_RESOURCE_BARRIER barrier	= {};
-			barrier.Type					= D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-			barrier.Transition.pResource	= m_RenderTargets[backbufferindex].Get();
-			barrier.Transition.Subresource	= D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-			barrier.Transition.StateBefore	= D3D12_RESOURCE_STATE_PRESENT;
-			barrier.Transition.StateAfter	= D3D12_RESOURCE_STATE_RENDER_TARGET;
-			list->ResourceBarrier(1, &barrier);
-
-			const float clear_color_with_alpha[4] = {m_ClearColor[0] * m_ClearColor[3], m_ClearColor[1] * m_ClearColor[3], m_ClearColor[2] * m_ClearColor[3], m_ClearColor[3]};
-			list->ClearRenderTargetView(m_RenderTargetViews[backbufferindex], clear_color_with_alpha, 0, nullptr);
-			list->OMSetRenderTargets(1, &m_RenderTargetViews[backbufferindex], false, nullptr);
-			list->SetDescriptorHeaps(1, m_SRVHeap.GetAddressOf());
-
-			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), list.Get());
-
-			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
-			list->ResourceBarrier(1, &barrier);
 
 			DXCALL(list->Close());
 
 			ID3D12CommandList* commandlist[] = { list.Get() };
 			m_Device->GetGraphicsQueue()->ExecuteCommandLists(1, commandlist);
 
-			ImGuiIO io = ImGui::GetIO(); (void)io;
-			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-			{
-				ImGui::UpdatePlatformWindows();
-				ImGui::RenderPlatformWindowsDefault();
-			}
 			
 			DXCALL(m_SwapChain->Present(1, 0));
-			DXCALL(m_Device->GetGraphicsQueue()->Signal(m_Fence.Get(), m_FenceValue));
+
+			SyncFence& sync = m_Fences[m_CurrentFrameIndex];
+			sync.FenceValue++;
+			DXCALL(m_Device->GetGraphicsQueue()->Signal(sync.Fence.Get(), sync.FenceValue));
 			DXCALL(m_Device->GetDevice()->GetDeviceRemovedReason());
-			WaitForLastSubmittedFrame();
 		}
 
-
-		void DirectX12SwapChain::WaitForLastSubmittedFrame()
+		void DirectX12SwapChain::SetBackgroundColor(float r, float g, float b, float a)
 		{
-			// Signal and increment the fence value.
-			const UINT64 fence = m_FenceValue;
-			DXCALL(m_Device->GetGraphicsQueue()->Signal(m_Fence.Get(), fence));
-			m_FenceValue++;
+			m_ClearColor[0] = r;
+			m_ClearColor[1] = g;
+			m_ClearColor[2] = b;
+			m_ClearColor[3] = a;
+			VH_CORE_INFO("Color: ({0}, {1}, {2}, {3})", r, g, b, a);
+			VH_CORE_INFO("ClearColor: ({0}, {1}, {2}, {3})", m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
+		}
 
-			// Wait until the previous frame is finished.
-			if (m_Fence->GetCompletedValue() < fence)
+		void DirectX12SwapChain::WaitForFrame()
+		{
+			SyncFence& sync = m_Fences[m_CurrentFrameIndex];
+			uint64_t test = sync.Fence->GetCompletedValue();
+			// Wait only if the GPU hasn't finished this frame
+			if (test < sync.FenceValue)
 			{
-
-				DXCALL(m_Fence->SetEventOnCompletion(fence, m_FenceEvent));
+				DXCALL(sync.Fence->SetEventOnCompletion(sync.FenceValue, m_FenceEvent));
 				WaitForSingleObject(m_FenceEvent, INFINITE);
+			}
+		}
+
+		void DirectX12SwapChain::FlushGPU()
+		{
+			for (auto& sync : m_Fences)
+			{
+				if (sync.Fence->GetCompletedValue() < sync.FenceValue)
+				{
+					DXCALL(sync.Fence->SetEventOnCompletion(sync.FenceValue, m_FenceEvent));
+					WaitForSingleObject(m_FenceEvent, INFINITE);
+				}
 			}
 		}
 
 		void DirectX12SwapChain::OnResize(uint32_t width, uint32_t height)
 		{
-			VH_CORE_INFO("Waiting for last submitted frame");
-			WaitForLastSubmittedFrame();
-			VH_CORE_INFO("Done Waiting");
+			FlushGPU();
 
 			for (uint32_t i = 0; i < m_RenderTargets.size(); i++)
 			{
@@ -345,6 +279,5 @@ namespace Valhalla
 				m_Device->GetDevice()->CreateRenderTargetView(m_RenderTargets[i].Get(), nullptr, m_RenderTargetViews[i]);
 			}
 		}
-
 	}
 }

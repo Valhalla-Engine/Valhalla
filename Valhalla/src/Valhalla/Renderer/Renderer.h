@@ -79,6 +79,7 @@ namespace Valhalla
 			static RendererConfig& GetConfig();
 			static void SetConfig(const RendererConfig& config);
 
+
 			static RenderCommandQueue& GetRenderResourceReleaseQueue(uint32_t index);
 
 		private:
