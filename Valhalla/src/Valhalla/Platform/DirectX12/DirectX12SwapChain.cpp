@@ -18,7 +18,7 @@ namespace Valhalla
 	{
 
 		DirectX12SwapChain::DirectX12SwapChain()
-			: m_Height(0), m_Width(0), m_FenceEvent(nullptr-)
+			: m_Height(0), m_Width(0), m_FenceEvent(nullptr)
 		{
 
 		}
