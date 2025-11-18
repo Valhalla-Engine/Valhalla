@@ -1,5 +1,6 @@
-#include "vhpch.h"
-#include "Camera.h"
+#include <DirectXMath.h>
+
+module Valhalla.Renderer.Camera;
 
 namespace Valhalla
 {

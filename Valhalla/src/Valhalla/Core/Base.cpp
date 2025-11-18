@@ -1,7 +1,8 @@
-#include "vhpch.h"
-#include "Base.h"
 
-#include "Log.h"
+module Valhalla.Core;
+
+import Valhalla.Core.Log;
+import <iostream>;
 
 #define VALHALLA_BUILD_ID "v0.1a"
 
@@ -11,12 +12,12 @@ namespace Valhalla
 	{
 		Log::Init();
 
-		VH_CORE_TRACE("Valhalla Engine {}", VALHALLA_BUILD_ID);
-		VH_CORE_TRACE("Initializing...");
+		Log::CoreTrace("Valhalla Engine {0}", VALHALLA_BUILD_ID);
+		Log::CoreTrace("Initializing...");
 	}
 
 	void ShutdownCore()
 	{
-		VH_CORE_TRACE("Shutting down...");
+		Log::CoreTrace("Shutting down...");
 	}
 }

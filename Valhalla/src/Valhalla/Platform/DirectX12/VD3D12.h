@@ -1,8 +1,6 @@
 #pragma once
 #include "dxgi.h"
 
-#include "Valhalla/Core/Log.h"
-
 #include <iostream>
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -17,6 +15,8 @@
 #pragma comment (lib, "d3d12.lib")
 #pragma comment (lib, "D3DCompiler.lib")
 #pragma comment (lib, "dxgi.lib")
+
+//import Valhalla.Core.Log;
 
 namespace Valhalla
 {

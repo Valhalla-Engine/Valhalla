@@ -6,18 +6,15 @@ project "Valhalla"
     targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
     objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
 
-    -- Precompiled header (optional; modules may reduce PCH need)
-    pchheader "vhpch.h"
-    pchsource "src/vhpch.cpp"
-
     -- All sources, including module interface (.ixx) and module implementation (.cppm)
     files {
+        "src/**.ixx",
+        "src/**.cppm",
+        "src/**.cxx",
         "src/**.h",
         "src/**.c",
         "src/**.hpp",
         "src/**.cpp",
-        "src/**.ixx",
-        "src/**.cppm",
 
         "Platform/" .. firstToUpper(os.target()) .. "/**.hpp",
         "Platform/" .. firstToUpper(os.target()) .. "/**.cpp",
@@ -49,13 +46,26 @@ project "Valhalla"
         flags { "NoPCH" }
 
     -- Enable modules for your project files
-    filter { "files:**.ixx", "files:**.cppm" }
-            buildoptions { "/experimental:module" }
+    filter { "files:src/**.ixx", "files:src/**.cppm"}
+        buildoptions { "/experimental:module /module:interface" }
+        compileas "Module"
 
     -- Platform-specific
     filter "system:windows"
         systemversion "latest"
         defines { "VH_PLATFORM_WINDOWS" }
+        buildoptions { "/experimental:module" }
+
+        files {
+            "vendor/imgui/backends/imgui_impl_win32.cpp",
+            "vendor/imgui/backends/imgui_impl_dx12.cpp"
+        }
+
+        links {
+            "d3d12",
+            "dxgi",
+            "d3dcompiler"
+        }
 
     -- Configurations
     filter "configurations:Debug"

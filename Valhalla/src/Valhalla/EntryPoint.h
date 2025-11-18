@@ -1,6 +1,9 @@
 #pragma once
 
-extern Valhalla::Application* Valhalla::CreateApplication(int argc, char** argv);
+import Valhalla.Core;
+
+import Valhalla.Core.Application;
+//extern Valhalla::Application* Valhalla::CreateApplication(int argc, char** argv);
 
 
 namespace Valhalla
