@@ -7,7 +7,7 @@ import <type_traits>;
 
 export namespace Valhalla
 {
-	class RefCounted
+	export class RefCounted
 	{
 	public:
 
@@ -27,7 +27,7 @@ export namespace Valhalla
 		mutable uint32_t m_RefCount = 0;
 	};
 
-	template<typename T>
+	export template<typename T>
 	class Ref
 	{
 	public:

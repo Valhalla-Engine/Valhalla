@@ -1,9 +1,11 @@
-#pragma once
-#include "Valhalla/Core/Ref.h"
+export module Valhalla.Renderer.IndexBuffer;
 
-namespace Valhalla
+import Valhalla.Core.Ref;
+import Valhalla.Core.Types;
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class IndexBuffer : public RefCounted
 		{

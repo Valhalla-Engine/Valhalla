@@ -1,6 +1,7 @@
+#include <DirectXMath.h>;
+
 export module Valhalla.Core.Types;
 
-#include <DirectXMath.h>;
 
 export namespace Valhalla
 {

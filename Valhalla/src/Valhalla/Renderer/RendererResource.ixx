@@ -1,10 +1,10 @@
-#pragma once
+export module Valhalla.Renderer.RendererResource;
 
-#include "Valhalla/Asset/Asset.h"
+import Valhalla.Asset;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		using ResourceDescriptorInfo = void*;
 

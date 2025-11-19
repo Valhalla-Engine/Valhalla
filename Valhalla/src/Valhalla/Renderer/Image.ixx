@@ -1,14 +1,21 @@
-#pragma once
+#include <DirectXMath.h>
 
-#include "Valhalla/Core/Base.h"
-#include "Valhalla/Core/Buffer.h"
+export module Valhalla.Renderer.Image;
 
-#include "RendererResource.h"
+import Valhalla.Core.Buffer;
+import Valhalla.Core.Types;
+import Valhalla.Core.Ref;
+import Valhalla.Core.Assert;
+
+import Valhalla.Renderer.RendererResource;
+
+import <string>;
+import <cmath>;
 
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		enum class ImageFormat
 		{
@@ -106,7 +113,7 @@ namespace Valhalla
 			virtual uint64_t GetHash() const = 0;
 		};
 
-		class Image2D : public Image
+		export class Image2D : public Image
 		{
 		public:
 			static Ref<Image2D> Create(ImageSpecification specification, Buffer buffer);
@@ -120,18 +127,18 @@ namespace Valhalla
 			{
 				switch (format)
 				{
-				case ImageFormat::RED8UN:		return 1;
-				case ImageFormat::RED8UI:		return 1;
-				case ImageFormat::RED16UI:		return 2;
-				case ImageFormat::RED32UI:		return 4;
-				case ImageFormat::RED32F:		return 4;
-				case ImageFormat::RGB:
-				case ImageFormat::SRGB:			return 3;
-				case ImageFormat::RGBA:			return 4;
-				case ImageFormat::RGBA16F:		return 2 * 4;
-				case ImageFormat::RGBA32F:		return 4 * 4;
+					case ImageFormat::RED8UN:		return 1;
+					case ImageFormat::RED8UI:		return 1;
+					case ImageFormat::RED16UI:		return 2;
+					case ImageFormat::RED32UI:		return 4;
+					case ImageFormat::RED32F:		return 4;
+					case ImageFormat::RGB:
+					case ImageFormat::SRGB:			return 3;
+					case ImageFormat::RGBA:			return 4;
+					case ImageFormat::RGBA16F:		return 2 * 4;
+					case ImageFormat::RGBA32F:		return 4 * 4;
 				}
-				VH_CORE_ASSERT(false);
+				Assert(false);
 				return 0;
 			}
 
@@ -159,7 +166,7 @@ namespace Valhalla
 						return false;
 				}
 
-				VH_CORE_ASSERT(false);
+				Assert(false);
 				return false;
 			}
 

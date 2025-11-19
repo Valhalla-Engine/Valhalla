@@ -2,7 +2,7 @@ export module Valhalla.Core.TimeStep;
 
 import Valhalla.Core.Types;
 
-namespace Valhalla
+export namespace Valhalla
 {
 	export class Timestep
 	{
