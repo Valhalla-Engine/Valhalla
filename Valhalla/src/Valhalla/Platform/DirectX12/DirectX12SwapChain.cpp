@@ -1,16 +1,26 @@
-#include "vhpch.h"
-#include "DirectX12SwapChain.h"
-#include "Valhalla/Core/Application.h"
-
-#include "Valhalla/Renderer/Renderer.h"
-
 #include "imgui.h"
 #include "backends/imgui_impl_win32.h"
 #include "backends/imgui_impl_dx12.h"
 
-#include "DirectX12Context.h"
+#include "D12Include.hpp"
 
-#include <codecvt>
+module Valhalla.Yggdrasil.DirectX12.SwapChain;
+
+import Valhalla.Core.Application;
+
+import Valhalla.Renderer.Renderer;
+
+import Valhalla.Yggdrasil.DirectX12.Context;
+
+import Valhalla.Core.Log;
+import Valhalla.Core.Assert;
+
+import Valhalla.Yggdrasil.DirectX12.VD3D12;
+#include "DXCALL.h"
+
+
+import <codecvt>;
+import <sstream>;
 
 namespace Valhalla
 {
@@ -30,7 +40,7 @@ namespace Valhalla
 
 		void DirectX12SwapChain::Destroy()
 		{
-			
+			FlushGPU();
 		}
 
 		void DirectX12SwapChain::Init(Ref<Heimdall::RendererContext>& context)
@@ -51,7 +61,7 @@ namespace Valhalla
 			m_Height = *height;
 			m_VSync = vsync;
 
-			VH_CORE_INFO("SwapChain Size: ({0}, {1})", m_Width, m_Height);
+			Log::CoreInfo("SwapChain Size: ({0}, {1})", m_Width, m_Height);
 
 			D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevel{};
 			QualityLevel.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -150,7 +160,7 @@ namespace Valhalla
 				for (size_t i = 0; i < m_CommandBuffers.size(); i++)
 				{
 					SwapChainCommandBuffer& commandBuffer = m_CommandBuffers[i];
-					VH_CORE_INFO("Creating draw command buffers");
+					Log::CoreInfo("Creating draw command buffers");
 					DXCALL(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandBuffer.CommandAllocator)));
 					std::wstringstream ss;
 					ss << i;
@@ -173,7 +183,7 @@ namespace Valhalla
 			}
 
 			m_FenceEvent = CreateEvent(nullptr, false, false, nullptr);
-			VH_CORE_ASSERT(m_FenceEvent, "Failed to create fence event");
+			Assert(m_FenceEvent, "Failed to create fence event");
 		}
 
 		void DirectX12SwapChain::BeginFrame()
@@ -233,8 +243,8 @@ namespace Valhalla
 			m_ClearColor[1] = g;
 			m_ClearColor[2] = b;
 			m_ClearColor[3] = a;
-			VH_CORE_INFO("Color: ({0}, {1}, {2}, {3})", r, g, b, a);
-			VH_CORE_INFO("ClearColor: ({0}, {1}, {2}, {3})", m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
+			Log::CoreInfo("Color: ({0}, {1}, {2}, {3})", r, g, b, a);
+			Log::CoreInfo("ClearColor: ({0}, {1}, {2}, {3})", m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
 		}
 
 		void DirectX12SwapChain::WaitForFrame()

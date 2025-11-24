@@ -3,9 +3,9 @@ export module Valhalla.Renderer.UniformBufferSet;
 import Valhalla.Core.Ref;
 import Valhalla.Renderer.UniformBuffer;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class UniformBufferSet : public RefCounted
 		{

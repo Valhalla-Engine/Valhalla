@@ -1,10 +1,13 @@
-#include "vhpch.h"
-#include "MeshFactory.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#include "Valhalla/Renderer/Renderer.h"
+module Valhalla.Renderer.MeshFactory;
+
+import Valhalla.Renderer.Mesh;
+//import Valhalla.Renderer.Vertex;
+
+import <vector>;
 
 namespace Valhalla
 {
@@ -47,8 +50,8 @@ namespace Valhalla
 			indices[10] = { 3, 2, 6 };
 			indices[11] = { 6, 7, 3 };
 
-			Renderer::RenderMesh(VertexBuffer::Create(vertices.data(), (uint32_t)(vertices.size() * sizeof(Vertex))), 
-				IndexBuffer::Create(indices.data(), (uint32_t)(indices.size() * sizeof(Index))));
+			/*Renderer::RenderMesh(VertexBuffer::Create(vertices.data(), (uint32_t)(vertices.size() * sizeof(Vertex))),
+				IndexBuffer::Create(indices.data(), (uint32_t)(indices.size() * sizeof(Index))));*/
 
 			return {};
 		}

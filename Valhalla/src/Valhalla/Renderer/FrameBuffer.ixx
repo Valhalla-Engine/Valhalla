@@ -1,12 +1,19 @@
-#pragma once
+export module Valhalla.Renderer.FrameBuffer;
 
-#include "Valhalla/Renderer/Image.h"
+import Valhalla.Renderer.Image;
 
-#include "Valhalla/Core/Ref.h"
+import Valhalla.Core.Ref;
 
-namespace Valhalla
+import <initializer_list>;
+import <vector>;
+import <string>;
+import <map>;
+import <functional>;
+
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class FrameBuffer;
 

@@ -1,19 +1,25 @@
-#pragma once
+export module Valhalla.Renderer.Renderer;
 
-#include "RendererContext.h"
-#include "RendererConfig.h"
-#include "RenderCommandQueue.h"
-#include "IndexBuffer.h"
+import Valhalla.Renderer.RendererContext;
+import Valhalla.Renderer.RendererConfig;
+import Valhalla.Renderer.RenderCommandQueue;
+import Valhalla.Renderer.IndexBuffer;
+import Valhalla.Renderer.VertexBuffer;
 
-#include "Valhalla/Renderer/Pipeline.h"
-#include "Valhalla/Renderer/Shader.h"
+import Valhalla.Core.Types;
 
-#include "Valhalla/Core/Application.h"
+import Valhalla.Renderer.Pipeline;
+import Valhalla.Renderer.Shader;
+
+import Valhalla.Core.Application;
+
+import Valhalla.Core.Ref;
 
 
-namespace Valhalla
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class Renderer
 		{

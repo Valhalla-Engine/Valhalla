@@ -1,10 +1,10 @@
-#pragma once
+export module Valhalla.Renderer.RendererCapabilities;
 
-#include <string>
+import <string>;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		struct RendererCapabilities
 		{

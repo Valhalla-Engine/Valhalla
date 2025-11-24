@@ -1,10 +1,10 @@
-#pragma once
+export module Valhalla.Renderer.RendererContext;
 
-#include "Valhalla/Core/Ref.h"
+import Valhalla.Core.Ref;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class RendererContext : public RefCounted
 		{

@@ -1,8 +1,10 @@
-#pragma once
+export module Valhalla.Renderer.RenderCommandQueue;
 
-namespace Valhalla
+import Valhalla.Core.Types;
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class RenderCommandQueue
 		{

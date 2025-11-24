@@ -7,7 +7,7 @@ import <cstring>;
 
 export namespace Valhalla
 {
-	struct Buffer
+	export struct Buffer
 	{
 		byte* Data;
 		uint32_t Size;

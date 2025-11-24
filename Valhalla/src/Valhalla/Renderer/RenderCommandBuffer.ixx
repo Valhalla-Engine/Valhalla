@@ -1,12 +1,13 @@
-#pragma once
+export module Valhalla.Renderer.RenderCommandBuffer;
 
-#include "Valhalla/Core/Ref.h"
+import Valhalla.Core.Ref;
+
+import <string>;
 
 
-namespace Valhalla
+export namespace Valhalla
 {
-
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class RenderCommandBuffer : public RefCounted
 		{

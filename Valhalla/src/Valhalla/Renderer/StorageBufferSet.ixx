@@ -1,10 +1,11 @@
-#pragma once
+export module Valhalla.Renderer.StorageBufferSet;
 
-#include "StorageBuffer.h"
+import Valhalla.Renderer.StorageBuffer;
+import Valhalla.Core.Ref;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class StorageBufferSet : public RefCounted
 		{

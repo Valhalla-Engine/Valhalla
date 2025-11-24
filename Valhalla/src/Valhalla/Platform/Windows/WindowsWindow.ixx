@@ -33,8 +33,8 @@ export namespace Valhalla
 
 		inline void* GetNativeWindow() const { return m_Window; }
 
-		//virtual Ref<Heimdall::RendererContext> GetRendererContext() override { return m_RendererContext; }
-		//virtual Ref<Heimdall::SwapChain> GetSwapChain() override { return m_SwapChain; }
+		virtual Ref<Heimdall::RendererContext> GetRendererContext() override { return m_RendererContext; }
+		virtual Ref<Heimdall::SwapChain> GetSwapChain() override { return m_SwapChain; }
 
 		virtual void SwapBuffers() override;
 
@@ -58,7 +58,7 @@ export namespace Valhalla
 
 		WindowData m_Data;
 		float_t m_LastFrameTime = 0.0f;
-		//Ref<Heimdall::RendererContext> m_RendererContext;
-		//Ref<Heimdall::SwapChain> m_SwapChain;
+		Ref<Heimdall::RendererContext> m_RendererContext;
+		Ref<Heimdall::SwapChain> m_SwapChain;
 	};
 }

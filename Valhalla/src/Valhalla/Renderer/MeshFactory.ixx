@@ -1,6 +1,8 @@
-#pragma once
+#include <DirectXMath.h>
 
-#include "Mesh.h"
+export module Valhalla.Renderer.MeshFactory;
+
+import Valhalla.Asset;
 
 namespace Valhalla
 {

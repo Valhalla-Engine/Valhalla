@@ -1,12 +1,13 @@
-#pragma once
-#include "Valhalla/Core/Ref.h"
-#include "Valhalla/Renderer/RendererContext.h"
+export module Valhalla.Renderer.SwapChain;
 
-namespace Valhalla
+import Valhalla.Core.Ref;
+import Valhalla.Renderer.RendererContext;
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
-		class SwapChain : public RefCounted
+		export class SwapChain : public RefCounted
 		{
 		public:
 			SwapChain() = default;

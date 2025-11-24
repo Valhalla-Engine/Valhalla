@@ -1,8 +1,6 @@
-#include "vhpch.h"
+module Valhalla.Renderer.FrameBuffer;
 
-#include "Valhalla/Renderer/FrameBuffer.h"
-
-#include "Valhalla/Renderer/RendererAPI.h"
+import Valhalla.Renderer.RendererAPI;
 
 namespace Valhalla
 {

@@ -1,10 +1,12 @@
-#pragma once
+export module Valhalla.Renderer.SceneEnvironment;
 
-#include "Texture.h"
+import Valhalla.Asset;
+import Valhalla.Renderer.Texture;
+import Valhalla.Core.Ref;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class Environment : public Mimir::Asset
 		{

@@ -1,10 +1,12 @@
-#pragma once
+export module Valhalla.Renderer.StorageBuffer;
 
-#include "Valhalla/Core/Ref.h"
+import Valhalla.Core.Ref;
 
-namespace Valhalla
+import <string>;
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		struct StorageBufferSpecification
 		{

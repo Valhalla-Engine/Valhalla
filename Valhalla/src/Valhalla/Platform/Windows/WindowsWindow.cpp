@@ -81,13 +81,13 @@ namespace Valhalla
 			Assert(m_Window, "Could not initialize Win32");
 		}
 
-		/*m_RendererContext = Heimdall::RendererContext::Create();
+		m_RendererContext = Heimdall::RendererContext::Create();
 		m_SwapChain = Heimdall::SwapChain::Create();
 		m_RendererContext->Init();
 
 		m_SwapChain->Init(m_RendererContext);
 		m_SwapChain->InitSurface();
-		m_SwapChain->CreateSwapchain(&m_Data.Width, &m_Data.Height, m_Data.VSync);*/
+		m_SwapChain->CreateSwapchain(&m_Data.Width, &m_Data.Height, m_Data.VSync);
 
 		SetWindowLongPtr(m_Window, GWLP_USERDATA, (LONG_PTR)&m_Data);
 		ShowWindow(m_Window, SW_SHOW);
@@ -97,8 +97,8 @@ namespace Valhalla
 
 	void WindowsWindow::Shutdown()
 	{
-		//m_SwapChain->Destroy();
-		//m_RendererContext->~RendererContext();
+		m_SwapChain->~SwapChain();
+		m_RendererContext->~RendererContext();
 		DestroyWindow(m_Window);
 	}
 

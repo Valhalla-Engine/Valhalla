@@ -9,6 +9,8 @@ import Valhalla.Core.Events;
 import Valhalla.Core.Types;
 import Valhalla.Core.Ref;
 
+import Valhalla.Renderer.RendererContext;
+import Valhalla.Renderer.SwapChain;
 
 export namespace Valhalla
 {
@@ -55,8 +57,8 @@ export namespace Valhalla
 
 		virtual void Init() = 0;
 
-		//virtual Ref<Heimdall::RendererContext> GetRendererContext() = 0;
-		//virtual Ref<Heimdall::SwapChain> GetSwapChain() = 0;
+		virtual Ref<Heimdall::RendererContext> GetRendererContext() = 0;
+		virtual Ref<Heimdall::SwapChain> GetSwapChain() = 0;
 		
 		static Window* Create(const WindowProps& props = WindowProps());
 	};

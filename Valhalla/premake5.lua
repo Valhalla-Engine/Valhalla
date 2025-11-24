@@ -2,6 +2,7 @@ project "Valhalla"
     kind "StaticLib"
     language "C++"
     cppdialect "C++20"
+    toolset "v145"
 
     targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
     objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
@@ -49,6 +50,9 @@ project "Valhalla"
     filter { "files:src/**.ixx", "files:src/**.cppm"}
         buildoptions { "/experimental:module /module:interface" }
         compileas "Module"
+
+    filter "toolset:msc"
+        buildoptions { "/scanDependencies" }
 
     -- Platform-specific
     filter "system:windows"

@@ -1,7 +1,8 @@
-#include "vhpch.h"
-#include "PipelineCompute.h"
+module Valhalla.Renderer.PipelineCompute;
 
-#include "Valhalla/Renderer/RendererAPI.h"
+import Valhalla.Renderer.RendererAPI;
+
+import Valhalla.Core.Assert;
 
 
 namespace Valhalla
@@ -16,7 +17,7 @@ namespace Valhalla
 				case RendererAPIType::DirectX12:	return nullptr;
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 	}

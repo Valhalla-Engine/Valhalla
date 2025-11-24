@@ -1,5 +1,4 @@
-#include "vhpch.h"
-#include "RendererStats.h"
+module Valhalla.Renderer.RendererStats;
 
 namespace Valhalla
 {

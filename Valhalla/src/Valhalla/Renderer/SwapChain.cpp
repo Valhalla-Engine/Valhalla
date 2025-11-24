@@ -1,9 +1,10 @@
-#include "vhpch.h"
-#include "SwapChain.h"
+module Valhalla.Renderer.SwapChain;
 
-#include "RendererAPI.h"
+import Valhalla.Renderer.RendererAPI;
+import Valhalla.Core.Ref;
+import Valhalla.Core.Assert;
 
-#include "Valhalla/Platform/DirectX12/DirectX12SwapChain.h"
+import Valhalla.Yggdrasil.DirectX12.SwapChain;
 
 namespace Valhalla
 {
@@ -13,13 +14,13 @@ namespace Valhalla
 		{
 			switch (RendererAPI::Current())
 			{
-			case RendererAPIType::None:			return nullptr;
-			case RendererAPIType::DirectX11:	return nullptr;
-			case RendererAPIType::DirectX12:	return Ref<Yggdrasil::DirectX12SwapChain>::Create();
-			case RendererAPIType::Vulkan:		return nullptr;
+				case RendererAPIType::None:			return nullptr;
+				case RendererAPIType::DirectX11:	return nullptr;
+				case RendererAPIType::DirectX12:	return Ref<Yggdrasil::DirectX12SwapChain>::Create();
+				case RendererAPIType::Vulkan:		return nullptr;
 			}
 
-			VH_CORE_ASSERT(false, "Unknown Renderer API");
+			Assert(false, "Unknown Renderer API");
 			return nullptr;
 		}
 	}

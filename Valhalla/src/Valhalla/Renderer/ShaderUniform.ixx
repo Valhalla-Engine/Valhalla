@@ -1,9 +1,13 @@
-#pragma once
+export module Valhalla.Renderer.ShaderUniform;
 
+import Valhalla.Core.Types;
 
-namespace Valhalla
+import <string>;
+import <vector>;
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		enum class ShaderDomain
 		{

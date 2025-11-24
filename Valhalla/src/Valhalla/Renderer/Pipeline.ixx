@@ -1,14 +1,14 @@
-#pragma once
+export module Valhalla.Renderer.Pipeline;
 
-#include "Valhalla/Core/Ref.h"
+import Valhalla.Core.Ref;
 
-#include "Valhalla/Renderer/VertexBuffer.h"
-#include "Valhalla/Renderer/Shader.h"
-#include "Valhalla/Renderer/UniformBuffer.h"
+import Valhalla.Renderer.VertexBuffer;
+import Valhalla.Renderer.Shader;
+import Valhalla.Renderer.UniformBuffer;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		enum class PrimitiveTopology
 		{

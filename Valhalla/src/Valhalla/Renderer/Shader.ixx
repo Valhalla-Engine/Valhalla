@@ -1,11 +1,17 @@
-#pragma once
-#include "Valhalla/Core/Ref.h"
+export module Valhalla.Renderer.Shader;
 
-#include "Valhalla/Renderer/ShaderUniform.h"
+import Valhalla.Core.Ref;
 
-namespace Valhalla
+import Valhalla.Renderer.ShaderUniform;
+
+import <string>;
+import <vector>;
+import <unordered_map>;
+import <functional>;
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		enum class ShaderUniformType
 		{

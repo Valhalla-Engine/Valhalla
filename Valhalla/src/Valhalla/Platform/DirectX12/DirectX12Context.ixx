@@ -1,14 +1,18 @@
-#pragma once
-#include "VD3D12.h"
-#include "Valhalla/Renderer/RendererContext.h"
-#include "DirectX12Device.h"
-#include "DirectX12SwapChain.h"
-#include "Valhalla/Renderer/Renderer.h"
-#include <d3dcompiler.h>
+#include <DirectXMath.h>
 
-namespace Valhalla
+export module Valhalla.Yggdrasil.DirectX12.Context;
+
+import Valhalla.Yggdrasil.DirectX12.Device;
+import Valhalla.Yggdrasil.DirectX12.SwapChain;
+
+import Valhalla.Renderer.RendererContext;
+import Valhalla.Renderer.Renderer;
+
+import <compare>;
+
+export namespace Valhalla
 {
-	namespace Yggdrasil
+	export namespace Yggdrasil
 	{
 		struct Vertex
 		{

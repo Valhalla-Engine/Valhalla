@@ -1,21 +1,22 @@
-#pragma once
+#include <DirectXMath.h>
+
+export module Valhalla.Renderer.Mesh;
+
+import Valhalla.Core.Math.AABB;
+import Valhalla.Core.Math.DirectXMath;
+
+import Valhalla.Asset;
+
+import Valhalla.Renderer.IndexBuffer;
+import Valhalla.Renderer.UniformBuffer;
+import Valhalla.Renderer.VertexBuffer;
+
+import <vector>;
+import <string>;
+import <unordered_map>;
 
 
-#include "Valhalla/Core/Math/AABB.h"
-#include "Valhalla/Core/Math/DirectXMathExtended.h"
-
-#include "Valhalla/Asset/Asset.h"
-
-#include "Valhalla/Renderer/IndexBuffer.h"
-#include "Valhalla/Renderer/UniformBuffer.h"
-#include "Valhalla/Renderer/VertexBuffer.h"
-
-#include "Valhalla/Asset/AssimpMeshImporter.h"
-
-#include <vector>
-
-
-namespace Valhalla
+export namespace Valhalla
 {
 	namespace Yggdrasil
 	{
@@ -28,7 +29,7 @@ namespace Valhalla
 		class AssimpMeshImporter;
 	}
 
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		struct Vertex
 		{
@@ -39,7 +40,7 @@ namespace Valhalla
 			DirectX::XMFLOAT2 TexCoord;
 		};
 
-		static const int numAttributes = 5;
+		const int numAttributes = 5;
 
 		struct Index
 		{

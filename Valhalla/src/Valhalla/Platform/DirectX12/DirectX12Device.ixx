@@ -1,11 +1,20 @@
-#pragma once
+#include <wrl.h>
+#include <d3d12.h>
+#include <dxgi.h>
+#include <dxgidebug.h>
 
-#include "VD3D12.h"
-#include "Valhalla/Core/Ref.h"
+export module Valhalla.Yggdrasil.DirectX12.Device;
 
-namespace Valhalla
+import Valhalla.Core.Ref;
+import Valhalla.Yggdrasil.DirectX12.VD3D12;
+
+import <vector>;
+import <map>;
+import <thread>;
+
+export namespace Valhalla
 {
-	namespace Yggdrasil
+	export namespace Yggdrasil
 	{
 		class DirectX12CommandAllocator : public RefCounted
 		{

@@ -1,16 +1,23 @@
-#pragma once
+#include <DirectXMath.h>
 
-#include "Valhalla/Core/Base.h"
+export module Valhalla.Renderer.RenderPass;
 
-#include "Valhalla/Renderer/FrameBuffer.h"
-#include "Valhalla/Renderer/UniformBufferSet.h"
-#include "Valhalla/Renderer/StorageBufferSet.h"
-#include "Valhalla/Renderer/Texture.h"
-#include "Valhalla/Renderer/Pipeline.h"
+import Valhalla.Renderer.FrameBuffer;
+import Valhalla.Renderer.UniformBufferSet;
+import Valhalla.Renderer.UniformBuffer;
+import Valhalla.Renderer.StorageBufferSet;
+import Valhalla.Renderer.StorageBuffer;
+import Valhalla.Renderer.Texture;
+import Valhalla.Renderer.Pipeline;
+import Valhalla.Renderer.Image;
 
-namespace Valhalla
+import Valhalla.Core.Ref;
+
+import <string>;
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		struct RenderPassSpecification
 		{

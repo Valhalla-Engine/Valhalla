@@ -1,13 +1,20 @@
-#pragma once
-#include "VD3D12.h"
-#include "DirectX12Device.h"
+#include <wrl.h>
 
+#include <d3d12.h>
+#include <dxgi1_4.h>
 
-#include "Valhalla/Renderer/SwapChain.h"
+export module Valhalla.Yggdrasil.DirectX12.SwapChain;
 
-namespace Valhalla
+import Valhalla.Renderer.SwapChain;
+import Valhalla.Core.Assert;
+import Valhalla.Core.Log;
+import Valhalla.Yggdrasil.DirectX12.Device;
+
+import <vector>;
+
+export namespace Valhalla
 {
-	namespace Yggdrasil
+	export namespace Yggdrasil
 	{
 		class DirectX12SwapChain : public Heimdall::SwapChain
 		{
@@ -38,13 +45,13 @@ namespace Valhalla
 			uint32_t GetCurrentBackIndex() const { return m_CurrentBufferIndex; }
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCurrentDrawCommandBuffer()
 			{
-				//VH_CORE_INFO("Current back buffer index:{0}", m_CurrentBufferIndex);
+				Log::CoreInfo("Current back buffer index:{0}", m_CurrentBufferIndex);
 				return GetDrawCommandBuffer(m_CurrentBufferIndex);
 			}
 
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetDrawCommandBuffer(uint32_t index)
 			{
-				VH_CORE_ASSERT(index < m_CommandBuffers.size());
+				Assert(index < m_CommandBuffers.size());
 				return m_CommandBuffers[index].CommandBuffer;
 			}
 

@@ -1,12 +1,12 @@
-#pragma once
+export module Valhalla.Renderer.PipelineCompute;
 
-#include "Valhalla/Core/Base.h"
-#include "Valhalla/Renderer/Shader.h"
-#include "Valhalla/Renderer/RenderCommandBuffer.h"
+import Valhalla.Core.Ref;
+import Valhalla.Renderer.Shader;
+import Valhalla.Renderer.RenderCommandBuffer;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		class PipelineCompute : public RefCounted
 		{

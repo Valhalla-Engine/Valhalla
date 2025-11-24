@@ -1,14 +1,16 @@
-#pragma once
+#include <DirectXMath.h>
 
-#include "Valhalla/Core/Base.h"
-#include "Valhalla/Core/Buffer.h"
-#include "Valhalla/Renderer/Image.h"
+export module Valhalla.Renderer.Texture;
 
-#include <filesystem>
+import Valhalla.Renderer.Image;
+import Valhalla.Core.Buffer;
+import Valhalla.Renderer.RendererResource;
 
-namespace Valhalla
+import <filesystem>;
+
+export namespace Valhalla
 {
-	namespace Heimdall
+	export namespace Heimdall
 	{
 		struct TextureSpecification
 		{
