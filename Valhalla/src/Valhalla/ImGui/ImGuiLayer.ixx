@@ -1,9 +1,8 @@
-#pragma once
+export module Valhalla.Imgui.Layer;
 
+import Valhalla.Core.Layer;
 
-#include "Valhalla/Core/Layer.h"
-
-namespace Valhalla
+export namespace Valhalla
 {
 	class ImGuiLayer : public Layer
 	{

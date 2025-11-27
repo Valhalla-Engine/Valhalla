@@ -1,12 +1,17 @@
-#pragma once
-#include "VD3D12.h"
-#include "Valhalla/Renderer/RendererAPI.h"
+#include "D12Include.hpp"
+#include <DirectXMath.h>
 
-#include "DirectX12Context.h"
+export module Valhalla.Yggdrasil.DirectX12.Renderer;
 
-namespace Valhalla
+import Valhalla.Renderer.RendererAPI;
+import Valhalla.Yggdrasil.DirectX12.Device;
+import Valhalla.Yggdrasil.DirectX12.SwapChain;
+
+import Valhalla.Core.Ref;
+
+export namespace Valhalla
 {
-	namespace Yggdrasil
+	export namespace Yggdrasil
 	{
 		class DirectX12Renderer : public Heimdall::RendererAPI
 		{

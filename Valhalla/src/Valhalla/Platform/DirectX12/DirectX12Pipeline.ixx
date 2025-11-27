@@ -1,12 +1,12 @@
-#pragma once
+#include "D12Include.hpp"
 
-#include "VD3D12.h"
+export module Valhalla.Yggdrasil.DirectX12.Pipeline;
 
-#include "Valhalla/Renderer/Pipeline.h"
+import Valhalla.Renderer.Pipeline;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Yggdrasil
+	export namespace Yggdrasil
 	{
 		class DirectX12Pipeline : public Heimdall::Pipeline
 		{

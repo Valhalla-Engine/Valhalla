@@ -1,13 +1,16 @@
-#pragma once
+#include "D12Include.hpp"
 
-#include "Valhalla/ImGui/ImGuiLayer.h"
-#include "VD3D12.h"
+export module Valhalla.Yggdrasil.DirectX12.ImguiLayer;
 
-#include "Valhalla/Renderer/RenderCommandBuffer.h"
+import Valhalla.Renderer.RenderCommandBuffer;
 
-namespace Valhalla
+import Valhalla.Imgui.Layer;
+
+import Valhalla.Core.Ref;
+
+export namespace Valhalla
 {
-	namespace Yggdrasil
+	export namespace Yggdrasil
 	{
 		class DirectX12ImGuiLayer : public ImGuiLayer
 		{

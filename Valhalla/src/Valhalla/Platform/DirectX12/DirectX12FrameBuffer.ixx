@@ -1,10 +1,8 @@
-#pragma once
+#include "D12Include.hpp"
 
-#include "VD3D12.h"
+export module Valhalla.Yggdrasil.DirectX12.FrameBuffer;
 
-#include "Valhalla/Renderer/FrameBuffer.h"
-
-#include "DirectX12Image.h"
+import Valhalla.Renderer.FrameBuffer;
 
 namespace Valhalla
 {

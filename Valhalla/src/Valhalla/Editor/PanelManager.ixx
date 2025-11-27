@@ -1,16 +1,17 @@
-#pragma once
+export module Valhalla.Editor.PanelManager;
 
-#include "Valhalla/Core/Ref.h"
-#include "Valhalla/Core/Log.h"
-#include "Valhalla/Core/Hash.h"
+import Valhalla.Core.Ref;
+import Valhalla.Core.Log;
+import Valhalla.Core.Hash;
+import Valhalla.Core.Events;
 
+import Valhalla.Editor.EditorPanel;
 
-#include "EditorPanel.h"
+import <array>;
+import <unordered_map>;
+import <utility>;
 
-#include <unordered_map>
-#include <utility>
-
-namespace Valhalla
+export namespace Valhalla
 {
 	struct PanelData
 	{
@@ -53,7 +54,7 @@ namespace Valhalla
 			uint32_t id = Hash::GenerateFNVHash(data.ID);
 			if (panelMap.find(id) != panelMap.end())
 			{
-				VH_CORE_ERROR_TAG("PanelManager", "A panel with the id '{0}' has already been added", data.ID);
+				Log::CoreErrorTag("PanelManager", "A panel with the id '{0}' has already been added", data.ID);
 				return nullptr;
 			}
 
@@ -88,7 +89,7 @@ namespace Valhalla
 				return panelMap.at(id).Panel.As<TPanel>();
 			}
 
-			VH_CORE_ERROR_TAG("PanelManager", "Couldn't find panel with id '{0}'", strID);
+			Log::CoreErrorTag("PanelManager", "Couldn't find panel with id '{0}'", strID);
 			return nullptr;
 		}
 

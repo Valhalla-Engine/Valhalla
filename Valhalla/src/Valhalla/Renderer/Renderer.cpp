@@ -9,6 +9,8 @@ import Valhalla.Renderer.Shader;
 import Valhalla.Renderer.RendererConfig;
 import Valhalla.Renderer.RenderCommandQueue;
 
+import Valhalla.Yggdrasil.DirectX12.Renderer;
+
 import <atomic>;
 import <vector>;
 import <unordered_map>;
@@ -54,7 +56,7 @@ namespace Valhalla
 		{
 			switch (RendererAPI::Current())
 			{
-				case RendererAPIType::DirectX12:	return nullptr;
+				case RendererAPIType::DirectX12:	return new Yggdrasil::DirectX12Renderer;
 			}
 			Assert(false, "Unknown RendererAPI");
 			return nullptr;
