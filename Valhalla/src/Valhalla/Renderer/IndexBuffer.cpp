@@ -1,9 +1,9 @@
-#include "vhpch.h"
+module Valhalla.Renderer.IndexBuffer;
 
-#include "IndexBuffer.h"
-#include "RendererAPI.h"
-
-#include "Valhalla/Platform/DirectX12/DirectX12IndexBuffer.h"
+import Valhalla.Core.Ref;
+import Valhalla.Core.Types;
+import Valhalla.Renderer.RendererAPI;
+import Valhalla.Core.Assert;
 
 namespace Valhalla
 {
@@ -19,7 +19,7 @@ namespace Valhalla
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
 
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 
@@ -29,11 +29,11 @@ namespace Valhalla
 			{
 				case RendererAPIType::None:			return nullptr;
 				case RendererAPIType::DirectX11:	return nullptr;
-				case RendererAPIType::DirectX12:	return Ref<Yggdrasil::DirectX12IndexBuffer>::Create(buffer, size);
+				case RendererAPIType::DirectX12:	return nullptr;
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
 
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 	}

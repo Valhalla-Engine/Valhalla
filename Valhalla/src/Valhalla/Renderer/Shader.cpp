@@ -1,10 +1,8 @@
-#include "vhpch.h"
-#include "Shader.h"
+module Valhalla.Renderer.Shader;
 
-
-#include "Valhalla/Platform/DirectX12/DirectX12Shader.h"
-
-#include "Valhalla/Renderer/RendererAPI.h"
+import Valhalla.Renderer.RendererAPI;
+import Valhalla.Core.Ref;
+import Valhalla.Core.Assert;
 
 namespace Valhalla
 {
@@ -23,7 +21,7 @@ namespace Valhalla
 
 				case RendererAPIType::DirectX12:
 				{
-					result = Ref<Yggdrasil::DirectX12Shader>::Create(filepath, forceCompile, disableOptimization);
+					result = nullptr;
 					break;
 				}
 
@@ -59,27 +57,27 @@ namespace Valhalla
 		void ShaderLibrary::Add(const Ref<Shader>& shader)
 		{
 			auto& name = shader->GetName();
-			VH_CORE_ASSERT(m_Shaders.find(name) == m_Shaders.end());
+			Assert(m_Shaders.find(name) == m_Shaders.end());
 			m_Shaders[name] = shader;
 		}
 
 		void ShaderLibrary::Load(std::string_view path, bool forceCompile, bool disableOptimization)
 		{
 			Ref<Shader> shader = Shader::Create(path.data(), forceCompile, disableOptimization);
-			VH_CORE_ASSERT(m_Shaders.find(shader->GetName()) == m_Shaders.end());
+			Assert(m_Shaders.find(shader->GetName()) == m_Shaders.end());
 			std::string name = shader->GetName();
 			m_Shaders[shader->GetName()] = shader;
 		}
 
 		void ShaderLibrary::Load(std::string_view name, const std::string& path)
 		{
-			VH_CORE_ASSERT(m_Shaders.find(std::string(name)) == m_Shaders.end());
+			Assert(m_Shaders.find(std::string(name)) == m_Shaders.end());
 			m_Shaders[std::string(name)] = Shader::Create(path);
 		}
 
 		const Ref<Shader>& ShaderLibrary::Get(const std::string& name) const
 		{
-			VH_CORE_ASSERT(m_Shaders.find(name) == m_Shaders.end());
+			Assert(m_Shaders.find(name) == m_Shaders.end());
 			return m_Shaders.at(name);
 		}
 

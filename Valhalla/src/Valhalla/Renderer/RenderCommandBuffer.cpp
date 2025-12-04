@@ -1,9 +1,9 @@
-#include "vhpch.h"
-#include "RenderCommandBuffer.h"
+module Valhalla.Renderer.RenderCommandBuffer;
 
-#include "RendererAPI.h"
+import Valhalla.Renderer.RendererAPI;
 
-#include "Valhalla/Platform/DirectX12/DirectX12RenderCommandBuffer.h"
+import Valhalla.Core.Ref;
+import Valhalla.Core.Assert;
 
 namespace Valhalla
 {
@@ -15,10 +15,10 @@ namespace Valhalla
 			{
 				case RendererAPIType::None:				return nullptr;
 				case RendererAPIType::DirectX11:		return nullptr;
-				case RendererAPIType::DirectX12:		return Ref<Yggdrasil::DirectX12RenderCommandBuffer>::Create(count, debugName);
+				case RendererAPIType::DirectX12:		return nullptr;
 				case RendererAPIType::Vulkan:			return nullptr;
 			}
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 
@@ -26,12 +26,12 @@ namespace Valhalla
 		{
 			switch (RendererAPI::Current())
 			{
-			case RendererAPIType::None:				return nullptr;
-			case RendererAPIType::DirectX11:		return nullptr;
-			case RendererAPIType::DirectX12:		return nullptr;
-			case RendererAPIType::Vulkan:			return nullptr;
+				case RendererAPIType::None:				return nullptr;
+				case RendererAPIType::DirectX11:		return nullptr;
+				case RendererAPIType::DirectX12:		return nullptr;
+				case RendererAPIType::Vulkan:			return nullptr;
 			}
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 	}

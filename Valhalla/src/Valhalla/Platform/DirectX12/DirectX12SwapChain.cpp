@@ -1,12 +1,26 @@
-#include "vhpch.h"
-#include "DirectX12SwapChain.h"
-#include "Valhalla/Core/Application.h"
+#include "imgui.h"
+#include "backends/imgui_impl_win32.h"
+#include "backends/imgui_impl_dx12.h"
 
-#include "Valhalla/Renderer/Renderer.h"
+#include "D12Include.hpp"
 
-#include "DirectX12Context.h"
+module Valhalla.Yggdrasil.DirectX12.SwapChain;
 
-#include <codecvt>
+import Valhalla.Core.Application;
+
+import Valhalla.Renderer.Renderer;
+
+import Valhalla.Yggdrasil.DirectX12.Context;
+
+import Valhalla.Core.Log;
+import Valhalla.Core.Assert;
+
+import Valhalla.Yggdrasil.DirectX12.VD3D12;
+#include "DXCALL.h"
+
+
+import <codecvt>;
+import <sstream>;
 
 namespace Valhalla
 {
@@ -14,18 +28,19 @@ namespace Valhalla
 	{
 
 		DirectX12SwapChain::DirectX12SwapChain()
-			: m_Height(0), m_Width(0)
+			: m_Height(0), m_Width(0), m_FenceEvent(nullptr)
 		{
 
 		}
 
 		DirectX12SwapChain::~DirectX12SwapChain()
 		{
+			Destroy();
 		}
 
 		void DirectX12SwapChain::Destroy()
 		{
-
+			FlushGPU();
 		}
 
 		void DirectX12SwapChain::Init(Ref<Heimdall::RendererContext>& context)
@@ -35,7 +50,7 @@ namespace Valhalla
 
 		void DirectX12SwapChain::InitSurface()
 		{
-			
+
 		}
 
 		void DirectX12SwapChain::CreateSwapchain(uint32_t* width, uint32_t* height, bool vsync)
@@ -46,7 +61,7 @@ namespace Valhalla
 			m_Height = *height;
 			m_VSync = vsync;
 
-			VH_CORE_INFO("SwapChain Size: ({0}, {1})", m_Width, m_Height);
+			Log::CoreInfo("SwapChain Size: ({0}, {1})", m_Width, m_Height);
 
 			D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevel{};
 			QualityLevel.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -58,7 +73,7 @@ namespace Valhalla
 
 			m_4xMSAAQuality = QualityLevel.NumQualityLevels;
 
-			m_SwapChain.Reset(); 
+			m_SwapChain.Reset();
 
 			HWND window = static_cast<HWND>(Application::Get().GetWindow().GetNativeWindow());
 
@@ -97,18 +112,17 @@ namespace Valhalla
 			m_ImageCount = temp.BufferCount;
 
 			{
-				D3D12_DESCRIPTOR_HEAP_DESC desc;
+				D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 				desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 				desc.NumDescriptors = m_ImageCount;
 				desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 				desc.NodeMask = 1;
-
 				DXCALL(device->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&m_RTVHeap)));
 
-				size_t rtvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+				SIZE_T rtvDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 				D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = m_RTVHeap->GetCPUDescriptorHandleForHeapStart();
 				m_RenderTargetViews.resize(m_ImageCount);
-				for (uint32_t i = 0; i < m_ImageCount; i++)
+				for (UINT i = 0; i < m_ImageCount; i++)
 				{
 					m_RenderTargetViews[i] = rtvHandle;
 					rtvHandle.ptr += rtvDescriptorSize;
@@ -118,7 +132,7 @@ namespace Valhalla
 			{
 				D3D12_DESCRIPTOR_HEAP_DESC desc;
 				desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-				desc.NumDescriptors = 1;
+				desc.NumDescriptors = m_ImageCount;
 				desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 				desc.NodeMask = 0;
 
@@ -146,7 +160,7 @@ namespace Valhalla
 				for (size_t i = 0; i < m_CommandBuffers.size(); i++)
 				{
 					SwapChainCommandBuffer& commandBuffer = m_CommandBuffers[i];
-					VH_CORE_INFO("Creating draw command buffers");
+					Log::CoreInfo("Creating draw command buffers");
 					DXCALL(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandBuffer.CommandAllocator)));
 					std::wstringstream ss;
 					ss << i;
@@ -161,75 +175,105 @@ namespace Valhalla
 				}
 			}
 
+			m_Fences.resize(m_ImageCount);
+			for (uint32_t i = 0; i < 2; i++)
 			{
-
-				/*m_WaitFences.resize(m_ImageCount);
-				m_FenceValues.resize(m_ImageCount);
-				for (size_t i = 0; i < m_ImageCount; i++)
-				{
-					DXCALL(device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_WaitFences[i])));
-					m_FenceValues[i] = 0;
-					VH_CORE_INFO("Number of Fences: {0}", i);
-				}
-
-				m_FenceEvent = CreateEvent(nullptr, false, false, nullptr);*/
+				DXCALL(device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fences[i].Fence)));
+				m_Fences[i].FenceValue = 0;
 			}
+
+			m_FenceEvent = CreateEvent(nullptr, false, false, nullptr);
+			Assert(m_FenceEvent, "Failed to create fence event");
 		}
 
 		void DirectX12SwapChain::BeginFrame()
 		{
-			//auto device = DirectX12Context::GetCurrentDevice();
-			m_CurrentBufferIndex = m_SwapChain->GetCurrentBackBufferIndex();
-			/*DXCALL(m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator->Reset());
-			DXCALL(m_CommandBuffers[m_CurrentBufferIndex].CommandBuffer->Reset(m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator.Get(), nullptr));*/
+			m_CurrentBufferIndex = GetCurrentBackBufferIndex();
+			m_CurrentFrameIndex = (m_CurrentFrameIndex + 1) % m_ImageCount;
+			WaitForFrame();
+			DXCALL(m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator->Reset());
+			DXCALL(m_CommandBuffers[m_CurrentBufferIndex].CommandBuffer->Reset(m_CommandBuffers[m_CurrentBufferIndex].CommandAllocator.Get(), nullptr));
 
-			/*D3D12_RESOURCE_BARRIER barrier = {};
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> list = GetCurrentDrawCommandBuffer();
+
+			D3D12_RESOURCE_BARRIER barrier = {};
 			barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-			barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 			barrier.Transition.pResource = GetCurrentRenderTaget().Get();
+			barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
 			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+			list->ResourceBarrier(1, &barrier);
 
-			GetCurrentDrawCommandBuffer()->ResourceBarrier(1, &barrier);
+			auto renderTargetView = GetCurrentRenderTagetView();
 
-			const float color[4] = {1.0f, 0.2f, 0.2f, 1.0f};
-			GetCurrentDrawCommandBuffer()->ClearRenderTargetView(m_RenderTargetViews[m_CurrentBufferIndex], color, 0, nullptr);
-			GetCurrentDrawCommandBuffer()->OMSetRenderTargets(1, &m_RenderTargetViews[m_CurrentBufferIndex], false, nullptr);
+			const float clear_color_with_alpha[4] = { m_ClearColor[0] * m_ClearColor[3], m_ClearColor[1] * m_ClearColor[3], m_ClearColor[2] * m_ClearColor[3], m_ClearColor[3] };
+			list->ClearRenderTargetView(renderTargetView, clear_color_with_alpha, 0, nullptr);
+			list->OMSetRenderTargets(1, &renderTargetView, false, nullptr);
+			list->SetDescriptorHeaps(1, m_SRVHeap.GetAddressOf());
+
 
 			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
-			GetCurrentDrawCommandBuffer()->ResourceBarrier(1, &barrier);*/
+			GetCurrentDrawCommandBuffer()->ResourceBarrier(1, &barrier);
 		}
 
 		void DirectX12SwapChain::Present()
 		{
-			/*DXCALL(GetCurrentDrawCommandBuffer()->Close());
-			WaitForLastSubmittedFrame();
+			UINT backbufferindex = m_SwapChain->GetCurrentBackBufferIndex();
 
-			ID3D12CommandList* commandlist[] = { GetCurrentDrawCommandBuffer().Get() };
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> list = GetCurrentDrawCommandBuffer();
+
+			DXCALL(list->Close());
+
+			ID3D12CommandList* commandlist[] = { list.Get() };
 			m_Device->GetGraphicsQueue()->ExecuteCommandLists(1, commandlist);
 
-			DXCALL(m_Device->GetGraphicsQueue()->Signal(m_WaitFences[m_CurrentBufferIndex].Get(), m_FenceValues[m_CurrentBufferIndex]));*/
+			
 			DXCALL(m_SwapChain->Present(1, 0));
+
+			SyncFence& sync = m_Fences[m_CurrentFrameIndex];
+			sync.FenceValue++;
+			DXCALL(m_Device->GetGraphicsQueue()->Signal(sync.Fence.Get(), sync.FenceValue));
+			DXCALL(m_Device->GetDevice()->GetDeviceRemovedReason());
 		}
 
-
-		void DirectX12SwapChain::WaitForLastSubmittedFrame()
+		void DirectX12SwapChain::SetBackgroundColor(float r, float g, float b, float a)
 		{
-			int64_t value = m_WaitFences[m_CurrentBufferIndex]->GetCompletedValue();
-			int64_t test = m_FenceValues[m_CurrentBufferIndex];
+			m_ClearColor[0] = r;
+			m_ClearColor[1] = g;
+			m_ClearColor[2] = b;
+			m_ClearColor[3] = a;
+			Log::CoreInfo("Color: ({0}, {1}, {2}, {3})", r, g, b, a);
+			Log::CoreInfo("ClearColor: ({0}, {1}, {2}, {3})", m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
+		}
 
-			if (value < m_FenceValues[m_CurrentBufferIndex])
+		void DirectX12SwapChain::WaitForFrame()
+		{
+			SyncFence& sync = m_Fences[m_CurrentFrameIndex];
+			uint64_t test = sync.Fence->GetCompletedValue();
+			// Wait only if the GPU hasn't finished this frame
+			if (test < sync.FenceValue)
 			{
-				DXCALL(m_WaitFences[m_CurrentBufferIndex]->SetEventOnCompletion(m_FenceValues[m_CurrentBufferIndex], m_FenceEvent));
+				DXCALL(sync.Fence->SetEventOnCompletion(sync.FenceValue, m_FenceEvent));
 				WaitForSingleObject(m_FenceEvent, INFINITE);
 			}
-			m_FenceValues[m_CurrentBufferIndex]++;
+		}
+
+		void DirectX12SwapChain::FlushGPU()
+		{
+			for (auto& sync : m_Fences)
+			{
+				if (sync.Fence->GetCompletedValue() < sync.FenceValue)
+				{
+					DXCALL(sync.Fence->SetEventOnCompletion(sync.FenceValue, m_FenceEvent));
+					WaitForSingleObject(m_FenceEvent, INFINITE);
+				}
+			}
 		}
 
 		void DirectX12SwapChain::OnResize(uint32_t width, uint32_t height)
 		{
-			WaitForLastSubmittedFrame();
+			FlushGPU();
 
 			for (uint32_t i = 0; i < m_RenderTargets.size(); i++)
 			{
@@ -242,9 +286,8 @@ namespace Valhalla
 			for (size_t i = 0; i < m_ImageCount; i++)
 			{
 				m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_RenderTargets[i]));
- 				m_Device->GetDevice()->CreateRenderTargetView(m_RenderTargets[i].Get(), nullptr, m_RenderTargetViews[i]);
+				m_Device->GetDevice()->CreateRenderTargetView(m_RenderTargets[i].Get(), nullptr, m_RenderTargetViews[i]);
 			}
 		}
-
 	}
 }

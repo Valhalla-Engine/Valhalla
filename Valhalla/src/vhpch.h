@@ -14,8 +14,3 @@
 
 #include <fstream>
 
-#include <Valhalla/Core/Base.h>
-#include <Valhalla/Core/Log.h>
-#include <Valhalla/Core/Events/Event.h>
-#include <Valhalla/Core/Base.h>
-

@@ -1,7 +1,8 @@
-#include <Valhalla.h>
 #include <Valhalla/Entrypoint.h>
 
-#include <filesystem>
+import <filesystem>;
+import Valhalla.Core.Application;
+import Valhalla.Core.Log;
 
 class OdinApplication : public Valhalla::Application
 {
@@ -25,7 +26,7 @@ Valhalla::Application* Valhalla::CreateApplication(int argc, char** argv)
 	if (argc > 1)
 		projectPath = argv[1];
 
-	VH_CORE_ERROR("Current file path: {0}", projectPath);
+	Valhalla::Log::CoreError("Current file path: {0}", projectPath);
 
 	Valhalla::ApplicationSpecification specification;
 	specification.Name = "Odin";

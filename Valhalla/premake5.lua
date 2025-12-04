@@ -1,73 +1,100 @@
 project "Valhalla"
-	kind "StaticLib"
+    kind "StaticLib"
+    language "C++"
+    cppdialect "C++20"
+    toolset "v145"
 
-	targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
+    targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "vhpch.h"
-	pchsource "src/vhpch.cpp"
+    -- All sources, including module interface (.ixx) and module implementation (.cppm)
+    files {
+        "src/**.ixx",
+        "src/**.cppm",
+        "src/**.cxx",
+        "src/**.h",
+        "src/**.c",
+        "src/**.hpp",
+        "src/**.cpp",
 
-	files {
-		"src/**.h",
-		"src/**.c",
-		"src/**.hpp",
-		"src/**.cpp",
+        "Platform/" .. firstToUpper(os.target()) .. "/**.hpp",
+        "Platform/" .. firstToUpper(os.target()) .. "/**.cpp",
+        "Platform/" .. firstToUpper(os.target()) .. "/**.ixx",
+        "Platform/" .. firstToUpper(os.target()) .. "/**.cppm",
 
-		"Platform/" .. firstToUpper(os.target()) .. "/**.hpp",
-		"Platform/" .. firstToUpper(os.target()) .. "/**.cpp",
+        "vendor/FastNoise/**.cpp",
+        "vendor/yaml-cpp/src/**.cpp",
+        "vendor/yaml-cpp/src/**.h",
+        "vendor/yaml-cpp/include/**.h",
+        "vendor/VulkanMemoryAllocator/**.h",
+        "vendor/VulkanMemoryAllocator/**.cpp",
 
-		"vendor/FastNoise/**.cpp",
+        "vendor/imgui/misc/cpp/imgui_stdlib.cpp",
+        "vendor/imgui/misc/cpp/imgui_stdlib.h"
+    }
 
-		"vendor/yaml-cpp/src/**.cpp",
-		"vendor/yaml-cpp/src/**.h",
-		"vendor/yaml-cpp/include/**.h",
-		"vendor/VulkanMemoryAllocator/**.h",
-		"vendor/VulkanMemoryAllocator/**.cpp",
+    includedirs {
+        "src/",
+        "vendor/"
+    }
 
-		"vendor/imgui/misc/cpp/imgui_stdlib.cpp",
-		"vendor/imgui/misc/cpp/imgui_stdlib.h"
-	}
+    IncludeDependencies()
 
-	includedirs { "src/", "vendor/", }
+    defines { "GLM_FORCE_DEPTH_ZERO_TO_ONE" }
 
-	IncludeDependencies()
+    -- Disable PCH for external/vendor files
+    filter { "files:vendor/FastNoise/**.cpp", "files:vendor/yaml-cpp/src/**.cpp", "files:vendor/imgui/misc/cpp/imgui_stdlib.cpp" }
+        flags { "NoPCH" }
 
-	defines { "GLM_FORCE_DEPTH_ZERO_TO_ONE", }
+    -- Enable modules for your project files
+    filter { "files:src/**.ixx", "files:src/**.cppm"}
+        buildoptions { "/experimental:module /module:interface" }
+        compileas "Module"
 
-	filter "files:vendor/FastNoise/**.cpp or files:vendor/yaml-cpp/src/**.cpp or files:vendor/imgui/misc/cpp/imgui_stdlib.cpp"
-	flags { "NoPCH" }
+    filter "toolset:msc"
+        buildoptions { "/scanDependencies" }
 
-	filter "system:windows"
-		systemversion "latest"
-		defines { "VH_PLATFORM_WINDOWS", }
+    -- Platform-specific
+    filter "system:windows"
+        systemversion "latest"
+        defines { "VH_PLATFORM_WINDOWS" }
+        buildoptions { "/experimental:module" }
 
-	filter "configurations:Debug"
-		symbols "On"
-		defines { "VH_DEBUG", "_DEBUG", }
+        files {
+            "vendor/imgui/backends/imgui_impl_win32.cpp",
+            "vendor/imgui/backends/imgui_impl_dx12.cpp"
+        }
 
-	filter "configurations:Release"
-		optimize "On"
-		vectorextensions "AVX2"
-		isaextensions { "BMI", "POPCNT", "LZCNT", "F16C" }
-		defines { "VH_RELEASE", "NDEBUG", }
+        links {
+            "d3d12",
+            "dxgi",
+            "d3dcompiler"
+        }
 
-	filter { "configurations:Debug or configurations:Release" }
-		defines {
-			"VH_TRACK_MEMORY"
-		}
+    -- Configurations
+    filter "configurations:Debug"
+        symbols "On"
+        defines { "VH_DEBUG", "_DEBUG" }
 
-	filter "configurations:Dist"
-		optimize "On"
-		symbols "Off"
-		vectorextensions "AVX2"
-		isaextensions { "BMI", "POPCNT", "LZCNT", "F16C" }
-		defines { "VH_DIST" }
+    filter "configurations:Release"
+        optimize "On"
+        vectorextensions "AVX2"
+        isaextensions { "BMI", "POPCNT", "LZCNT", "F16C" }
+        defines { "VH_RELEASE", "NDEBUG" }
 
-		removefiles {
-			"src/Valhalla/Platform/Vulkan/ShaderCompiler/**.cpp",
-			"src/Valhalla/Platform/Vulkan/Debug/**.cpp",
+    filter { "configurations:Debug or configurations:Release" }
+        defines { "VH_TRACK_MEMORY" }
 
-			"src/Valhalla/Asset/AssimpAnimationImporter.cpp",
-			"src/Valhalla/Asset/AssimpMeshImporter.cpp",
-		}
-	
+    filter "configurations:Dist"
+        optimize "On"
+        symbols "Off"
+        vectorextensions "AVX2"
+        isaextensions { "BMI", "POPCNT", "LZCNT", "F16C" }
+        defines { "VH_DIST" }
+
+        removefiles {
+            "src/Valhalla/Platform/Vulkan/ShaderCompiler/**.cpp",
+            "src/Valhalla/Platform/Vulkan/Debug/**.cpp",
+            "src/Valhalla/Asset/AssimpAnimationImporter.cpp",
+            "src/Valhalla/Asset/AssimpMeshImporter.cpp"
+        }

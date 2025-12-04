@@ -1,6 +1,4 @@
-#include "vhpch.h"
-
-#include "SceneEnvironment.h"
+module Valhalla.Renderer.SceneEnvironment;
 
 namespace Valhalla
 {

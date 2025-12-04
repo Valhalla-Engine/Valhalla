@@ -1,15 +1,12 @@
-#include "vhpch.h"
-#include "Application.h"
+module Valhalla.Core.Application;
 
-#include "Valhalla/Renderer/Renderer.h"
+//#include "Valhalla/Renderer/Renderer.h"
 
-#include <filesystem>
+import <filesystem>;
+import Valhalla.Core.Log;
 
-//extern ImGuiContext* GImGui;
 namespace Valhalla
 {
-#define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
-
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application(const ApplicationSpecification& specs)
@@ -24,16 +21,15 @@ namespace Valhalla
 		m_Window->SetVSync(true);
 
 		std::filesystem::path path = std::filesystem::current_path();
-		VH_CORE_INFO("the current path is: {0}", path.string());
+		Log::CoreTrace("the current path is: {0}", path.string());
 
 		m_Profiler = new PerformanceProfiler();
 
-		Heimdall::Renderer::Init();
-		Heimdall::Renderer::WaitAndRender();
+		//Heimdall::Renderer::Init();
 
-		/*m_ImGuiLayer = ImGuiLayer::Create();
-		PushOverlay(m_ImGuiLayer);*/
-		Heimdall::Renderer::WaitAndRender();
+		//m_ImGuiLayer = ImGuiLayer::Create();
+		//PushOverlay(m_ImGuiLayer);
+		//Heimdall::Renderer::WaitAndRender();
 	}
 
 	Application::~Application()
@@ -41,7 +37,7 @@ namespace Valhalla
 		for (Layer* layer : m_LayerStack)
 			layer->OnDetach();
 
-		Heimdall::Renderer::Shutdown();
+		//Heimdall::Renderer::Shutdown();
 
 		delete m_Profiler;
 		m_Profiler = nullptr;
@@ -73,7 +69,7 @@ namespace Valhalla
 
 	void Application::RenderImGui()
 	{
-		m_ImGuiLayer->Begin();
+		//m_ImGuiLayer->Begin();
 
 		for (uint32_t i = 0; i < m_LayerStack.Size(); i++)
 			m_LayerStack[i]->OnImGuiRender();
@@ -86,29 +82,23 @@ namespace Valhalla
 		{
 
 			ProcessEvents();
-			Heimdall::Renderer::WaitAndRender();
+			//Heimdall::Renderer::WaitAndRender();
 			if (!m_Minimized)
 			{
-				m_Window->GetSwapChain()->BeginFrame();
+				//m_Window->GetSwapChain()->BeginFrame();
 
-				Heimdall::Renderer::BeginFrame();
-				{
-					for (Layer* layer : m_LayerStack)
-						layer->OnUpdate(m_TimeStep);
-				}
 
 				Application* app = this;
 				if (m_Specification.EnableImGui)
 				{
-					/*Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
-					Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });*/
+					//Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
+					//Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
 				}
-				Heimdall::Renderer::EndFrame();
 
-				Heimdall::Renderer::Submit([app]() 
+				/*Heimdall::Renderer::Submit([app]()
 				{
 					app->m_Window->SwapBuffers();
-				});
+				});*/
 			}
 
 		}

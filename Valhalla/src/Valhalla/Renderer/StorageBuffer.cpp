@@ -1,8 +1,8 @@
-#include "vhpch.h"
+module Valhalla.Renderer.StorageBuffer;
 
-#include "StorageBuffer.h"
-
-#include "Valhalla/Renderer/RendererAPI.h"
+import Valhalla.Renderer.RendererAPI;
+import Valhalla.Core.Assert;
+import Valhalla.Core.Ref;
 
 namespace Valhalla
 {
@@ -16,7 +16,7 @@ namespace Valhalla
 				case RendererAPIType::DirectX12:	return nullptr;
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 	}

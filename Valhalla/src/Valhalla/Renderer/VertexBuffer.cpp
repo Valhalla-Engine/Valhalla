@@ -1,10 +1,9 @@
-#include "vhpch.h"
-#include "VertexBuffer.h"
+module Valhalla.Renderer.VertexBuffer;
 
-#include "RendererAPI.h"
+import Valhalla.Core.Assert;
+import Valhalla.Core.Ref;
 
-
-#include "Valhalla/Platform/DirectX12/DirectX12VertexBuffer.h"
+import Valhalla.Renderer.RendererAPI;
 
 namespace Valhalla
 {
@@ -16,10 +15,10 @@ namespace Valhalla
 			{
 				case RendererAPIType::None:			return nullptr;
 				case RendererAPIType::DirectX11:	return nullptr;
-				case RendererAPIType::DirectX12:	return Ref<Yggdrasil::DirectX12VertexBuffer>::Create(data, size, usage);
+				case RendererAPIType::DirectX12:	return nullptr;
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 
@@ -32,7 +31,7 @@ namespace Valhalla
 				case RendererAPIType::DirectX12:	return nullptr;
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 	}

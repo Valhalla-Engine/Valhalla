@@ -1,9 +1,8 @@
-#include "vhpch.h"
-#include "UUID.h"
+module Valhalla.Core.UUID;
 
-#include <cstdlib>
-#include <random>
-#include <ctime>
+import <random>;
+import <cstdlib>;
+import <ctime>;
 
 namespace Valhalla
 {
@@ -15,32 +14,32 @@ namespace Valhalla
 	static std::uniform_int_distribution<uint32_t> s_UniformDistribution32;
 
 	UUID::UUID()
-		: m_UUID(s_UniformDistribution(eng)) 
 	{
+		m_UUID = s_UniformDistribution(eng);
 	}
 
 	UUID::UUID(uint64_t uuid)
-		: m_UUID(uuid) 
 	{
+		m_UUID = uuid;
 	}
 
 	UUID::UUID(const UUID& other)
-		: m_UUID(other.m_UUID) 
 	{
+		m_UUID = other.m_UUID;
 	}
 
 	UUID32::UUID32()
-		: m_UUID(s_UniformDistribution32(eng32))
 	{
+		m_UUID = s_UniformDistribution32(eng32);
 	}
 
 	UUID32::UUID32(uint32_t uuid)
-		: m_UUID(uuid)
 	{
+		m_UUID = uuid;
 	}
 
 	UUID32::UUID32(const UUID32& other)
-		: m_UUID(other.m_UUID)
 	{
+		m_UUID = other.m_UUID;
 	}
 }

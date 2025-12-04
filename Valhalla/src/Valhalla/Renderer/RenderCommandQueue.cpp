@@ -1,5 +1,6 @@
-#include "vhpch.h"
-#include "RenderCommandQueue.h"
+module Valhalla.Renderer.RenderCommandQueue;
+
+import <memory>;
 
 namespace Valhalla
 {

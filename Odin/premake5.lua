@@ -1,82 +1,93 @@
 project "Odin"
-	kind "ConsoleApp"
-	
-	targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++20"   -- required for modules
+    staticruntime "Off"  -- optional, your choice
 
-	links { "Valhalla" }
+    targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
 
-	defines { "GLM_FORCE_DEPTH_ZERO_TO_ONE", }
+    -- Files
+    files  { 
+        "src/**.h",
+        "src/**.hpp",
+        "src/**.c",
+        "src/**.cpp",
+        -- Modules (interface units)
+        "src/**.ixx",
+        "src/**.cppm",
 
-	files  { 
-		"src/**.h",
-		"src/**.c",
-		"src/**.hpp",
-		"src/**.cpp",
-		
-		-- Shaders
-		"Resources/Shaders/**.glsl",
-		"Resources/Shaders/**.glslh",
-		"Resources/Shaders/**.hlsl",
-		"Resources/Shaders/**.hlslh",
-		"Resources/Shaders/**.slh",
-	}
+        -- Shaders
+        "Resources/Shaders/**.glsl",
+        "Resources/Shaders/**.glslh",
+        "Resources/Shaders/**.hlsl",
+        "Resources/Shaders/**.hlslh",
+        "Resources/Shaders/**.slh",
+    }
 
-	includedirs  {
-		"src/",
+    -- Include directories
+    includedirs  {
+        "src/",
+        "../Valhalla/src/",
+        "../Valhalla/vendor/"
+    }
 
-		"../Valhalla/src/",
-		"../Valhalla/vendor/"
-	}
+    -- Link against engine
+    links { "Valhalla" }
 
-	filter "system:windows"
-		systemversion "latest"
+    -- Windows-specific settings
+    filter "system:windows"
+        systemversion "latest"
+        defines { "VH_PLATFORM_WINDOWS" }
 
-		defines { "VH_PLATFORM_WINDOWS" }
+        -- Link DirectX and other Windows libs for modules that need them
+        links { "d3d12", "dxgi", "d3dcompiler" }
 
-		postbuildcommands {
-			'{COPY} "../Valhalla/vendor/NvidiaAftermath/lib/x64/windows/GFSDK_Aftermath_Lib.x64.dll" "%{cfg.targetdir}"',
-		}
+        -- Post-build copies
+        postbuildcommands {
+            '{COPY} "../Valhalla/vendor/NvidiaAftermath/lib/x64/windows/GFSDK_Aftermath_Lib.x64.dll" "%{cfg.targetdir}"',
+        }
 
-	filter { "system:windows", "configurations:Debug" }
-		postbuildcommands {
-			'{COPY} "../Valhalla/vendor/assimp/bin/windows/Debug/assimp-vc143-mtd.dll" "%{cfg.targetdir}"',
-			'{COPY} "../Valhalla/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"',
-		}
+    -- Debug/Release/Dist postbuild
+    filter { "system:windows", "configurations:Debug" }
+        postbuildcommands {
+            '{COPY} "../Valhalla/vendor/assimp/bin/windows/Debug/assimp-vc143-mtd.dll" "%{cfg.targetdir}"',
+            '{COPY} "../Valhalla/vendor/mono/bin/Debug/mono-2.0-sgen.dll" "%{cfg.targetdir}"',
+        }
 
-	filter { "system:windows", "configurations:Release or configurations:Dist" }
-		postbuildcommands {
-			'{COPY} "../Valhalla/vendor/assimp/bin/windows/Release/assimp-vc143-mt.dll" "%{cfg.targetdir}"',
-			'{COPY} "../Valhalla/vendor/mono/bin/Release/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
-		}
+    filter { "system:windows", "configurations:Release or configurations:Dist" }
+        postbuildcommands {
+            '{COPY} "../Valhalla/vendor/assimp/bin/windows/Release/assimp-vc143-mt.dll" "%{cfg.targetdir}"',
+            '{COPY} "../Valhalla/vendor/mono/bin/Release/mono-2.0-sgen.dll" "%{cfg.targetdir}"'
+        }
 
+    -- Configurations
+    filter "configurations:Debug"
+        defines { "VH_DEBUG" }
+        symbols "On"
+        ProcessDependencies("Debug")
 
-	filter "configurations:Debug"
-		symbols "On"
-		defines { "VH_DEBUG", }
-
-		ProcessDependencies("Debug")
-
-	filter "configurations:Release"
-		optimize "On"
+    filter "configurations:Release"
+        defines { "VH_RELEASE" }
+        optimize "On"
         vectorextensions "AVX2"
         isaextensions { "BMI", "POPCNT", "LZCNT", "F16C" }
-		defines { "VH_RELEASE", }
+        ProcessDependencies("Release")
 
-		ProcessDependencies("Release")
+    filter "configurations:Debug or configurations:Release"
+        defines { "VH_TRACK_MEMORY" }
 
-	filter "configurations:Debug or configurations:Release"
-		defines {
-			"VH_TRACK_MEMORY",
-		}
-
-	filter "configurations:Dist"
-		optimize "On"
+    filter "configurations:Dist"
+        defines { "VH_DIST" }
+        optimize "On"
         vectorextensions "AVX2"
         isaextensions { "BMI", "POPCNT", "LZCNT", "F16C" }
-		defines { "VH_DIST" }
+        ProcessDependencies("Dist")
 
-		ProcessDependencies("Dist")
+    -- Exclude shader files from compilation
+    filter "files:**.hlsl"
+        flags { "ExcludeFromBuild" }
 
-	filter "files:**.hlsl"
-		flags {"ExcludeFromBuild"}
+    -- C++20 modules support
+    filter "system:windows"
+        buildoptions { "/experimental:module /std:c++20" }

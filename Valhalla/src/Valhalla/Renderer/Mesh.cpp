@@ -1,22 +1,26 @@
-#include "vhpch.h"
-#include "Mesh.h"
-
-#include "Valhalla/Renderer/Renderer.h"
-
 #include "imgui/imgui.h"
+
+module Valhalla.Renderer.Mesh;
+
+import Valhalla.Core.Ref;
+
+import <vector>;
+import <string>;
+
 
 namespace Valhalla
 {
 
 
-#define MESH_DEBUG_LOG 0
+/*#define MESH_DEBUG_LOG 0
 #if MESH_DEBUG_LOG
 #define VH_MESH_LOG(...) VH_CORE_TRACE_TAG("Mesh", __VA_ARGS__)
 #define VH_MESH_ERROR(...) VH_CORE_ERROR_TAG("Mesh", __VA_ARGS__)
 #else
 #define VH_MESH_LOG(...)
 #define VH_MESH_ERROR(...)
-#endif
+#endif*/
+
 	namespace Heimdall
 	{
 		MeshSource::MeshSource(const std::vector<Vertex>& vertices, const std::vector<Index>& indices, const DirectX::XMFLOAT4X4& transform)
@@ -59,22 +63,22 @@ namespace Valhalla
 
 		void MeshSource::DumpVertexBuffer()
 		{
-			VH_MESH_LOG("----------------------------------------------------------");
-			VH_MESH_LOG("Vertex Buffer Dump");
-			VH_MESH_LOG("Mesh: {0}", m_FilePath);
+			//VH_MESH_LOG("----------------------------------------------------------");
+			//VH_MESH_LOG("Vertex Buffer Dump");
+			//VH_MESH_LOG("Mesh: {0}", m_FilePath);
 			for (size_t i = 0; i < m_Vertices.size(); i++)
 			{
 				auto& vertex = m_Vertices[i];
-				VH_MESH_LOG("Vertex {0}", i);
-				VH_MESH_LOG("Position: {0}, {1}, {2}", vertex.Position.x, vertex.Position.y, vertex.Position.z);
-				VH_MESH_LOG("Normal: {0}, {1}, {2}", vertex.Normal.x, vertex.Normal.y, vertex.Normal.z);
-				VH_MESH_LOG("Binormal: {0}, {1}, {2}", vertex.BiNormal.x, vertex.BiNormal.y, vertex.BiNormal.z);
-				VH_MESH_LOG("Tangent: {0}, {1}, {2}", vertex.Tangent.x, vertex.Tangent.y, vertex.Tangent.z);
-				VH_MESH_LOG("TexCoord: {0}, {1}, {2}", vertex.TexCoord.x, vertex.TexCoord.y);
-				VH_MESH_LOG("--");
+				//VH_MESH_LOG("Vertex {0}", i);
+				//VH_MESH_LOG("Position: {0}, {1}, {2}", vertex.Position.x, vertex.Position.y, vertex.Position.z);
+				//VH_MESH_LOG("Normal: {0}, {1}, {2}", vertex.Normal.x, vertex.Normal.y, vertex.Normal.z);
+				//VH_MESH_LOG("Binormal: {0}, {1}, {2}", vertex.BiNormal.x, vertex.BiNormal.y, vertex.BiNormal.z);
+				//VH_MESH_LOG("Tangent: {0}, {1}, {2}", vertex.Tangent.x, vertex.Tangent.y, vertex.Tangent.z);
+				//VH_MESH_LOG("TexCoord: {0}, {1}, {2}", vertex.TexCoord.x, vertex.TexCoord.y);
+				//VH_MESH_LOG("--");
 			}
 
-			VH_MESH_LOG("----------------------------------------------------------");
+			//VH_MESH_LOG("----------------------------------------------------------");
 		}
 
 		StaticMesh::StaticMesh(Ref<MeshSource> meshSource)
