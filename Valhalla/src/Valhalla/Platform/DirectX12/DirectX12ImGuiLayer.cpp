@@ -1,14 +1,22 @@
-#include "vhpch.h"
-#include "DirectX12ImGuiLayer.h"
-
 #include "imgui.h"
 #include "backends/imgui_impl_win32.h"
 #include "backends/imgui_impl_dx12.h"
 
-#include "Valhalla/Core/Application.h"
+#include "D12Include.hpp"
 
-#include "DirectX12Context.h"
-#include "DirectX12Renderer.h"
+module Valhalla.Yggdrasil.DirectX12.ImguiLayer;
+
+import Valhalla.Yggdrasil.DirectX12.Context;
+import Valhalla.Yggdrasil.DirectX12.Renderer;
+import Valhalla.Yggdrasil.DirectX12.SwapChain;
+
+import Valhalla.Core.Application;
+import Valhalla.Core.Log;
+import Valhalla.Core.Assert;
+
+import Valhalla.Renderer.Renderer;
+
+import <vector>;
 
 namespace Valhalla
 {
@@ -74,13 +82,13 @@ namespace Valhalla
 			auto layer = this;
 			init_info.SrvDescriptorAllocFn = [](ImGui_ImplDX12_InitInfo* info, D3D12_CPU_DESCRIPTOR_HANDLE* out_cpu_handle, D3D12_GPU_DESCRIPTOR_HANDLE* out_gpu_handle)
 			{
-				 auto layer = static_cast<Yggdrasil::DirectX12ImGuiLayer*>(info->UserData);
+				 auto layer = static_cast<DirectX12ImGuiLayer*>(info->UserData);
 				 return layer->AllocSRVHeap(out_cpu_handle, out_gpu_handle);
 			};
 
 			init_info.SrvDescriptorFreeFn = [](ImGui_ImplDX12_InitInfo* info, D3D12_CPU_DESCRIPTOR_HANDLE cpu_handle, D3D12_GPU_DESCRIPTOR_HANDLE gpu_handle)
 			{
-				auto layer = static_cast<Yggdrasil::DirectX12ImGuiLayer*>(info->UserData);
+				auto layer = static_cast<DirectX12ImGuiLayer*>(info->UserData);
 				return layer->FreeSRVHeap(cpu_handle, gpu_handle);
 			};
 			
@@ -100,8 +108,8 @@ namespace Valhalla
 
 		void DirectX12ImGuiLayer::Begin()
 		{
-			ImGui_ImplDX12_NewFrame();
 			ImGui_ImplWin32_NewFrame();
+			ImGui_ImplDX12_NewFrame();
 			ImGui::NewFrame();
 		}
 
@@ -110,12 +118,11 @@ namespace Valhalla
 			ImGui::Render();
 
 			auto swapchain = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>();
-			VH_CORE_INFO("Imgui ClearColor: ({0}, {1}, {2}, {3})", m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
 			swapchain->SetBackgroundColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
 
 			UINT backbufferindex = swapchain->GetCurrentBackBufferIndex();
 
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> list = swapchain->GetCurrentDrawCommandBuffer();
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> list = swapchain->GetCurrentDrawCommandBuffer();
 
 			auto renderTarget = swapchain->GetCurrentRenderTaget();
 
@@ -126,6 +133,8 @@ namespace Valhalla
 			barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
 			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
 			list->ResourceBarrier(1, &barrier);
+			ID3D12DescriptorHeap* heaps[] = {m_SRVHeap.Get()};
+			list->SetDescriptorHeaps(1, heaps);
 
 			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), list.Get());
 
@@ -190,7 +199,7 @@ namespace Valhalla
 			uint32_t handleIncrement = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 			int cpu_idx = (int)((cpu_handle.ptr - srvheap->GetCPUDescriptorHandleForHeapStart().ptr) / handleIncrement);
 			int gpu_idx = (int)((gpu_handle.ptr - srvheap->GetGPUDescriptorHandleForHeapStart().ptr) / handleIncrement);
-			VH_CORE_ASSERT(cpu_idx == gpu_idx);
+			Assert(cpu_idx == gpu_idx);
 		}
 	}
 }

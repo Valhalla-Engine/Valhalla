@@ -1,10 +1,10 @@
-#pragma once
-
-
-#include "Valhalla/Core/Log.h"
-
 #include <assimp/DefaultLogger.hpp>
 #include <assimp/LogStream.hpp>
+
+export module Valhalla.Utils.AssimpLogStream;
+
+import Valhalla.Core.Log;
+
 
 namespace Valhalla
 {
@@ -28,19 +28,19 @@ namespace Valhalla
 			}
 			if (strncmp(message, "Debug", 5) == 0)
 			{
-				VH_CORE_TRACE_TAG("Assimp", msg);
+				Log::CoreTraceTag("Assimp", msg);
 			}
 			else if (strncmp(message, "Info", 4) == 0)
 			{
-				VH_CORE_INFO_TAG("Assimp", msg);
+				Log::CoreInfoTag("Assimp", msg);
 			}
 			else if (strncmp(message, "Warn", 4) == 0)
 			{
-				VH_CORE_WARN_TAG("Assimp", msg);
+				Log::CoreWarnTag("Assimp", msg);
 			}
 			else
 			{
-				VH_CORE_ERROR_TAG("Assimp", msg);
+				Log::CoreErrorTag("Assimp", msg);
 			}
 		}
 	};

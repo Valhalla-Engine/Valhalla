@@ -1,13 +1,13 @@
-#pragma once
+#include "D12Include.hpp"
 
-#include "VD3D12.h"
 
-#include "Valhalla/Renderer/VertexBuffer.h"
-#include "Valhalla/Platform/DirectX12/DirectX12Context.h"
+export module Valhalla.Yggdrasil.DirectX12.VertexBuffer;
 
-namespace Valhalla
+import Valhalla.Renderer.VertexBuffer;
+
+export namespace Valhalla
 {
-	namespace Yggdrasil
+	export namespace Yggdrasil
 	{
 		class DirectX12VertexBuffer : public Heimdall::VertexBuffer
 		{

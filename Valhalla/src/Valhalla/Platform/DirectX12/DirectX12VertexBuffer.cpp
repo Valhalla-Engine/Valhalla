@@ -1,9 +1,15 @@
-#include "vhpch.h"
-#include "DirectX12VertexBuffer.h"
+#include "D12Include.hpp"
 
-#include "Valhalla/Platform/DirectX12/DirectX12Renderer.h"
 
-#include "Valhalla/Renderer/Vertex.h"
+module Valhalla.Yggdrasil.DirectX12.VertexBuffer;
+
+import Valhalla.Yggdrasil.DirectX12.Context;
+import Valhalla.Yggdrasil.DirectX12.VD3D12;
+
+import Valhalla.Core.Log;
+
+#include "DXCALL.h"
+
 
 namespace Valhalla
 {

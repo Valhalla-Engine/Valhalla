@@ -1,9 +1,10 @@
 module Valhalla.Core.Application;
 
-//#include "Valhalla/Renderer/Renderer.h"
 
 import <filesystem>;
 import Valhalla.Core.Log;
+
+import Valhalla.Renderer.Renderer;
 
 namespace Valhalla
 {
@@ -25,11 +26,11 @@ namespace Valhalla
 
 		m_Profiler = new PerformanceProfiler();
 
-		//Heimdall::Renderer::Init();
+		Heimdall::Renderer::Init();
 
-		//m_ImGuiLayer = ImGuiLayer::Create();
-		//PushOverlay(m_ImGuiLayer);
-		//Heimdall::Renderer::WaitAndRender();
+		m_ImGuiLayer = ImGuiLayer::Create();
+		PushOverlay(m_ImGuiLayer);
+		Heimdall::Renderer::WaitAndRender();
 	}
 
 	Application::~Application()
@@ -91,14 +92,14 @@ namespace Valhalla
 				Application* app = this;
 				if (m_Specification.EnableImGui)
 				{
-					//Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
-					//Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
+					Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
+					Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
 				}
 
-				/*Heimdall::Renderer::Submit([app]()
+				Heimdall::Renderer::Submit([app]()
 				{
 					app->m_Window->SwapBuffers();
-				});*/
+				});
 			}
 
 		}
@@ -153,7 +154,7 @@ namespace Valhalla
 		}
 
 		auto& window = m_Window;
-		//window->GetSwapChain()->OnResize(width, height);
+		window->GetSwapChain()->OnResize(width, height);
 
 
 		return false;

@@ -14,8 +14,7 @@ import Valhalla.Core.Timer;
 import Valhalla.Core.Events.ApplicationEvent;
 import Valhalla.Core.Window;
 
-
-//#include "Valhalla/ImGui/ImGuiLayer.h"
+import Valhalla.Imgui.Layer;
 
 #include <queue>
 
@@ -82,7 +81,7 @@ export namespace Valhalla
 		LayerStack m_LayerStack;
 		Timestep m_TimeStep;
 
-		//ImGuiLayer* m_ImGuiLayer;
+		ImGuiLayer* m_ImGuiLayer;
 
 		float_t m_LastFrameTime = 0.0f;
 

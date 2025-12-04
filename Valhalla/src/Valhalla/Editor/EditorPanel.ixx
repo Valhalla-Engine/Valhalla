@@ -1,9 +1,12 @@
 #pragma once
 
-#include "Valhalla/Core/Ref.h"
-#include "Valhalla/Core/Events/Event.h"
+export module Valhalla.Editor.EditorPanel;
 
-namespace Valhalla
+import Valhalla.Core.Ref;
+import Valhalla.Core.Events;
+
+
+export namespace Valhalla
 {
 	class EditorPanel : public RefCounted
 	{

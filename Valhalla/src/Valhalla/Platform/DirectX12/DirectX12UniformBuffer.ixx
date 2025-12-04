@@ -1,12 +1,12 @@
-#pragma once
+#include "D12Include.hpp"
 
-#include "VD3D12.h"
+export module Valhalla.Yggdrasil.DirectX12.UniformBuffer;
 
-#include "Valhalla/Renderer/UniformBuffer.h"
+import Valhalla.Renderer.UniformBuffer;
 
-namespace Valhalla
+export namespace Valhalla
 {
-	namespace Yggdrasil
+	export namespace Yggdrasil
 	{
 		class DirectX12UniformBuffer : public Heimdall::UniformBuffer
 		{
