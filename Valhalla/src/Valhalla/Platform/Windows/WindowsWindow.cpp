@@ -102,7 +102,7 @@ namespace Valhalla
 
 	void WindowsWindow::SwapBuffers()
 	{
-		m_SwapChain->Present();
+		//m_SwapChain->Present();
 	}
 
 	void WindowsWindow::ProcessEvents()

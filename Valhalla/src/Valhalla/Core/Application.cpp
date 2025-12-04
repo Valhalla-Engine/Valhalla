@@ -38,7 +38,7 @@ namespace Valhalla
 		for (Layer* layer : m_LayerStack)
 			layer->OnDetach();
 
-		Heimdall::Renderer::Shutdown();
+		//Heimdall::Renderer::Shutdown();
 
 		delete m_Profiler;
 		m_Profiler = nullptr;
@@ -70,7 +70,7 @@ namespace Valhalla
 
 	void Application::RenderImGui()
 	{
-		m_ImGuiLayer->Begin();
+		//m_ImGuiLayer->Begin();
 
 		for (uint32_t i = 0; i < m_LayerStack.Size(); i++)
 			m_LayerStack[i]->OnImGuiRender();
@@ -83,10 +83,10 @@ namespace Valhalla
 		{
 
 			ProcessEvents();
-			Heimdall::Renderer::WaitAndRender();
+			//Heimdall::Renderer::WaitAndRender();
 			if (!m_Minimized)
 			{
-				m_Window->GetSwapChain()->BeginFrame();
+				//m_Window->GetSwapChain()->BeginFrame();
 
 
 				Application* app = this;
