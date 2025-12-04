@@ -1,12 +1,10 @@
 #pragma once
 
 #include <spdlog/sinks/base_sink.h>
+#include <mutex>
 
-export module Valhalla.Editor.EditorConsoleSink;
 
-import <mutex>;
-
-export namespace Valhalla
+namespace Valhalla
 {
 	class EditorConsoleSink : public spdlog::sinks::base_sink<std::mutex>
 	{

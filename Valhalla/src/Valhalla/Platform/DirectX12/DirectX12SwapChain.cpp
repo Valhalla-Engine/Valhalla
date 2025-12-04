@@ -184,8 +184,6 @@ namespace Valhalla
 
 			m_FenceEvent = CreateEvent(nullptr, false, false, nullptr);
 			Assert(m_FenceEvent, "Failed to create fence event");
-
-			SetBackgroundColor(1.0f, 0.4f, 0.4f, 1.0f);
 		}
 
 		void DirectX12SwapChain::BeginFrame()
@@ -245,8 +243,8 @@ namespace Valhalla
 			m_ClearColor[1] = g;
 			m_ClearColor[2] = b;
 			m_ClearColor[3] = a;
-			//Log::CoreInfo("Color: ({0}, {1}, {2}, {3})", r, g, b, a);
-			//Log::CoreInfo("ClearColor: ({0}, {1}, {2}, {3})", m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
+			Log::CoreInfo("Color: ({0}, {1}, {2}, {3})", r, g, b, a);
+			Log::CoreInfo("ClearColor: ({0}, {1}, {2}, {3})", m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
 		}
 
 		void DirectX12SwapChain::WaitForFrame()

@@ -1,16 +1,7 @@
-#include "D12Include.hpp"
+#include "vhpch.h"
+#include "DirectX12RenderCommandBuffer.h"
 
-module Valhalla.Yggdrasil.DirectX12.RenderCommandBuffer;
-
-import Valhalla.Yggdrasil.DirectX12.Context;
-
-import Valhalla.Renderer.Renderer;
-
-import Valhalla.Core.Log;
-import Valhalla.Yggdrasil.DirectX12.VD3D12;
-#include "DXCALL.h"
-
-import <sstream>;
+#include "DirectX12Context.h"
 
 
 namespace Valhalla

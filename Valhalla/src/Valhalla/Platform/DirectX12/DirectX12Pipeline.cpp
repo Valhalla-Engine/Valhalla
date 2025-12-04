@@ -1,18 +1,10 @@
-#include "D12Include.hpp"
+#include "vhpch.h"
+#include "DirectX12Pipeline.h"
+#include "DirectX12Shader.h"
+#include "DirectX12Context.h"
 
-module Valhalla.Yggdrasil.DirectX12.Pipeline;
-
-import Valhalla.Core.Assert;
-
-import Valhalla.Renderer.Renderer;
-
-import Valhalla.Yggdrasil.DirectX12.Context;
-import Valhalla.Yggdrasil.DirectX12.Shader;
-
-import Valhalla.Core.Log;
-import Valhalla.Yggdrasil.DirectX12.VD3D12;
-#include "DXCALL.h"
-
+#include "Valhalla/Renderer/Renderer.h"
+//#include <d3dcommon.h>
 namespace Valhalla
 {
 	namespace Yggdrasil
@@ -31,7 +23,7 @@ namespace Valhalla
 					case Heimdall::PrimitiveTopology::TriangleFan:		return D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED;
 				}
 
-				Assert(false, "Unknown Topology");
+				VH_CORE_ASSERT(false, "Unknown Topology");
 				return D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED;
 			}
 
@@ -49,7 +41,7 @@ namespace Valhalla
 					case Heimdall::DepthCompareOperator::Always:			return D3D12_COMPARISON_FUNC_ALWAYS;
 				}
 
-				Assert(false, "Unknown Depth Compare Operator");
+				VH_CORE_ASSERT(false, "Unknown Depth Compare Operator");
 				return D3D12_COMPARISON_FUNC_ALWAYS;
 			}
 		}
@@ -68,14 +60,14 @@ namespace Valhalla
 				case Heimdall::ShaderDataType::Int4:		return DXGI_FORMAT_R32G32B32A32_SINT;
 			}
 
-			Assert(false);
+			VH_CORE_ASSERT(false);
 			DXGI_FORMAT_R32G32B32A32_TYPELESS;
 		}
 
 		DirectX12Pipeline::DirectX12Pipeline(const Heimdall::PipelineSpecification& specs)
 			: m_Specification(specs)
 		{
-			Assert(specs.Shader);
+			VH_CORE_ASSERT(specs.Shader);
 			Invalidate();
 			Heimdall::Renderer::RegisterShaderDependency(specs.Shader, this);
 		}

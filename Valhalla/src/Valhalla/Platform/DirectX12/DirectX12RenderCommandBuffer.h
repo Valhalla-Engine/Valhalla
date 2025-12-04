@@ -1,16 +1,11 @@
-#include "D12Include.hpp"
+#pragma once
+#include "VD3D12.h"
 
-export module Valhalla.Yggdrasil.DirectX12.RenderCommandBuffer;
+#include "Valhalla/Renderer/RenderCommandBuffer.h"
 
-import Valhalla.Renderer.RenderCommandBuffer;
-
-import Valhalla.Core.Assert;
-
-import <vector>;
-
-export namespace Valhalla
+namespace Valhalla
 {
-	export namespace Yggdrasil
+	namespace Yggdrasil
 	{
 		class DirectX12RenderCommandBuffer : public Heimdall::RenderCommandBuffer
 		{
@@ -27,7 +22,7 @@ export namespace Valhalla
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetActiveCommandBuffer() const { return m_ActiveCommandBuffer; }
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCommandBuffer(uint32_t frameIndex) const
 			{
-				Assert(frameIndex < m_CommandBuffers.size());
+				VH_CORE_ASSERT(frameIndex < m_CommandBuffers.size());
 				return m_CommandBuffers[frameIndex];
 			}
 

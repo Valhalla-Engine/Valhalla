@@ -1,13 +1,7 @@
-module Valhalla.Yggdrasil.DirectX12.FrameBuffer;
+#include "vhpch.h"
+#include "DirectX12FrameBuffer.h"
 
-import Valhalla.Core.Application;
-import Valhalla.Core.Assert;
-
-import Valhalla.Renderer.Image;
-import Valhalla.Renderer.Renderer;
-
-import <format>;
-import <string>;
+#include "Valhalla/Renderer/Renderer.h"
 
 namespace Valhalla
 {
@@ -54,7 +48,7 @@ namespace Valhalla
 						spec.Transfer = m_Specification.Transfer;
 						spec.Width = (uint32_t)(m_Width * m_Specification.Scale);
 						spec.Height = (uint32_t)(m_Height * m_Specification.Scale);
-						spec.DebugName = std::format("{}-DepthAttachment{}", m_Specification.DebugName.empty() ? "Unnamed FB" : m_Specification.DebugName, attachmentIndex);
+						spec.DebugName = fmt::format("{0}-DepthAttachment{1}", m_Specification.DebugName.empty() ? "Unnamed FB" : m_Specification.DebugName, attachmentIndex);
 						m_DepthAttachmentImage = Heimdall::Image2D::Create(spec);
 					}
 					else
@@ -65,14 +59,14 @@ namespace Valhalla
 						spec.Transfer = m_Specification.Transfer;
 						spec.Width = (uint32_t)(m_Width * m_Specification.Scale);
 						spec.Height = (uint32_t)(m_Height * m_Specification.Scale);
-						spec.DebugName = std::format("{}-DepthAttachment{}", m_Specification.DebugName.empty() ? "Unnamed FB" : m_Specification.DebugName, attachmentIndex);
+						spec.DebugName = fmt::format("{0}-DepthAttachment{1}", m_Specification.DebugName.empty() ? "Unnamed FB" : m_Specification.DebugName, attachmentIndex);
 						m_AttachmentImages.emplace_back(Heimdall::Image2D::Create(spec));
 					}
 					attachmentIndex++;
 				}
 			}
 
-			Assert(spec.Attachments.Attachments.size());
+			VH_CORE_ASSERT(spec.Attachments.Attachments.size());
 			Resize(m_Width, m_Height, true);
 		}
 

@@ -1,19 +1,9 @@
-#include "D12Include.hpp"
+#include "vhpch.h"
 
 #include <cwchar>
 
-#include <dxcapi.h>
-#include <d3d12shader.h>
-#include <d3dcompiler.h>
-
-
-module Valhalla.Yggdrasil.DirectX12.Shader;
-
-import Valhalla.Yggdrasil.DirectX12.Context;
-
-import Valhalla.Core.Log;
-import Valhalla.Yggdrasil.DirectX12.VD3D12;
-#include "DXCALL.h"
+#include "DirectX12Shader.h"
+#include "DirectX12Context.h"
 
 
 namespace Valhalla
@@ -67,7 +57,7 @@ namespace Valhalla
 			DXCALL(D3DCompileFromFile(wpath.c_str(), nullptr, nullptr, entrypoint, target, compileFlags, 0, bytecode.GetAddressOf(), error.GetAddressOf()));
 
 			if (error != nullptr)
-				Log::CoreInfo(((char*)error->GetBufferPointer()));
+				VH_CORE_INFO(((char*)error->GetBufferPointer()));
 
 			return bytecode;
 		}
@@ -207,8 +197,8 @@ namespace Valhalla
 				std::string name(desc.Name);
 			}
 
-			Log::CoreInfo("Bound Resources: {0}", number);
-			Log::CoreInfo("Constant buffers: {0}", constant);
+			VH_CORE_INFO("Bound Resources: {0}", number);
+			VH_CORE_INFO("Constant buffers: {0}", constant);
 
 			return ;
 		}

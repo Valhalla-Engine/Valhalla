@@ -1,6 +1,5 @@
-module Valhalla.Editor.PanelManager;
-
-import Valhalla.Core.Log;
+#include "vhpch.h"
+#include "PanelManager.h"
 
 namespace Valhalla
 {
@@ -50,7 +49,7 @@ namespace Valhalla
 			return;
 		}
 
-		Log::CoreErrorTag("PanelManager", "Couldn't find panel with id '{0}'", id);
+		VH_CORE_ERROR_TAG("PanelManager", "Couldn't find panel with id '{0}'", id);
 	}
 
 	void PanelManager::OnImGuiRender()

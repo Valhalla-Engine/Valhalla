@@ -1,18 +1,15 @@
-#include "D12Include.hpp"
+#pragma once
+
+#include "VD3D12.h"
 #include <dxcapi.h>
 #include <d3d12shader.h>
 #include <d3dcompiler.h>
 
-export module Valhalla.Yggdrasil.DirectX12.Shader;
+#include "Valhalla/Renderer/Shader.h"
 
-import Valhalla.Renderer.Shader;
-
-import <unordered_map>;
-import <string>;
-
-export namespace Valhalla
+namespace Valhalla
 {
-	export namespace Yggdrasil
+	namespace Yggdrasil
 	{
 		class DirectX12Shader : public Heimdall::Shader
 		{

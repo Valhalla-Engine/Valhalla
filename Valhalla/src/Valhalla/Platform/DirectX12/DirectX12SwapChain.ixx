@@ -45,7 +45,7 @@ export namespace Valhalla
 			uint32_t GetCurrentBackIndex() const { return m_CurrentBufferIndex; }
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCurrentDrawCommandBuffer()
 			{
-				//Log::CoreInfo("Current back buffer index:{0}", m_CurrentBufferIndex);
+				Log::CoreInfo("Current back buffer index:{0}", m_CurrentBufferIndex);
 				return GetDrawCommandBuffer(m_CurrentBufferIndex);
 			}
 

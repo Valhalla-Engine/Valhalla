@@ -1,12 +1,12 @@
-#include "D12Include.hpp"
+#pragma once
 
-export module Valhalla.Yggdrasil.DirectX12.IndexBuffer;
+#include "Valhalla/Renderer/IndexBuffer.h"
 
-import Valhalla.Renderer.IndexBuffer;
+#include "VD3D12.h"
 
-export namespace Valhalla
+namespace Valhalla
 {
-	export namespace Yggdrasil
+	namespace Yggdrasil
 	{
 		class DirectX12IndexBuffer : public Heimdall::IndexBuffer
 		{

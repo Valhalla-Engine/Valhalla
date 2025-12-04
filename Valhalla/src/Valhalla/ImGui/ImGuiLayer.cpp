@@ -1,16 +1,11 @@
+#include "vhpch.h"
+#include "ImGuiLayer.h"
+
+#include "Colors.h"
+
+#include "Valhalla/Renderer/RendererAPI.h"
+#include "Valhalla/Platform/DirectX12/DirectX12ImGuiLayer.h"
 #include <imgui.h>
-
-module Valhalla.Imgui.Layer;
-
-import Valhalla.Imgui.Colors;
-
-import Valhalla.Core.Ref;
-
-import Valhalla.Renderer.RendererAPI;
-
-import Valhalla.Core.Assert;
-
-import Valhalla.Yggdrasil.DirectX12.ImguiLayer;
 
 namespace Valhalla
 {
@@ -24,7 +19,7 @@ namespace Valhalla
 			case Heimdall::RendererAPIType::Vulkan:		return nullptr;
 		}
 
-		Assert(false, "Unknown RendererAPI");
+		VH_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
 

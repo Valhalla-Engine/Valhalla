@@ -1,14 +1,7 @@
-#include "D12Include.hpp"
-#include "d3dx12.h"
+#include "vhpch.h"
 
-module Valhalla.Yggdrasil.DirectX12.IndexBuffer;
-
-import Valhalla.Yggdrasil.DirectX12.Context;
-
-import Valhalla.Core.Log;
-import Valhalla.Yggdrasil.DirectX12.VD3D12;
-
-#include "DXCALL.h"
+#include "DirectX12IndexBuffer.h"
+#include "DirectX12Renderer.h"
 
 namespace Valhalla
 {
