@@ -1,6 +1,5 @@
-#include "vhpch.h"
-#include "DirectX12Context.h"
-#include "Valhalla/Core/Application.h"
+module Valhalla.Yggdrasil.DirectX12.Context;
+
 
 namespace Valhalla
 {

@@ -1,8 +1,10 @@
-#include "vhpch.h"
-#include "Image.h"
+module Valhalla.Renderer.Image;
 
 
-#include "Valhalla/Renderer/RendererAPI.h"
+import Valhalla.Renderer.RendererAPI;
+import Valhalla.Core.Ref;
+import Valhalla.Core.Assert;
+import Valhalla.Core.Buffer;
 
 namespace Valhalla
 {
@@ -17,7 +19,7 @@ namespace Valhalla
 				case RendererAPIType::Vulkan:			return nullptr;
 			}
 
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 
@@ -30,7 +32,7 @@ namespace Valhalla
 				case RendererAPIType::Vulkan:			return nullptr;
 			}
 
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 	}

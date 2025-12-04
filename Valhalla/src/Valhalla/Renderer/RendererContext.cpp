@@ -1,9 +1,12 @@
-#include "vhpch.h"
+module Valhalla.Renderer.RendererContext;
 
-#include "RendererAPI.h"
-#include "RendererContext.h"
+import Valhalla.Renderer.RendererAPI;
+import Valhalla.Core.Log;
+import Valhalla.Core.Assert;
 
-#include "Valhalla/Platform/DirectX12/DirectX12Context.h"
+import Valhalla.Core.Ref;
+
+import Valhalla.Yggdrasil.DirectX12.Context;
 
 namespace Valhalla
 {
@@ -11,7 +14,7 @@ namespace Valhalla
 	{
 		Ref<RendererContext> RendererContext::Create()
 		{
-			VH_CORE_INFO("Start of RendererContext Create");
+			Log::CoreInfo("Start of RendererContext Create");
 			switch (RendererAPI::Current())
 			{
 				case RendererAPIType::None:			return nullptr;
@@ -19,8 +22,8 @@ namespace Valhalla
 				case RendererAPIType::DirectX12:	return Ref<Yggdrasil::DirectX12Context>::Create();
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
-			VH_CORE_INFO("End of RendererContext Create");
-			VH_CORE_ASSERT(false, "Unknown Renderer API");
+			Log::CoreInfo("End of RendererContext Create");
+			Assert(false, "Unknown Renderer API");
 			return nullptr;
 		}
 	}

@@ -1,9 +1,19 @@
-#include "vhpch.h"
-#include "DirectX12Device.h"
-#include "DirectX12Context.h"
+#include "D12Include.hpp"
+#include <Windows.h>  
 
-#include <locale>
-#include <codecvt>
+module Valhalla.Yggdrasil.DirectX12.Device;
+
+import Valhalla.Yggdrasil.DirectX12.Context;
+import Valhalla.Yggdrasil.DirectX12.VD3D12;
+
+import Valhalla.Core.Log;
+import Valhalla.Core.Assert;
+
+#include "DXCALL.h"
+
+import <locale>;
+import <codecvt>;
+import <mutex>;
 
 namespace Valhalla
 {
@@ -88,7 +98,7 @@ namespace Valhalla
 				WaitForSingleObject(fenceHandle, INFINITE);
 			}
 
-			VH_CORE_INFO("executing command buffer!");
+			Log::CoreInfo("executing command buffer!");
 
 			m_GraphicsCommandAllocator->Reset();
 			commandBuffer->Reset(m_GraphicsCommandAllocator.Get(), nullptr);
@@ -101,14 +111,14 @@ namespace Valhalla
 #if defined(VH_DEBUG)
 			DXCALL(D3D12GetDebugInterface(IID_PPV_ARGS(&m_Debug)));
 			m_Debug->EnableDebugLayer();
-			DXGIGetDebugInterface1(0, IID_PPV_ARGS(m_dxgiDebug.GetAddressOf()));
+			DXCALL(DXGIGetDebugInterface1(0, IID_PPV_ARGS(m_dxgiDebug.GetAddressOf())));
 			m_dxgiDebug->EnableLeakTrackingForThread();
 			
 			factoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
 #endif
 
 			uint32_t i = 0;
-			IDXGIAdapter1* adapter = nullptr;
+			Microsoft::WRL::ComPtr<IDXGIAdapter1> adapter = nullptr;
 			Microsoft::WRL::ComPtr<IDXGIFactory4> factory = nullptr;
 			DXCALL(CreateDXGIFactory2(factoryFlags, IID_PPV_ARGS(&factory)));
 			while (factory->EnumAdapters1(i, &adapter) != DXGI_ERROR_NOT_FOUND)
@@ -124,9 +134,17 @@ namespace Valhalla
 				factory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter));
 
 				D3D12CreateDevice(warpAdapter.Get(), D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&m_Device));
+				warpAdapter->Release();
 			}
 
-			factory->Release();
+			if (m_Debug.Get() != nullptr)
+			{
+				Microsoft::WRL::ComPtr<ID3D12InfoQueue> infoQueue;
+				m_Device->QueryInterface(IID_PPV_ARGS(infoQueue.GetAddressOf()));
+				infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
+				infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
+				infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
+			}
 
 			D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 			queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
@@ -140,9 +158,28 @@ namespace Valhalla
 
 		DirectX12Device::~DirectX12Device()
 		{
+
 #if defined(VH_DEBUG)
-			m_dxgiDebug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_FLAGS(DXGI_DEBUG_RLO_DETAIL | DXGI_DEBUG_RLO_IGNORE_INTERNAL));
+			for (auto& [threadID, allocator] : m_CommandAllocators)
+			{
+				// release inner ComPtrs
+				allocator->GetGraphicsCommandAllocator().Reset();
+				allocator->GetComputeCommandAllocator().Reset();
+			}
+			m_CommandAllocators.clear();
+
+			m_GraphicsQueue.Reset();
+			m_ComputeQueue.Reset();
+			m_Device.Reset();
+			m_PhysicalDevices.clear();
+
+			if (m_dxgiDebug)
+			{
+				m_dxgiDebug->ReportLiveObjects(DXGI_DEBUG_ALL,
+					DXGI_DEBUG_RLO_FLAGS(DXGI_DEBUG_RLO_DETAIL | DXGI_DEBUG_RLO_IGNORE_INTERNAL));
+			}
 #endif
+
 		}
 
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12Device::GetCommandBuffer(bool begin, bool compute)
@@ -168,7 +205,7 @@ namespace Valhalla
 			
 			std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 			std::wstring wideDebug = converter.from_bytes(debugName);
-			//cmdBuffer->SetName(wideDebug.c_str());
+			cmdBuffer->SetName(wideDebug.c_str());
 
 			return cmdBuffer;
 		}
@@ -176,7 +213,7 @@ namespace Valhalla
 		Ref<DirectX12CommandAllocator> DirectX12Device::GetThreadLocalCommandAllocator()
 		{
 			auto threadID = std::this_thread::get_id();
-			VH_CORE_VERIFY(m_CommandAllocators.find(threadID) != m_CommandAllocators.end());
+			Verify(m_CommandAllocators.find(threadID) != m_CommandAllocators.end());
 			
 			return m_CommandAllocators.at(threadID);
 		}

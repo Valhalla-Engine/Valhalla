@@ -1,9 +1,17 @@
-#include "vhpch.h"
-#include "Renderer.h"
+module Valhalla.Renderer.Renderer;
 
-#include "RendererAPI.h"
+import Valhalla.Core.Ref;
+import Valhalla.Core.Assert;
 
-#include "Valhalla/Platform/DirectX12/DirectX12Renderer.h"
+import Valhalla.Renderer.RendererAPI;
+import Valhalla.Renderer.Pipeline;
+import Valhalla.Renderer.Shader;
+import Valhalla.Renderer.RendererConfig;
+import Valhalla.Renderer.RenderCommandQueue;
+
+import <atomic>;
+import <vector>;
+import <unordered_map>;
 
 namespace Valhalla
 {
@@ -46,9 +54,9 @@ namespace Valhalla
 		{
 			switch (RendererAPI::Current())
 			{
-				case RendererAPIType::DirectX12:	return new Yggdrasil::DirectX12Renderer;
+				case RendererAPIType::DirectX12:	return nullptr;
 			}
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 
@@ -106,7 +114,8 @@ namespace Valhalla
 
 		uint32_t Renderer::RT_GetCurrentFrameIndex()
 		{
-			return Application::Get().GetWindow().GetSwapChain()->GetCurrentBackBufferIndex();
+			//return Application::Get().GetWindow().GetSwapChain()->GetCurrentBackBufferIndex();
+			return 2;
 		}
 
 		RendererConfig& Renderer::GetConfig()

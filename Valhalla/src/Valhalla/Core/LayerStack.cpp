@@ -1,6 +1,6 @@
-#include "vhpch.h"
+module Valhalla.Core.LayerStack;
 
-#include "LayerStack.h"
+import Valhalla.Core.Layer;
 
 namespace Valhalla
 {

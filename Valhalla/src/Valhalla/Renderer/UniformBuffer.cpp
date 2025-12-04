@@ -1,7 +1,10 @@
-#include "vhpch.h"
-#include "UniformBuffer.h"
+module Valhalla.Renderer.UniformBuffer;
 
-#include "Valhalla/Renderer/RendererAPI.h"
+import Valhalla.Core.Ref;
+import Valhalla.Core.Types;
+import Valhalla.Core.Assert;
+
+import Valhalla.Renderer.RendererAPI;
 
 namespace Valhalla
 {
@@ -16,8 +19,9 @@ namespace Valhalla
 				case RendererAPIType::Vulkan:		return nullptr;
 			}
 
-			VH_CORE_ASSERT(false, "Unknown RendererAPI");
+			Assert(false, "Unknown RendererAPI");
 			return nullptr;
+
 		}
 	}
 }

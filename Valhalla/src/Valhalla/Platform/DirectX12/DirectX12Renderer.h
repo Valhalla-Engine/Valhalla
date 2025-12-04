@@ -3,9 +3,6 @@
 #include "Valhalla/Renderer/RendererAPI.h"
 
 #include "DirectX12Context.h"
-#include "DirectX12Pipeline.h"
-#include "DirectX12Shader.h"
-#include "DirectX12VertexBuffer.h"
 
 namespace Valhalla
 {
@@ -29,23 +26,11 @@ namespace Valhalla
 
 			virtual void BeginFrame() override;
 			virtual void EndFrame() override;
-
-			virtual void BeginRenderPass(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::RenderPass> renderPass, bool explicitClear = false) override;
-			virtual void EndRenderPass(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer) override;
-
-			virtual void SubmitFillScreenQuad(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader) override;
-			virtual void SubmitFullscreenQuadWithOverrides(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader, Buffer vertexShaderOverrides, Buffer fragmentShaderOverrides) override;
-
-			virtual std::pair<Ref<Heimdall::TextureCube>, Ref<Heimdall::TextureCube>> CreateEnvironmentMap(const std::string& filepath) override;
-			virtual Ref<Heimdall::TextureCube> CreatePreethamSky(float turbidity, float azimuth, float inclination) override;
-
-			virtual void RenderGeometry(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader, Ref<Heimdall::VertexBuffer> vertexBuffer, Ref<Heimdall::IndexBuffer> indexBuffer, const DirectX::XMFLOAT4X4& transform, uint32_t indexCount = 0) override;
 		private: 
 
 			Ref<DirectX12Device> m_DirectX12Device;
 			Ref<DirectX12SwapChain> m_DirectX12Swap;
-			Ref<DirectX12VertexBuffer> m_vBuffer;
-			
+
 			Microsoft::WRL::ComPtr<ID3D12Device> m_device;
 			Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapchain;
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_commandQueue;

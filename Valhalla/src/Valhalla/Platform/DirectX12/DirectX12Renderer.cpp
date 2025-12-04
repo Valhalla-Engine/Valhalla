@@ -23,8 +23,7 @@ namespace Valhalla
 		{
 			m_DirectX12Device = DirectX12Context::GetCurrentDevice();
 			m_DirectX12Swap = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>();
-			LoadPipeline();
-			LoadAssets();
+			
 		}
 
 		void DirectX12Renderer::Shutdown()
@@ -34,58 +33,13 @@ namespace Valhalla
 
 		void DirectX12Renderer::BeginFrame()
 		{
-			m_frameIndex = m_swapchain->GetCurrentBackBufferIndex();
-			PopulateCommandList();
+			
 		}
 
 
 		void DirectX12Renderer::EndFrame()
 		{
-			ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
-			m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-
-			DXCALL(m_device->GetDeviceRemovedReason());
-
-			// Present the frame.
-			//DXCALL(m_swapchain->Present(1, 0));
-
-			WaitForPreviousFrame();
-		}
-
-
-		void DirectX12Renderer::BeginRenderPass(Ref<Heimdall::RenderCommandBuffer> buffer, Ref<Heimdall::RenderPass> pass, bool explicitClear)
-		{
-
-		}
-
-		void DirectX12Renderer::EndRenderPass(Ref<Heimdall::RenderCommandBuffer> commandBuffer)
-		{
-
-		}
-
-		void DirectX12Renderer::SubmitFillScreenQuad(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader)
-		{
 			
-		}
-
-		void DirectX12Renderer::SubmitFullscreenQuadWithOverrides(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader, Buffer vertexShaderOverrides, Buffer fragmentShaderOverrides)
-		{
-
-		}
-
-		std::pair<Ref<Heimdall::TextureCube>, Ref<Heimdall::TextureCube>> DirectX12Renderer::CreateEnvironmentMap(const std::string& filepath)
-		{
-			return {};
-		}
-
-		Ref<Heimdall::TextureCube> DirectX12Renderer::CreatePreethamSky(float turbidity, float azimuth, float inclination)
-		{
-			return nullptr;
-		}
-
-		void DirectX12Renderer::RenderGeometry(Ref<Heimdall::RenderCommandBuffer> renderCommandBuffer, Ref<Heimdall::Pipeline> pipeline, Ref<Heimdall::Shader> shader, Ref<Heimdall::VertexBuffer> vertexBuffer, Ref<Heimdall::IndexBuffer> indexBuffer, const DirectX::XMFLOAT4X4& transform, uint32_t indexCount)
-		{
-
 		}
 
 		void DirectX12Renderer::LoadPipeline()
@@ -153,7 +107,7 @@ namespace Valhalla
 
 		void DirectX12Renderer::LoadAssets()
 		{
-			CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
+			/*CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 			rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 			Microsoft::WRL::ComPtr<ID3D10Blob> signature;
 			DXCALL(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, nullptr));
@@ -243,16 +197,13 @@ namespace Valhalla
 			m_scissorRect.left = 0;
 			m_scissorRect.top = 0;
 			m_scissorRect.right = Application::Get().GetWindow().GetWidth();
-			m_scissorRect.bottom = Application::Get().GetWindow().GetHeight();
+			m_scissorRect.bottom = Application::Get().GetWindow().GetHeight();*/
 		}
 
 		void DirectX12Renderer::PopulateCommandList()
 		{
-
-			/*D3D12_RESOURCE_DESC vDesc;
-			vDesc = m_vBuffer->GetVertexBuffer()->GetDesc();*/
 			 
-			DXCALL(m_CommandAllocator->Reset());
+			/*DXCALL(m_CommandAllocator->Reset());
 
 			DXCALL(m_commandList->Reset(m_CommandAllocator.Get(), m_PipelineState.Get()));
 
@@ -292,7 +243,7 @@ namespace Valhalla
 			barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
 			m_commandList->ResourceBarrier(1, &barrier);
 
-			DXCALL(m_commandList->Close());
+			DXCALL(m_commandList->Close());*/
 		}
 
 		void DirectX12Renderer::WaitForPreviousFrame()
