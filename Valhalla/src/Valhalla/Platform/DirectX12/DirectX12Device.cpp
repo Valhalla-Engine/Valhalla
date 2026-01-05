@@ -8,6 +8,9 @@ import Valhalla.Yggdrasil.DirectX12.VD3D12;
 
 import Valhalla.Core.Log;
 import Valhalla.Core.Assert;
+import Valhalla.Core.Application;
+
+import Valhalla.Renderer.Renderer;
 
 #include "DXCALL.h"
 
@@ -19,90 +22,25 @@ namespace Valhalla
 {
 	namespace Yggdrasil
 	{
-		DirectX12CommandAllocator::DirectX12CommandAllocator()
+		DirectX12ThreadContext::DirectX12ThreadContext()
 		{
 			auto device = DirectX12Context::GetCurrentDevice();
 			auto directXDevice = device->GetDevice();
 
-			DXCALL(directXDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_GraphicsCommandAllocator)));
-			DXCALL(directXDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_COMPUTE, IID_PPV_ARGS(&m_ComputeCommandAllocator)));
-		}
+			uint32_t framesInFlight = Heimdall::Renderer::GetConfig().FramesInFlight;
 
-		DirectX12CommandAllocator::~DirectX12CommandAllocator()
-		{
-
-		}
-
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12CommandAllocator::AllocateCommandBuffer(bool begin, bool compute /* = false */)
-		{
-			auto device = DirectX12Context::GetCurrentDevice();
-			auto directXDevice = device->GetDevice();
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> cmdlist;
-			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> allocator;
-			D3D12_COMMAND_LIST_TYPE type;
-
-			if (compute)
+			for (uint32_t i = 0; i < framesInFlight; i++)
 			{
-				allocator = m_ComputeCommandAllocator;
-				type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
+				DXCALL(directXDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_COMPUTE, IID_PPV_ARGS(&m_FrameAllocators.at(i).ComputeAllocator)));
+				DXCALL(directXDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_COPY, IID_PPV_ARGS(&m_FrameAllocators.at(i).CopyAllocator)));
+				DXCALL(directXDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_BUNDLE, IID_PPV_ARGS(&m_FrameAllocators.at(i).BundleAllocator)));
 			}
-			else
-			{
-				allocator = m_GraphicsCommandAllocator;
-				type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-			}
-
-			DXCALL(directXDevice->CreateCommandList(0, type, allocator.Get(), nullptr, IID_PPV_ARGS(&cmdlist)));
-
-			if (!begin)
-				DXCALL(cmdlist->Close());
-
-			return cmdlist;
 		}
 
-		void DirectX12CommandAllocator::FlushCommandBuffer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer)
+		DirectX12ThreadContext::~DirectX12ThreadContext()
 		{
-			auto device = DirectX12Context::GetCurrentDevice();
-			FlushCommandBuffer(commandBuffer, device->GetGraphicsQueue());
 		}
 
-		void DirectX12CommandAllocator::FlushCommandBuffer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer,
-			Microsoft::WRL::ComPtr<ID3D12CommandQueue> queue)
-		{
-			auto device = DirectX12Context::GetCurrentDevice();
-			auto directXDevice = device->GetDevice();
-
-			DXCALL(commandBuffer->Close());
-
-			Microsoft::WRL::ComPtr<ID3D12Fence> fence;
-			DXCALL(directXDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence)));
-
-			uint64_t fenceValue = 1;
-
-			HANDLE fenceHandle = CreateEvent(nullptr, false, false, nullptr);
-
-			{
-				static std::mutex submissionLock;
-				std::scoped_lock<std::mutex> lock(submissionLock);
-
-				ID3D12CommandList* commandlists[] = { commandBuffer.Get() };
-				queue->ExecuteCommandLists(1, commandlists);
-
-				queue->Signal(fence.Get(), fenceValue);
-			}
-
-			if (fence->GetCompletedValue() < fenceValue)
-			{
-				DXCALL(fence->SetEventOnCompletion(fenceValue, fenceHandle));
-
-				WaitForSingleObject(fenceHandle, INFINITE);
-			}
-
-			Log::CoreInfo("executing command buffer!");
-
-			m_GraphicsCommandAllocator->Reset();
-			commandBuffer->Reset(m_GraphicsCommandAllocator.Get(), nullptr);
-		}
 
 
 		DirectX12Device::DirectX12Device()
@@ -160,12 +98,6 @@ namespace Valhalla
 		{
 
 #if defined(VH_DEBUG)
-			for (auto& [threadID, allocator] : m_CommandAllocators)
-			{
-				// release inner ComPtrs
-				allocator->GetGraphicsCommandAllocator().Reset();
-				allocator->GetComputeCommandAllocator().Reset();
-			}
 			m_CommandAllocators.clear();
 
 			m_GraphicsQueue.Reset();
@@ -180,34 +112,6 @@ namespace Valhalla
 			}
 #endif
 
-		}
-
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12Device::GetCommandBuffer(bool begin, bool compute)
-		{
-			return GetOrCreateThreadLocalCommandAllocator()->AllocateCommandBuffer(begin, compute);
-		}
-
-		void DirectX12Device::FlushCommandBuffer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer)
-		{
-			return GetThreadLocalCommandAllocator()->FlushCommandBuffer(commandBuffer);
-		}
-
-		void DirectX12Device::FlushCommandBuffer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> commandBuffer, Microsoft::WRL::ComPtr<ID3D12CommandQueue> queue)
-		{
-			return GetThreadLocalCommandAllocator()->FlushCommandBuffer(commandBuffer, queue);
-		}
-
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> DirectX12Device::CreateSecondaryCommandBuffer(const char* debugName)
-		{
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> cmdBuffer;
-			m_Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, 
-				GetOrCreateThreadLocalCommandAllocator()->GetGraphicsCommandAllocator().Get(), nullptr, IID_PPV_ARGS(&cmdBuffer));
-			
-			std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-			std::wstring wideDebug = converter.from_bytes(debugName);
-			cmdBuffer->SetName(wideDebug.c_str());
-
-			return cmdBuffer;
 		}
 
 		Ref<DirectX12CommandAllocator> DirectX12Device::GetThreadLocalCommandAllocator()
