@@ -62,3 +62,4 @@ hooks/
 bin-int/Debug-windows-x86_64/Odin/Odin.obj
 Valhalla/vendor/assimp/bin/linux/libassimp.so.5
 Valhalla/vendor/assimp/bin/linux/libassimp.so
+Odin/logs/Valhalla.log
