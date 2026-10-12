@@ -1,3 +1,8 @@
+module;
+#include <atomic>
+#include <vector>
+#include <unordered_map>
+
 module Valhalla.Renderer.Renderer;
 
 import Valhalla.Core.Ref;
@@ -11,9 +16,7 @@ import Valhalla.Renderer.RenderCommandQueue;
 
 import Valhalla.Yggdrasil.DirectX12.Renderer;
 
-import <atomic>;
-import <vector>;
-import <unordered_map>;
+
 
 namespace Valhalla
 {
@@ -85,7 +88,7 @@ namespace Valhalla
 
 			delete s_Data;
 
-			for (size_t i = 0; i < s_Config.FramesInFlight; i++)
+			for (uint32_t i = 0; i < s_Config.FramesInFlight; i++)
 			{
 				auto& queue = Renderer::GetRenderResourceReleaseQueue(i);
 				queue.Execute();

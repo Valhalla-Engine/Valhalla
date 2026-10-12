@@ -1,9 +1,11 @@
+module;
 #include <Windows.h>
+#include <ostream>
 
 export module Valhalla.Core.KeyCodes;
 
 import Valhalla.Core.Types;
-import <ostream>;
+
 
 export namespace Valhalla
 {

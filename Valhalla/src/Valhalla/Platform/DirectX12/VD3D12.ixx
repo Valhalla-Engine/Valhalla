@@ -1,5 +1,4 @@
-﻿#pragma once
-#include "dxgi.h"
+﻿module;
 
 #include <iostream>
 #include <d3d12.h>
@@ -11,10 +10,6 @@
 #include <dxgidebug.h>
 #pragma comment (lib, "dxguid.lib")
 #endif
-
-#pragma comment (lib, "d3d12.lib")
-#pragma comment (lib, "D3DCompiler.lib")
-#pragma comment (lib, "dxgi.lib")
 
 export module Valhalla.Yggdrasil.DirectX12.VD3D12;
 

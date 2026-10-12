@@ -1,5 +1,6 @@
+module;
 #include "D12Include.hpp"
-
+#include "DXCALL.h"
 #include <cwchar>
 
 #include <dxcapi.h>
@@ -13,7 +14,6 @@ import Valhalla.Yggdrasil.DirectX12.Context;
 
 import Valhalla.Core.Log;
 import Valhalla.Yggdrasil.DirectX12.VD3D12;
-#include "DXCALL.h"
 
 
 namespace Valhalla
@@ -102,7 +102,7 @@ namespace Valhalla
 
 			std::vector<D3D12_INPUT_ELEMENT_DESC> InputElements;
 			uint32_t offset = 0;
-			for (size_t i = 0; i < shaderDesc.InputParameters; i++)
+			for (uint32_t i = 0; i < shaderDesc.InputParameters; i++)
 			{
 				D3D12_SIGNATURE_PARAMETER_DESC signatureDesc;
 				m_VertexReflection->GetInputParameterDesc(i, &signatureDesc);

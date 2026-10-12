@@ -1,3 +1,4 @@
+module;
 #include <Windows.h>
 
 export module Valhalla.Platform.Windows.Window;

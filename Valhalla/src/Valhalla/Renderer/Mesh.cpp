@@ -1,11 +1,12 @@
+module;
 #include "imgui/imgui.h"
+#include <vector>
+#include <string>
 
 module Valhalla.Renderer.Mesh;
 
 import Valhalla.Core.Ref;
 
-import <vector>;
-import <string>;
 
 
 namespace Valhalla
@@ -23,7 +24,7 @@ namespace Valhalla
 
 	namespace Heimdall
 	{
-		MeshSource::MeshSource(const std::vector<Vertex>& vertices, const std::vector<Index>& indices, const DirectX::XMFLOAT4X4& transform)
+		MeshSource::MeshSource(const std::vector<Vertex>& vertices, const std::vector<Index>& indices, const Math::Mat4x4& transform)
 			: m_Vertices(vertices), m_Indices(indices)
 		{
 			Handle = {};
@@ -35,8 +36,8 @@ namespace Valhalla
 			submesh.transform = transform;
 			m_Submeshes.push_back(submesh);
 
-			m_VertexBuffer = VertexBuffer::Create(m_Vertices.data(), (uint32_t)(m_Vertices.size() * sizeof(Vertex)));
-			m_IndexBuffer = IndexBuffer::Create(m_Indices.data(), (uint32_t)m_Indices.size() * sizeof(Index));
+			m_VertexBuffer = VertexBuffer::Create(m_Vertices.data(), static_cast<uint32_t>(m_Vertices.size() * sizeof(Vertex)));
+			m_IndexBuffer = IndexBuffer::Create(m_Indices.data(), static_cast<uint32_t>(m_Indices.size() * sizeof(Index)));
 		}
 
 		MeshSource::MeshSource(const std::vector<Vertex>& vertices, const std::vector<Index>& indices, const std::vector<Submesh>& submeshes)
@@ -44,8 +45,8 @@ namespace Valhalla
 		{
 			Handle = {};
 
-			m_VertexBuffer = VertexBuffer::Create(m_Vertices.data(), (uint32_t)(m_Vertices.size() * sizeof(Vertex)));
-			m_IndexBuffer = IndexBuffer::Create(m_Indices.data(), (uint32_t)m_Indices.size() * sizeof(Index));
+			m_VertexBuffer = VertexBuffer::Create(m_Vertices.data(), static_cast<uint32_t>(m_Vertices.size() * sizeof(Vertex)));
+			m_IndexBuffer = IndexBuffer::Create(m_Indices.data(), static_cast<uint32_t>(m_Indices.size() * sizeof(Index)));
 		}
 
 		MeshSource::~MeshSource()

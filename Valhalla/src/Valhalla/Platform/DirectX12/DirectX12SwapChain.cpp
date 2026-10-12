@@ -1,8 +1,14 @@
+module;
+
 #include "imgui.h"
 #include "backends/imgui_impl_win32.h"
 #include "backends/imgui_impl_dx12.h"
 
 #include "D12Include.hpp"
+#include "DXCALL.h"
+
+#include <codecvt>
+#include <sstream>
 
 module Valhalla.Yggdrasil.DirectX12.SwapChain;
 
@@ -16,11 +22,7 @@ import Valhalla.Core.Log;
 import Valhalla.Core.Assert;
 
 import Valhalla.Yggdrasil.DirectX12.VD3D12;
-#include "DXCALL.h"
 
-
-import <codecvt>;
-import <sstream>;
 
 namespace Valhalla
 {
@@ -142,7 +144,7 @@ namespace Valhalla
 			m_RenderTargets.resize(m_ImageCount);
 
 			CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_RTVHeap->GetCPUDescriptorHandleForHeapStart());
-			for (size_t i = 0; i < m_ImageCount; i++)
+			for (uint32_t i = 0; i < m_ImageCount; i++)
 			{
 				m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_RenderTargets[i]));
 				device->CreateRenderTargetView(m_RenderTargets[i].Get(), nullptr, rtvHandle);
@@ -285,7 +287,7 @@ namespace Valhalla
 
 			DXCALL(m_SwapChain->ResizeBuffers(2, width, height, m_ColorFormat, DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT));
 
-			for (size_t i = 0; i < m_ImageCount; i++)
+			for (uint32_t i = 0; i < m_ImageCount; i++)
 			{
 				m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_RenderTargets[i]));
 				m_Device->GetDevice()->CreateRenderTargetView(m_RenderTargets[i].Get(), nullptr, m_RenderTargetViews[i]);

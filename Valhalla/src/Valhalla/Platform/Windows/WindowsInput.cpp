@@ -1,3 +1,4 @@
+module;
 #include <Windows.h>
 
 module Valhalla.Core.Input;

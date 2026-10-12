@@ -35,7 +35,8 @@ project "Valhalla"
 
     includedirs {
         "src/",
-        "vendor/"
+        "vendor/",
+        "vendor/DirectXMath/Inc"
     }
 
     IncludeDependencies()
@@ -47,18 +48,21 @@ project "Valhalla"
         flags { "NoPCH" }
 
     -- Enable modules for your project files
-    filter { "files:src/**.ixx", "files:src/**.cppm"}
-        buildoptions { "/experimental:module /module:interface" }
+    filter { "files:src/**.ixx", "files:src/**.cppm" }
         compileas "Module"
 
     filter "toolset:msc"
-        buildoptions { "/scanDependencies" }
+        buildoptions { 
+            "/scanDependencies",
+            "/utf-8",
+            "/Zc:__cplusplus"
+        }
 
     -- Platform-specific
     filter "system:windows"
         systemversion "latest"
         defines { "VH_PLATFORM_WINDOWS" }
-        buildoptions { "/experimental:module" }
+        buildoptions { "/experimental:module", "/utf-8", "/Zc:__cplusplus" }
 
         files {
             "vendor/imgui/backends/imgui_impl_win32.cpp",

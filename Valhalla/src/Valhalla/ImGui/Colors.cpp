@@ -1,7 +1,9 @@
+module;
 #include <imgui.h>
+#include <cmath>
+
 
 module Valhalla.Imgui.Colors;
-import <cmath>;
 
 namespace Colors
 {

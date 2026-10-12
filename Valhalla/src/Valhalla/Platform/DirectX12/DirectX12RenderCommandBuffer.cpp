@@ -1,5 +1,7 @@
+module;
 #include "D12Include.hpp"
-
+#include "DXCALL.h"
+#include <sstream>
 module Valhalla.Yggdrasil.DirectX12.RenderCommandBuffer;
 
 import Valhalla.Yggdrasil.DirectX12.Context;
@@ -8,9 +10,6 @@ import Valhalla.Renderer.Renderer;
 
 import Valhalla.Core.Log;
 import Valhalla.Yggdrasil.DirectX12.VD3D12;
-#include "DXCALL.h"
-
-import <sstream>;
 
 
 namespace Valhalla
@@ -149,8 +148,8 @@ namespace Valhalla
 		void DirectX12RenderCommandBuffer::WaitForFence(uint32_t frameIndex)
 		{
 			auto& fence = m_Fences[frameIndex];
-			uint32_t completedValue = fence.Fence->GetCompletedValue();
-			uint32_t value = fence.FenceValue;
+			uint64_t completedValue = fence.Fence->GetCompletedValue();
+			uint64_t value = fence.FenceValue;
 			if (fence.Fence->GetCompletedValue() >= fence.FenceValue)
 			{
 				DXCALL(fence.Fence->SetEventOnCompletion(fence.FenceValue, fence.FenceEvent));

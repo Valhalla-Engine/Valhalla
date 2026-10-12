@@ -1,5 +1,3 @@
-#include <DirectXMath.h>
-
 export module Valhalla.Yggdrasil.DirectX12.Context;
 
 import Valhalla.Yggdrasil.DirectX12.Device;
@@ -7,8 +5,8 @@ import Valhalla.Yggdrasil.DirectX12.SwapChain;
 
 import Valhalla.Renderer.RendererContext;
 import Valhalla.Renderer.Renderer;
+import Valhalla.Math;
 
-import <compare>;
 
 export namespace Valhalla
 {
@@ -16,13 +14,13 @@ export namespace Valhalla
 	{
 		struct Vertex
 		{
-			DirectX::XMFLOAT3 Position;
-			DirectX::XMFLOAT4 Color;
+			Math::Float3 Position;
+			Math::Float4 Color;
 		};
 
 		struct VertexPosition
 		{
-			DirectX::XMFLOAT3 Position;
+			Math::Float3 Position;
 		};
 
 		class DirectX12Context : public Heimdall::RendererContext

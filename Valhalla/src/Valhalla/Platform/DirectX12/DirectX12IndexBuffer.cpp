@@ -1,5 +1,7 @@
+module;
 #include "D12Include.hpp"
 #include "d3dx12.h"
+#include "DXCALL.h"
 
 module Valhalla.Yggdrasil.DirectX12.IndexBuffer;
 
@@ -8,19 +10,18 @@ import Valhalla.Yggdrasil.DirectX12.Context;
 import Valhalla.Core.Log;
 import Valhalla.Yggdrasil.DirectX12.VD3D12;
 
-#include "DXCALL.h"
 
 namespace Valhalla
 {
 	namespace Yggdrasil
 	{
-		DirectX12IndexBuffer::DirectX12IndexBuffer(uint16_t size)
+		DirectX12IndexBuffer::DirectX12IndexBuffer(uint32_t size)
 			: m_Size(size)
 		{
 
 		}
 
-		DirectX12IndexBuffer::DirectX12IndexBuffer(void* buffer, uint16_t size)
+		DirectX12IndexBuffer::DirectX12IndexBuffer(void* buffer, uint32_t size)
 			: m_Size(size)
 		{
 			Microsoft::WRL::ComPtr<ID3D12Device> device = DirectX12Context::GetCurrentDevice()->GetDevice();
@@ -70,7 +71,7 @@ namespace Valhalla
 			DirectX12Context::GetCurrentDevice()->FlushCommandBuffer(cmdList);
 		}
 
-		void DirectX12IndexBuffer::SetData(void* buffer, uint16_t size, uint16_t offset)
+		void DirectX12IndexBuffer::SetData(void* buffer, uint32_t size, uint32_t offset)
 		{
 
 		}

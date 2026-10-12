@@ -1,14 +1,16 @@
+module;
 #include "D12Include.hpp"
 #include <dxcapi.h>
 #include <d3d12shader.h>
 #include <d3dcompiler.h>
+#include <unordered_map>
+#include <string>
 
 export module Valhalla.Yggdrasil.DirectX12.Shader;
 
 import Valhalla.Renderer.Shader;
 
-import <unordered_map>;
-import <string>;
+
 
 export namespace Valhalla
 {

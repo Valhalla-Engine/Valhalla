@@ -1,4 +1,6 @@
+module;
 #include <wrl.h>
+#include <vector>
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -10,7 +12,6 @@ import Valhalla.Core.Assert;
 import Valhalla.Core.Log;
 import Valhalla.Yggdrasil.DirectX12.Device;
 
-import <vector>;
 
 export namespace Valhalla
 {

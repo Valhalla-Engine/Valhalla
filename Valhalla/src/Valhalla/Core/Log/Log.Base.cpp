@@ -1,3 +1,4 @@
+module;
 #define VH_HAS_CONSOLE !VH_DIST
 
 #define VH_ASSERT_MESSAGE_BOX (!VH_DIST && VH_PLATFORM_WINDOWS)
@@ -8,17 +9,16 @@
 #endif
 #endif
 
-#include "spdlog/sinks/basic_file_sink.h";
-#include "spdlog/sinks/stdout_color_sinks.h";
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
-
+#include <filesystem>
+#include <map>
 
 module Valhalla.Core.Log.Base;
 
-import <filesystem>;
-import <map>;
 
 import Valhalla.Core.Log.Types;
 
@@ -119,16 +119,22 @@ namespace Valhalla
 
 			auto& logger = (type == Type::Core) ? s_CoreLogger : s_ClientLogger;
 
-			std::string logFormat = tag.empty() ? "{0}{1}" : "[{0}] {1}";
+			spdlog::level::level_enum spdLevel;
 
 			switch (level)
 			{
-				case Valhalla::Log::Level::Trace: logger->trace(logFormat, tag, message); break;
-				case Valhalla::Log::Level::Info: logger->info(logFormat, tag, message); break;
-				case Valhalla::Log::Level::Warn: logger->warn(logFormat, tag, message); break;
-				case Valhalla::Log::Level::Error: logger->error(logFormat, tag, message); break;
-				case Valhalla::Log::Level::Fatal: logger->critical(logFormat, tag, message); break;
+				case Level::Trace: spdLevel = spdlog::level::trace; break;
+				case Level::Info:  spdLevel = spdlog::level::info; break;
+				case Level::Warn:  spdLevel = spdlog::level::warn; break;
+				case Level::Error: spdLevel = spdlog::level::err; break;
+				case Level::Fatal: spdLevel = spdlog::level::critical; break;
+				default: return;
 			}
+
+			if (tag.empty())
+				logger->log(spdLevel, "{}", message);
+			else
+				logger->log(spdLevel, "[{}] {}", tag, message);
 		}
 
 		void Logger::AssertMessageInternal(Type type, std::string_view prefix, const std::string & message)

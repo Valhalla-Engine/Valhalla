@@ -1,4 +1,5 @@
-#include <DirectXMath.h>
+module;
+#include <filesystem>
 
 export module Valhalla.Renderer.Texture;
 
@@ -6,7 +7,8 @@ import Valhalla.Renderer.Image;
 import Valhalla.Core.Buffer;
 import Valhalla.Renderer.RendererResource;
 
-import <filesystem>;
+import Valhalla.Math;
+
 
 export namespace Valhalla
 {
@@ -38,7 +40,7 @@ export namespace Valhalla
 			virtual ImageFormat GetFormat() const = 0;
 			virtual uint32_t GetWidth() const = 0;
 			virtual uint32_t GetHeight() const = 0;
-			virtual DirectX::XMUINT2 GetSize() const = 0;
+			virtual Math::UInt2 GetSize() const = 0;
 
 			virtual uint32_t GetMipLevelCount() const = 0;
 			virtual std::pair<uint32_t, uint32_t> GetMipSize(uint32_t mip) const = 0;
@@ -55,7 +57,7 @@ export namespace Valhalla
 			static Ref<Texture2D> Create(const TextureSpecification& specification, const std::filesystem::path& filepath);
 			static Ref<Texture2D> Create(const TextureSpecification& specification, Buffer imageData);
 
-			virtual void Resize(const DirectX::XMUINT2& size) = 0;
+			virtual void Resize(const Math::UInt2& size) = 0;
 			virtual void Resize(const uint32_t width, const uint32_t height) = 0;
 
 			virtual Ref<Image2D> GetImage() const = 0;

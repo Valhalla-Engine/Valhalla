@@ -1,3 +1,4 @@
+module;
 #include <assimp/DefaultLogger.hpp>
 #include <assimp/LogStream.hpp>
 

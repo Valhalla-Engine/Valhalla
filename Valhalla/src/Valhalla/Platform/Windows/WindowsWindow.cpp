@@ -1,3 +1,4 @@
+module;
 #include "ImGui/imgui.h"
 
 #include <Windows.h>
@@ -6,9 +7,10 @@
 #include <locale>
 #include <codecvt>
 
-extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 module Valhalla.Platform.Windows.Window;
+
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 import Valhalla.Core.Log;
 import Valhalla.Core.Assert;
@@ -97,7 +99,29 @@ namespace Valhalla
 
 	void WindowsWindow::Shutdown()
 	{
-		DestroyWindow(m_Window);
+		if (m_SwapChain)
+		{
+			//m_SwapChain->Shutdown();
+			m_SwapChain = nullptr;
+		}
+
+		if (m_RendererContext)
+		{
+			//m_RendererContext->Shutdown();
+			m_RendererContext = nullptr;
+		}
+
+		if (m_Window)
+		{
+			DestroyWindow(m_Window);
+			m_Window = nullptr;
+		}
+
+		if (m_hInstance)
+		{
+			UnregisterClass(L"Win32 Window", m_hInstance);
+			m_hInstance = nullptr;
+		}
 	}
 
 	void WindowsWindow::SwapBuffers()

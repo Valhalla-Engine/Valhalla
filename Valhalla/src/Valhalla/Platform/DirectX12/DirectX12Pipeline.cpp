@@ -1,4 +1,6 @@
+module;
 #include "D12Include.hpp"
+#include "DXCALL.h"
 
 module Valhalla.Yggdrasil.DirectX12.Pipeline;
 
@@ -11,7 +13,6 @@ import Valhalla.Yggdrasil.DirectX12.Shader;
 
 import Valhalla.Core.Log;
 import Valhalla.Yggdrasil.DirectX12.VD3D12;
-#include "DXCALL.h"
 
 namespace Valhalla
 {

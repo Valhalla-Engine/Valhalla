@@ -1,4 +1,7 @@
-#include <DirectXMath.h>
+module;
+#include <string>
+#include <cmath>
+
 
 export module Valhalla.Renderer.Image;
 
@@ -6,11 +9,9 @@ import Valhalla.Core.Buffer;
 import Valhalla.Core.Types;
 import Valhalla.Core.Ref;
 import Valhalla.Core.Assert;
+import Valhalla.Math;
 
 import Valhalla.Renderer.RendererResource;
-
-import <string>;
-import <cmath>;
 
 
 export namespace Valhalla
@@ -99,7 +100,7 @@ export namespace Valhalla
 
 			virtual uint32_t GetWidth() const = 0;
 			virtual uint32_t GetHeight() const = 0;
-			virtual DirectX::XMFLOAT2 GetSize() const = 0;
+			virtual Math::Float2 GetSize() const = 0;
 
 			virtual float_t GetAspectRatio() const = 0;
 
@@ -118,7 +119,7 @@ export namespace Valhalla
 		public:
 			static Ref<Image2D> Create(ImageSpecification specification, Buffer buffer);
 			static Ref<Image2D> Create(ImageSpecification specification, const void* data = nullptr);
-			virtual void Resize(const DirectX::XMFLOAT2& size) = 0;
+			virtual void Resize(const Math::Float2& size) = 0;
 		};
 
 		namespace Utils
@@ -172,7 +173,7 @@ export namespace Valhalla
 
 			inline uint32_t CalculateMipCount(uint32_t width, uint32_t height)
 			{
-				return (uint32_t)std::floor(std::log2(DirectX::XMMin(width, height))) + 1;
+				return (uint32_t)std::floor(std::log2(Math::Min(width, height))) + 1;
 			}
 
 			inline uint32_t GetImageMemorySize(ImageFormat format, uint32_t width, uint32_t height)

@@ -1,13 +1,16 @@
+module;
+
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <functional>
+
 export module Valhalla.Renderer.Shader;
 
 import Valhalla.Core.Ref;
 
 import Valhalla.Renderer.ShaderUniform;
 
-import <string>;
-import <vector>;
-import <unordered_map>;
-import <functional>;
 
 export namespace Valhalla
 {

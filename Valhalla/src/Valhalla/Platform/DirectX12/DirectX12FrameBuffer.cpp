@@ -1,3 +1,8 @@
+module;
+#include <format>
+#include <string>
+
+
 module Valhalla.Yggdrasil.DirectX12.FrameBuffer;
 
 import Valhalla.Core.Application;
@@ -5,9 +10,6 @@ import Valhalla.Core.Assert;
 
 import Valhalla.Renderer.Image;
 import Valhalla.Renderer.Renderer;
-
-import <format>;
-import <string>;
 
 namespace Valhalla
 {

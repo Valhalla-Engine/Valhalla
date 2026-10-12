@@ -1,4 +1,5 @@
-#include <DirectXMath.h>
+module;
+#include <string>
 
 export module Valhalla.Renderer.RenderPass;
 
@@ -12,8 +13,8 @@ import Valhalla.Renderer.Pipeline;
 import Valhalla.Renderer.Image;
 
 import Valhalla.Core.Ref;
+import Valhalla.Math;
 
-import <string>;
 
 export namespace Valhalla
 {
@@ -23,7 +24,7 @@ export namespace Valhalla
 		{
 			Ref<Pipeline> Pipeline;
 			std::string DebugName;
-			DirectX::XMFLOAT4 MarkerColor;
+			Math::Float4 MarkerColor;
 		};
 
 		class RenderPass : public RefCounted

@@ -1,8 +1,11 @@
 
+module;
+#include <iostream>
+
 module Valhalla.Core;
 
 import Valhalla.Core.Log;
-import <iostream>;
+
 
 #define VALHALLA_BUILD_ID "v0.1a"
 

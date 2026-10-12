@@ -1,5 +1,4 @@
-#pragma once
-
+module;
 #include <ImGui/imgui.h>
 
 export module Valhalla.Imgui;

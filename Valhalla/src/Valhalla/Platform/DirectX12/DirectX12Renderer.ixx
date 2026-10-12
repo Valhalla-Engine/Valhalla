@@ -1,5 +1,5 @@
+module;
 #include "D12Include.hpp"
-#include <DirectXMath.h>
 
 export module Valhalla.Yggdrasil.DirectX12.Renderer;
 
@@ -8,6 +8,7 @@ import Valhalla.Yggdrasil.DirectX12.Device;
 import Valhalla.Yggdrasil.DirectX12.SwapChain;
 
 import Valhalla.Core.Ref;
+import Valhalla.Math;
 
 export namespace Valhalla
 {
@@ -18,8 +19,8 @@ export namespace Valhalla
 
 			struct Vertex
 			{
-				DirectX::XMFLOAT3 position;
-				DirectX::XMFLOAT4 Color;
+				Math::Float3 position;
+				Math::Float4 color;
 			};
 
 

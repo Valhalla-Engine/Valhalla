@@ -1,0 +1,6 @@
+[submodule "Valhalla/vendor/spdlog"]
+	path = Valhalla/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "Valhalla/vendor/DirectXMath"]
+	path = Valhalla/vendor/DirectXMath
+	url = https://github.com/microsoft/DirectXMath.git

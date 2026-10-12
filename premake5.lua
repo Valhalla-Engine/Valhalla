@@ -2,6 +2,7 @@ include "./vendor/premake_customization/solution_items.lua"
 include "Dependencies.lua"
 include "./Odin/Resources/LUA/Valhalla.lua"
 
+
 workspace "Valhalla"
 	configurations { "Debug", "Release", "Dist" }
 	targetdir "build"

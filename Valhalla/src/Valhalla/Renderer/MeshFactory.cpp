@@ -1,19 +1,19 @@
-
+module;
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <vector>
 
 module Valhalla.Renderer.MeshFactory;
 
 import Valhalla.Renderer.Mesh;
 //import Valhalla.Renderer.Vertex;
 
-import <vector>;
 
 namespace Valhalla
 {
 	namespace Heimdall
 	{
-		Mimir::AssetHandle MeshFactory::CreateBox(const DirectX::XMFLOAT3& size)
+		Mimir::AssetHandle MeshFactory::CreateBox(const Math::Float3& size)
 		{
 			std::vector<Vertex> vertices;
 			vertices.resize(8);

@@ -1,3 +1,4 @@
+module;
 #include <imgui.h>
 
 export module Valhalla.Imgui.Colors;

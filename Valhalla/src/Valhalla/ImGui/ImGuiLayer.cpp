@@ -1,3 +1,4 @@
+module;
 #include <imgui.h>
 
 module Valhalla.Imgui.Layer;

@@ -1,10 +1,14 @@
-[02:52:11] [trace] Valhalla: Valhalla Engine v0.1a
-[02:52:11] [trace] Valhalla: Initializing...
-[02:52:11] [error] Valhalla: Current file path: 
-[02:52:11] [info] Valhalla: Creating Window Odin 1280x800
-[02:52:11] [info] Valhalla: Start of RendererContext Create
-[02:52:12] [info] Valhalla: SwapChain Size: (1280, 800)
-[02:52:12] [info] Valhalla: Creating draw command buffers
-[02:52:12] [info] Valhalla: Creating draw command buffers
-[02:52:12] [trace] Valhalla: the current path is: C:\dev\Valhalla\Odin
-[02:52:16] [trace] Valhalla: Shutting down...
+[02:59:01] [trace] Valhalla: Valhalla Engine v0.1a
+[02:59:01] [trace] Valhalla: Initializing...
+[02:59:01] [error] Valhalla: Current file path: 
+[02:59:01] [info] Valhalla: Creating Window Odin 1280x800
+[02:59:01] [info] Valhalla: Start of RendererContext Create
+[02:59:01] [trace] Valhalla: [Renderer] Selected DirectX 12 adapter: NVIDIA GeForce RTX 4080 SUPER
+[02:59:01] [trace] Valhalla: [Renderer] Dedicated video memory: 16824401920
+[02:59:01] [trace] Valhalla: [Renderer] Dedicated system memory: 0
+[02:59:01] [trace] Valhalla: [Renderer] Shared system memory: 16620881920
+[02:59:01] [info] Valhalla: SwapChain Size: (1280, 800)
+[02:59:01] [info] Valhalla: Creating draw command buffers
+[02:59:01] [info] Valhalla: Creating draw command buffers
+[02:59:01] [trace] Valhalla: the current path is: C:\dev\Valhalla\Odin
+[02:59:05] [trace] Valhalla: Shutting down...

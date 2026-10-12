@@ -1,3 +1,4 @@
+module;
 #include "D12Include.hpp"
 
 export module Valhalla.Yggdrasil.DirectX12.Pipeline;

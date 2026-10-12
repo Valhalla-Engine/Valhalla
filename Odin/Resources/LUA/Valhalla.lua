@@ -19,16 +19,16 @@ local function getAssemblyFiles(directory, is_windows)
 end
 
 function linkAppReferences(linkScriptCore)
-	local hazelDir = os.getenv("VALHALLA_DIR")
+	local ValhallaDir = os.getenv("VALHALLA_DIR")
 	local monoLibsPath
     local monoLibsFacadesPath
 	local is_windows = os.istarget('windows')
 
 	if is_windows then
-		monoLibsPath = path.join(hazelDir, "Odin", "mono", "lib", "mono", "4.5"):gsub("/", "\\")
+		monoLibsPath = path.join(ValhallaDir, "Odin", "mono", "lib", "mono", "4.5"):gsub("/", "\\")
 		monoLibsFacadesPath = path.join(monoLibsPath, "Facades"):gsub("/", "\\")
 	else
-		monoLibsPath = path.join(hazelDir, "Odin", "mono", "linux", "lib", "mono", "4.5")
+		monoLibsPath = path.join(ValhallaDir, "Odin", "mono", "linux", "lib", "mono", "4.5")
 		monoLibsFacadesPath = path.join(monoLibsPath, "Facades")
 	end
 

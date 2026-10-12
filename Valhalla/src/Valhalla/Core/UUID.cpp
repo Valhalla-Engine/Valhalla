@@ -1,8 +1,10 @@
+module;
+#include <random>
+#include <cstdlib>
+#include <ctime>
+
 module Valhalla.Core.UUID;
 
-import <random>;
-import <cstdlib>;
-import <ctime>;
 
 namespace Valhalla
 {

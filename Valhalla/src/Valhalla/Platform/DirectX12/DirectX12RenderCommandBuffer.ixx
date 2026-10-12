@@ -1,4 +1,6 @@
+module;
 #include "D12Include.hpp"
+#include <vector>
 
 export module Valhalla.Yggdrasil.DirectX12.RenderCommandBuffer;
 
@@ -6,7 +8,6 @@ import Valhalla.Renderer.RenderCommandBuffer;
 
 import Valhalla.Core.Assert;
 
-import <vector>;
 
 export namespace Valhalla
 {

@@ -94,6 +94,9 @@ Dependencies = {
 		LibName = "Box2D",
 		IncludeDir = "%{wks.location}/Valhalla/vendor/Box2D/include",
 	},
+	SPDLog = {
+		IncludeDir = "%{wks.location}/Valhalla/vendor/spdlog/include",
+	},
 	STB = {
 		IncludeDir = "%{wks.location}/Valhalla/vendor/stb/include",
 	},

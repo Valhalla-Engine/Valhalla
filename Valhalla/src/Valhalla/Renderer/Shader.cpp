@@ -1,3 +1,6 @@
+module;
+#include <string>
+
 module Valhalla.Renderer.Shader;
 
 import Valhalla.Renderer.RendererAPI;

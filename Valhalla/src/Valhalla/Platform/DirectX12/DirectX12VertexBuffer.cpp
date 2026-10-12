@@ -1,5 +1,6 @@
+module;
 #include "D12Include.hpp"
-
+#include "DXCALL.h"
 
 module Valhalla.Yggdrasil.DirectX12.VertexBuffer;
 
@@ -8,7 +9,6 @@ import Valhalla.Yggdrasil.DirectX12.VD3D12;
 
 import Valhalla.Core.Log;
 
-#include "DXCALL.h"
 
 
 namespace Valhalla

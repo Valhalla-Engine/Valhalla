@@ -1,5 +1,8 @@
+module;
 #include "D12Include.hpp"
 #include "d3dx12.h"
+#include "DXCALL.h"
+#include <sstream>
 
 module Valhalla.Yggdrasil.DirectX12.Renderer;
 
@@ -13,9 +16,7 @@ import Valhalla.Yggdrasil.DirectX12.Context;
 
 import Valhalla.Core.Log;
 import Valhalla.Yggdrasil.DirectX12.VD3D12;
-#include "DXCALL.h"
 
-import <sstream>;
 
 namespace Valhalla
 {
@@ -38,7 +39,8 @@ namespace Valhalla
 
 		void DirectX12Renderer::Shutdown()
 		{
-
+			m_DirectX12Device = nullptr;
+			m_DirectX12Swap = nullptr;
 		}
 
 		void DirectX12Renderer::BeginFrame()
@@ -112,7 +114,6 @@ namespace Valhalla
 				// complete before continuing.
 				WaitForPreviousFrame();
 			}
-
 		}
 
 		void DirectX12Renderer::LoadAssets()

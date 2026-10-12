@@ -1,7 +1,10 @@
+module;
+#include <queue>
+#include <functional>
+#include <mutex>
+
 export module Valhalla.Core.Application;
 
-import <functional>;
-import <mutex>;
 
 
 import Valhalla.Core.Types;
@@ -15,8 +18,6 @@ import Valhalla.Core.Events.ApplicationEvent;
 import Valhalla.Core.Window;
 
 import Valhalla.Imgui.Layer;
-
-#include <queue>
 
 export namespace Valhalla
 {
@@ -45,7 +46,6 @@ export namespace Valhalla
 	public:
 		Application(const ApplicationSpecification& specifications);
 		virtual ~Application();
-
 		void Run();
 
 		virtual void OnInit() {}

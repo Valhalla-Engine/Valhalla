@@ -1,19 +1,19 @@
-#include <DirectXMath.h>
+module;
+#include <vector>
+#include <string>
+#include <unordered_map>
+
 
 export module Valhalla.Renderer.Mesh;
 
 import Valhalla.Core.Math.AABB;
-import Valhalla.Core.Math.DirectXMath;
+import Valhalla.Math;
 
 import Valhalla.Asset;
 
 import Valhalla.Renderer.IndexBuffer;
 import Valhalla.Renderer.UniformBuffer;
 import Valhalla.Renderer.VertexBuffer;
-
-import <vector>;
-import <string>;
-import <unordered_map>;
 
 
 export namespace Valhalla
@@ -33,11 +33,11 @@ export namespace Valhalla
 	{
 		struct Vertex
 		{
-			DirectX::XMFLOAT3 Position;
-			DirectX::XMFLOAT3 Normal;
-			DirectX::XMFLOAT3 Tangent;
-			DirectX::XMFLOAT3 BiNormal;
-			DirectX::XMFLOAT2 TexCoord;
+			Math::Float3 Position;
+			Math::Float3 Normal;
+			Math::Float3 Tangent;
+			Math::Float3 BiNormal;
+			Math::Float2 TexCoord;
 		};
 
 		const int numAttributes = 5;
@@ -65,8 +65,8 @@ export namespace Valhalla
 			uint32_t IndexCount;
 			uint32_t VertexCount;
 
-			DirectX::XMFLOAT4X4 transform = DirectX::XMFLOAT4X4Identity();
-			DirectX::XMFLOAT4X4 LocalTransform = DirectX::XMFLOAT4X4Identity();
+			Math::Mat4x4 transform;
+			Math::Mat4x4 LocalTransform;
 			AABB BoundingBox;
 
 			std::string NodeName, MeshName;
@@ -80,7 +80,7 @@ export namespace Valhalla
 			std::vector<uint32_t> Submeshes;
 
 			std::string Name;
-			DirectX::XMFLOAT4X4 LocalTransform = DirectX::XMFLOAT4X4Identity();
+			Math::Mat4x4 LocalTransform;
 
 			inline bool IsRoot() const { return Parent == 0xffffffff; }
 		};
@@ -89,7 +89,7 @@ export namespace Valhalla
 		{
 		public:
 			MeshSource() = default;
-			MeshSource(const std::vector<Vertex>& vertices, const std::vector<Index>& indices, const DirectX::XMFLOAT4X4& transform);
+			MeshSource(const std::vector<Vertex>& vertices, const std::vector<Index>& indices, const Math::Mat4x4& transform);
 			MeshSource(const std::vector<Vertex>& vertices, const std::vector<Index>& indices, const std::vector<Submesh>& submeshes);
 			virtual ~MeshSource();
 

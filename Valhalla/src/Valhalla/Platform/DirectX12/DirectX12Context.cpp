@@ -11,6 +11,7 @@ namespace Valhalla
 
 		DirectX12Context::~DirectX12Context()
 		{
+			m_Device.Reset();
 		}
 
 		void DirectX12Context::Init()

@@ -1,7 +1,9 @@
+module;
+#include <filesystem>
+
 module Valhalla.Core.Application;
 
 
-import <filesystem>;
 import Valhalla.Core.Log;
 
 import Valhalla.Renderer.Renderer;

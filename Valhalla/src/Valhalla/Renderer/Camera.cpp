@@ -1,29 +1,24 @@
-#include <DirectXMath.h>
 
 module Valhalla.Renderer.Camera;
-
+import Valhalla.Math;
 namespace Valhalla
 {
 	namespace Heimdall
 	{
 		Camera::Camera()
 		{
-			DirectX::XMStoreFloat4x4(&m_ProjectionMatrix, DirectX::XMMatrixIdentity());
-			DirectX::XMStoreFloat4x4(&m_UnReversedProjectionMatrix, DirectX::XMMatrixIdentity());
 		}
 
-		Camera::Camera(const DirectX::XMFLOAT4X4& projection, const DirectX::XMFLOAT4X4& UnReversedProjection)
-			: m_ProjectionMatrix(projection), m_UnReversedProjectionMatrix(UnReversedProjection)
+		Camera::Camera(const Math::Mat4x4& projection, const Math::Mat4x4& unReversedProjection)
+			: m_ProjectionMatrix(projection), m_UnReversedProjectionMatrix(unReversedProjection)
 		{
 
 		}
 
 		Camera::Camera(const float_t degFov, const float_t width, const float_t height, const float_t nearP, const float_t farP)
 		{
-			DirectX::XMStoreFloat4x4(&m_ProjectionMatrix, 
-				DirectX::XMMatrixPerspectiveFovRH(DirectX::XMConvertToRadians(degFov), (width / height), nearP, farP));
-			DirectX::XMStoreFloat4x4(&m_UnReversedProjectionMatrix,
-				DirectX::XMMatrixPerspectiveFovRH(DirectX::XMConvertToRadians(degFov), (width / height), nearP, farP));
+			m_ProjectionMatrix = Math::MatrixPerspectiveFovRH(Math::ConvertToRadians(degFov), (width / height), nearP, farP);
+			m_UnReversedProjectionMatrix = Math::MatrixPerspectiveFovRH(Math::ConvertToRadians(degFov), (width / height), nearP, farP);
 		}
 	}
 }

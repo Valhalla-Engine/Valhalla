@@ -1,7 +1,9 @@
-#include <DirectXMath.h>
+
 
 export module Valhalla.Renderer.Camera;
 
+import Valhalla.Math;
+import Valhalla.Core.Types;
 namespace Valhalla
 {
 	namespace Heimdall
@@ -10,13 +12,13 @@ namespace Valhalla
 		{
 		public:
 			Camera();
-			Camera(const DirectX::XMFLOAT4X4& projection, const DirectX::XMFLOAT4X4& unReversedProjection);
+			Camera(const Math::Mat4x4& projection, const Math::Mat4x4& unReversedProjection);
 			Camera(const float_t degFov, const float_t width, const float_t height, const float_t nearP, const float_t farP);
 
-			const DirectX::XMFLOAT4X4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
-			const DirectX::XMFLOAT4X4& GetUnReversedProjectionMatrix() const { return m_UnReversedProjectionMatrix; }
+			const Math::Mat4x4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
+			const Math::Mat4x4& GetUnReversedProjectionMatrix() const { return m_UnReversedProjectionMatrix; }
 
-			void SetProjectionMatrix(const DirectX::XMFLOAT4X4 projection, const DirectX::XMFLOAT4X4 unReversedProjection)
+			void SetProjectionMatrix(const Math::Mat4x4& projection, const Math::Mat4x4& unReversedProjection)
 			{
 				m_ProjectionMatrix = projection;
 				m_UnReversedProjectionMatrix = unReversedProjection;
@@ -24,16 +26,14 @@ namespace Valhalla
 
 			void SetPerspectiveProjectionMatrix(const float_t radFov, const float_t width, const float_t height, const float_t nearP, const float_t farP)
 			{
-				DirectX::XMStoreFloat4x4(&m_ProjectionMatrix,
-					DirectX::XMMatrixPerspectiveFovRH(radFov, (width / height), nearP, farP));
-				DirectX::XMStoreFloat4x4(&m_UnReversedProjectionMatrix,
-					DirectX::XMMatrixPerspectiveFovRH(radFov, (width / height), nearP, farP));
+				m_ProjectionMatrix = Math::MatrixPerspectiveFovRH(radFov, (width / height), nearP, farP);
+				m_UnReversedProjectionMatrix = Math::MatrixPerspectiveFovRH(radFov, (width / height), nearP, farP);
 			}
 
 			void SetOrthoProjectionMatrix(const float_t width, const float_t height, const float_t nearP, const float_t farP)
 			{
-				DirectX::XMStoreFloat4x4(&m_ProjectionMatrix, DirectX::XMMatrixOrthographicRH(width, height, nearP, farP));
-				DirectX::XMStoreFloat4x4(&m_UnReversedProjectionMatrix, DirectX::XMMatrixOrthographicRH(width, height, nearP, farP));
+				m_ProjectionMatrix = Math::MatrixOrthographicRH(width, height, nearP, farP);
+				m_UnReversedProjectionMatrix = Math::MatrixOrthographicRH(width, height, nearP, farP);
 			}
 
 			float_t GetExposure() const { return m_Exposure; }
@@ -42,8 +42,8 @@ namespace Valhalla
 		protected:
 			float_t m_Exposure = 0.8f;
 		private:
-			DirectX::XMFLOAT4X4 m_ProjectionMatrix;
-			DirectX::XMFLOAT4X4 m_UnReversedProjectionMatrix;
+			Math::Mat4x4 m_ProjectionMatrix;
+			Math::Mat4x4 m_UnReversedProjectionMatrix;
 		};
 	}
 }

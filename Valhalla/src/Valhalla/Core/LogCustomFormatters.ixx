@@ -1,14 +1,14 @@
 module;
-#include <DirectXMath.h>
-
 #include <spdlog/fmt/fmt.h>
 
 export module Valhalla.Core.LogCustomFormatters;
 
+import Valhalla.Math;
+
 export namespace fmt {
 
 	template<>
-	struct formatter<DirectX::XMFLOAT2>
+	struct formatter<Valhalla::Math::Float2>
 	{
 		char presentation = 'f';
 
@@ -23,7 +23,7 @@ export namespace fmt {
 		}
 
 		template <typename FormatContext>
-		auto format(const DirectX::XMFLOAT2& vec, FormatContext& ctx) const -> decltype(ctx.out())
+		auto format(const Valhalla::Math::Float2& vec, FormatContext& ctx) const -> decltype(ctx.out())
 		{
 			return presentation == 'f'
 				? fmt::format_to(ctx.out(), "({:.3f}, {:.3f})", vec.x, vec.y)
@@ -32,7 +32,7 @@ export namespace fmt {
 	};
 
 	template<>
-	struct formatter<DirectX::XMFLOAT3>
+	struct formatter<Valhalla::Math::Float3>
 	{
 		char presentation = 'f';
 
@@ -47,7 +47,7 @@ export namespace fmt {
 		}
 
 		template <typename FormatContext>
-		auto format(const DirectX::XMFLOAT3& vec, FormatContext& ctx) const -> decltype(ctx.out())
+		auto format(const Valhalla::Math::Float3& vec, FormatContext& ctx) const -> decltype(ctx.out())
 		{
 			return presentation == 'f'
 				? fmt::format_to(ctx.out(), "({:.3f}, {:.3f}, {:.3f})", vec.x, vec.y, vec.z)
@@ -56,7 +56,7 @@ export namespace fmt {
 	};
 
 	template<>
-	struct formatter<DirectX::XMFLOAT4>
+	struct formatter<Valhalla::Math::Float4>
 	{
 		char presentation = 'f';
 
@@ -71,7 +71,7 @@ export namespace fmt {
 		}
 
 		template <typename FormatContext>
-		auto format(const DirectX::XMFLOAT4& vec, FormatContext& ctx) const -> decltype(ctx.out())
+		auto format(const Valhalla::Math::Float4& vec, FormatContext& ctx) const -> decltype(ctx.out())
 		{
 			return presentation == 'f'
 				? fmt::format_to(ctx.out(), "({:.3f}, {:.3f}, {:.3f}, {:.3f})", vec.x, vec.y, vec.z, vec.w)

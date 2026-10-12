@@ -1,6 +1,5 @@
-#include <DirectXMath.h>
-
 export module Valhalla.Renderer.Vertex;
+import Valhalla.Math;
 
 namespace Valhalla
 {

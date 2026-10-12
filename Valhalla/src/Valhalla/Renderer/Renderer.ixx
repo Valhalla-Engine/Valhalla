@@ -1,3 +1,9 @@
+module;
+#include <new>
+#include <utility>
+#include <type_traits>
+#include <cstdint>
+
 export module Valhalla.Renderer.Renderer;
 
 import Valhalla.Renderer.RendererContext;
@@ -37,16 +43,24 @@ export namespace Valhalla
 			template<typename FuncT>
 			static void Submit(FuncT&& func)
 			{
+				using StoredFuncT = std::decay_t<FuncT>;
+
 				auto renderCmd = [](void* ptr)
-				{
-						auto pFunc = (FuncT*)ptr;
+					{
+						auto* pFunc = static_cast<StoredFuncT*>(ptr);
+
 						(*pFunc)();
+						pFunc->~StoredFuncT();
+					};
 
-						pFunc->~FuncT();
-				};
+				auto storageBuffer =
+					GetRenderCommandQueue().Allocate(
+						renderCmd,
+						sizeof(StoredFuncT)
+					);
 
-				auto storageBuffer = GetRenderCommandQueue().Allocate(renderCmd, sizeof(func));
-				new (storageBuffer) FuncT(std::forward<FuncT>(func));
+				new (storageBuffer)
+					StoredFuncT(std::forward<FuncT>(func));
 			}
 
 			template<typename FuncT>

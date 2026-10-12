@@ -9,7 +9,7 @@ namespace Valhalla
 {
 	namespace Heimdall
 	{
-		Ref<IndexBuffer> IndexBuffer::Create(uint16_t size)
+		Ref<IndexBuffer> IndexBuffer::Create(uint32_t size)
 		{
 			switch (RendererAPI::Current())
 			{
@@ -17,13 +17,13 @@ namespace Valhalla
 				case RendererAPIType::DirectX11:	return nullptr;
 				case RendererAPIType::DirectX12:	return nullptr;
 				case RendererAPIType::Vulkan:		return nullptr;
-			}
+			}	
 
 			Assert(false, "Unknown RendererAPI");
 			return nullptr;
 		}
 
-		Ref<IndexBuffer> IndexBuffer::Create(void* buffer, uint16_t size)
+		Ref<IndexBuffer> IndexBuffer::Create(void* buffer, uint32_t size)
 		{
 			switch (RendererAPI::Current())
 			{
