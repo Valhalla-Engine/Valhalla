@@ -31,6 +31,7 @@ export namespace Valhalla
 			virtual void OnResize(uint32_t width, uint32_t height) override;
 
 			virtual void BeginFrame() override;
+			virtual void EndFrame() override;
 			virtual void Present() override;
 
 
@@ -44,16 +45,14 @@ export namespace Valhalla
 			DXGI_FORMAT GetColorFormat() const { return m_ColorFormat; }
 
 			uint32_t GetCurrentBackIndex() const { return m_CurrentBufferIndex; }
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetCurrentDrawCommandBuffer()
+			const Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7>& GetCurrentDrawCommandBuffer() const
 			{
-				//Log::CoreInfo("Current back buffer index:{0}", m_CurrentBufferIndex);
-				return GetDrawCommandBuffer(m_CurrentBufferIndex);
+				return m_CurrentCommandBuffer;
 			}
 
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> GetDrawCommandBuffer(uint32_t index)
 			{
-				Assert(index < m_CommandBuffers.size());
-				return m_CommandBuffers[index].CommandBuffer;
+				return m_CurrentCommandBuffer;
 			}
 
 			Microsoft::WRL::ComPtr<ID3D12Resource> GetCurrentRenderTaget()
@@ -86,7 +85,6 @@ export namespace Valhalla
 			void SetBackgroundColor(float r, float g, float b, float a);
 
 		private:
-			void WaitForFrame();
 			void FlushGPU();
 
 		private:
@@ -111,24 +109,13 @@ export namespace Valhalla
 			std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> m_RenderTargets;
 			std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> m_RenderTargetViews;
 
-			struct SwapChainCommandBuffer
-			{
-				Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocator = nullptr;
-				Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> CommandBuffer = nullptr;
-			};
-			std::vector<SwapChainCommandBuffer> m_CommandBuffers;
-
-			struct SyncFence 
-			{
-				Microsoft::WRL::ComPtr<ID3D12Fence> Fence;
-				uint64_t FenceValue;
-			};
-
-			std::vector<SyncFence> m_Fences;
-
-			HANDLE m_FenceEvent;
+			Microsoft::WRL::ComPtr<ID3D12Fence> m_FlushFence;
+			uint64_t m_FlushFenceValue = 0;
+			HANDLE m_FlushFenceEvent = nullptr;
 
 			uint32_t m_CurrentBufferIndex = 0;
+
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList7> m_CurrentCommandBuffer;
 
 			friend class DirectX12Context;
 		};

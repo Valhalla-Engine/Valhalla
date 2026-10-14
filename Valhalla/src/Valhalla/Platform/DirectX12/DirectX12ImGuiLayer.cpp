@@ -47,7 +47,7 @@ namespace Valhalla
 			Ref<DirectX12SwapChain> swapchain = Application::Get().GetWindow().GetSwapChain();
 
 			auto context = DirectX12Context::Get();
-			auto device = DirectX12Context::GetCurrentDevice();
+			Ref<DirectX12Device> device = DirectX12Context::GetCurrentDevice();
 
 			uint32_t frameIndex = Heimdall::Renderer::RT_GetCurrentFrameIndex();
 

@@ -11,6 +11,7 @@ import Valhalla.Core.Application;
 
 import Valhalla.Renderer.VertexBuffer;
 import Valhalla.Renderer.IndexBuffer;
+import Valhalla.Renderer.Renderer;
 
 import Valhalla.Yggdrasil.DirectX12.Context;
 
@@ -32,9 +33,27 @@ namespace Valhalla
 
 		void DirectX12Renderer::Init()
 		{
-			m_DirectX12Device = DirectX12Context::GetCurrentDevice();
+			Ref<DirectX12Device> device = DirectX12Context::GetCurrentDevice();
 			m_DirectX12Swap = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>();
-			
+
+			uint32_t framesInFlight = m_DirectX12Swap->GetImageCount();
+
+			m_FrameContext.resize(framesInFlight);
+
+			for (uint32_t i = 0; i < framesInFlight; i++)
+			{
+				auto& frame = m_FrameContext[i];
+
+				frame.FrameIndex = i;
+				frame.FrameNumber = 0;
+
+				frame.GraphicsFenceValue = 0;
+				frame.ComputeFenceValue = 0;
+				frame.CopyFenceValue = 0;
+			}
+
+
+			device->InitializeFrames(framesInFlight);
 		}
 
 		void DirectX12Renderer::Shutdown()
@@ -45,18 +64,40 @@ namespace Valhalla
 
 		void DirectX12Renderer::BeginFrame()
 		{
+			Heimdall::Renderer::Submit([this](){
+				Ref<DirectX12Device> device = DirectX12Context::GetCurrentDevice();
+
+				const uint32_t frameIndex = m_DirectX12Swap->GetCurrentBackBufferIndex();
+				Log::CoreInfo("Frame Index: {0}", frameIndex);
+
+				auto& frame = m_FrameContext[frameIndex];
+
+				frame.FrameNumber = ++m_FrameNumber;
+
+				m_CurrentFrame = &frame;
+
+				device->BeginFrame(frame);
+			});
+
 			
 		}
 
 
 		void DirectX12Renderer::EndFrame()
 		{
-			
+			Heimdall::Renderer::Submit([this](){
+				Ref<DirectX12Device> device = DirectX12Context::GetCurrentDevice();
+				Ref<DirectX12SwapChain> swap = Application::Get().GetWindow().GetSwapChain().As<DirectX12SwapChain>();
+
+				swap->EndFrame();
+				device->EndFrame();
+				m_CurrentFrame = nullptr;
+			});
 		}
 
 		void DirectX12Renderer::LoadPipeline()
 		{
-			UINT dxgiFactoryFlags = 0;
+			/*UINT dxgiFactoryFlags = 0;
 
 			m_device = DirectX12Context::GetCurrentDevice()->GetDevice();
 			m_commandQueue = m_DirectX12Device->GetGraphicsQueue();
@@ -113,7 +154,7 @@ namespace Valhalla
 				// list in our main loop but for now, we just want to wait for setup to 
 				// complete before continuing.
 				WaitForPreviousFrame();
-			}
+			}*/
 		}
 
 		void DirectX12Renderer::LoadAssets()
@@ -259,7 +300,7 @@ namespace Valhalla
 
 		void DirectX12Renderer::WaitForPreviousFrame()
 		{
-			// Signal and increment the fence value.
+			/*// Signal and increment the fence value.
 			const UINT64 fence = m_FenceValue;
 			DXCALL(m_commandQueue->Signal(m_Fence.Get(), fence));
 			m_FenceValue++;
@@ -271,7 +312,7 @@ namespace Valhalla
 				WaitForSingleObject(m_FenceEvent, INFINITE);
 			}
 
-			m_frameIndex = m_swapchain->GetCurrentBackBufferIndex();
+			m_frameIndex = m_swapchain->GetCurrentBackBufferIndex();*/
 		}
 	}
 }

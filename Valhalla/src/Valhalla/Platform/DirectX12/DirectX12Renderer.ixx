@@ -6,6 +6,7 @@ export module Valhalla.Yggdrasil.DirectX12.Renderer;
 import Valhalla.Renderer.RendererAPI;
 import Valhalla.Yggdrasil.DirectX12.Device;
 import Valhalla.Yggdrasil.DirectX12.SwapChain;
+import Valhalla.Yggdrasil.DirectX12.FrameContext;
 
 import Valhalla.Core.Ref;
 import Valhalla.Math;
@@ -17,13 +18,6 @@ export namespace Valhalla
 		class DirectX12Renderer : public Heimdall::RendererAPI
 		{
 
-			struct Vertex
-			{
-				Math::Float3 position;
-				Math::Float4 color;
-			};
-
-
 		public:
 
 			~DirectX12Renderer() = default;
@@ -32,32 +26,17 @@ export namespace Valhalla
 
 			virtual void BeginFrame() override;
 			virtual void EndFrame() override;
-		private: 
+
+			DirectX12FrameContext& GetCurrentFrameContext();
+		private:
+			std::vector<DirectX12FrameContext> m_FrameContext;
+
+			DirectX12FrameContext* m_CurrentFrame = nullptr;
+
+			uint64_t m_FrameNumber = 0;
 
 			Ref<DirectX12Device> m_DirectX12Device;
 			Ref<DirectX12SwapChain> m_DirectX12Swap;
-
-			Microsoft::WRL::ComPtr<ID3D12Device> m_device;
-			Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapchain;
-			Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_commandQueue;
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RtvDescriptorHeap;
-			Microsoft::WRL::ComPtr<ID3D12Resource> m_RenderTargets[2];
-			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_CommandAllocator;
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList;
-			Microsoft::WRL::ComPtr<ID3D12RootSignature> m_RootSignature;
-			Microsoft::WRL::ComPtr<ID3D12PipelineState> m_PipelineState;
-			Microsoft::WRL::ComPtr<ID3D12Fence> m_Fence;
-			HANDLE m_FenceEvent;
-			UINT64 m_FenceValue;
-			int m_frameIndex;
-			int m_RtvDescriptorSize;
-
-			Microsoft::WRL::ComPtr<ID3D12PipelineState> m_Pipeline;
-			D3D12_VIEWPORT m_viewport;
-			D3D12_RECT m_scissorRect;
-			Microsoft::WRL::ComPtr<ID3D12Resource> m_IndexBuffer;
-			D3D12_VERTEX_BUFFER_VIEW m_VertexBufferView;
-			D3D12_INDEX_BUFFER_VIEW m_IndexBufferView;
 
 			void LoadPipeline();
 			void LoadAssets();

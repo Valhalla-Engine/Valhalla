@@ -1,8 +1,12 @@
+module;
+
+#include <type_traits>
+#include <atomic>
+
 export module Valhalla.Core.Ref;
 
 import Valhalla.Core.Types;
 
-import <type_traits>;
 
 
 export namespace Valhalla
@@ -13,18 +17,18 @@ export namespace Valhalla
 
 		void IncRefCount() const
 		{
-			m_RefCount++;
+			m_RefCount.fetch_add(1, std::memory_order_relaxed);
 		}
 
-		void DecRefCount() const
+		bool DecRefCount() const
 		{
-			m_RefCount--;
+			return m_RefCount.fetch_sub(1, std::memory_order_acq_rel) == 1;
 		}
 
-		uint32_t GetRefCount() const { return m_RefCount; }
+		uint32_t GetRefCount() const { return m_RefCount.load(std::memory_order_acquire); }
 
 	private:
-		mutable uint32_t m_RefCount = 0;
+		mutable std::atomic<uint32_t> m_RefCount{0};
 	};
 
 	export template<typename T>
@@ -89,6 +93,9 @@ export namespace Valhalla
 		template<typename T2>
 		Ref& operator=(const Ref<T2>& other)
 		{
+			if (this == &other)
+				return *this;
+
 			other.IncRef();
 			DecRef();
 
@@ -109,25 +116,44 @@ export namespace Valhalla
 		operator bool() { return m_Instance != nullptr; }
 		operator bool() const { return m_Instance != nullptr; }
 
-		T* operator->() { return m_Instance; }
-		const T* operator->() const { return m_Instance; }
+		T* operator->()
+		{
+			return m_Instance;
+		}
 
-		T& operator*() { return *m_Instance; }
-		const T& operator*() const { return *m_Instance; }
+		T* operator->() const
+		{
+			return m_Instance;
+		}
+
+		T& operator*()
+		{
+			return *m_Instance;
+		}
+
+		T& operator*() const
+		{
+			return *m_Instance;
+		}
 
 		T* Raw() { return m_Instance; }
 		const T* Raw() const { return m_Instance; }
 
 		void Reset(T* instance = nullptr)
 		{
+			if (m_Instance == instance)
+				return;
+
 			DecRef();
 			m_Instance = instance;
+			IncRef();
 		}
 
 		template<typename T2>
 		Ref<T2> As() const
 		{
-			return Ref<T2>(*this);
+			T2* instance = dynamic_cast<T2*>(m_Instance);
+			return Ref<T2>(instance);
 		}
 
 		template<typename ... Args>
@@ -143,15 +169,11 @@ export namespace Valhalla
 				m_Instance->IncRefCount();
 		}
 
-		void DecRef()const
+		void DecRef() const
 		{
-			if (m_Instance)
+			if (m_Instance && m_Instance->DecRefCount())
 			{
-				m_Instance->DecRefCount();
-				if (m_Instance->GetRefCount() == 0)
-				{
-					delete m_Instance;
-				}
+				delete m_Instance;
 			}
 		}
 

@@ -81,30 +81,48 @@ namespace Valhalla
 	void Application::Run()
 	{
 		OnInit();
+
 		while (m_Running)
 		{
-
-			ProcessEvents();
 			Heimdall::Renderer::WaitAndRender();
-			if (!m_Minimized)
+			ProcessEvents();
+
+			if (m_Minimized)
+				continue;
+
+			Application* app = this;
+
+			Heimdall::Renderer::BeginFrame();
+
+			Heimdall::Renderer::Submit([app]()
 			{
-				m_Window->GetSwapChain()->BeginFrame();
+				app->m_Window->GetSwapChain()->BeginFrame();
+			});
 
 
-				Application* app = this;
-				if (m_Specification.EnableImGui)
+			if (m_Specification.EnableImGui)
+			{
+				Heimdall::Renderer::Submit([app]()
 				{
-					Heimdall::Renderer::Submit([app]() {app->RenderImGui(); });
-					Heimdall::Renderer::Submit([=]() {m_ImGuiLayer->End(); });
-				}
+					app->RenderImGui();
+				});
 
 				Heimdall::Renderer::Submit([app]()
 				{
-					app->m_Window->SwapBuffers();
+					app->m_ImGuiLayer->End();
 				});
 			}
 
+			Heimdall::Renderer::EndFrame();
+
+			Heimdall::Renderer::Submit([app]()
+			{
+				app->m_Window->SwapBuffers();
+			});
 		}
+
+		Heimdall::Renderer::WaitAndRender();
+
 		OnShutdown();
 	}
 
